@@ -1,6 +1,6 @@
 <?php
 extract($args);
-$exclude_posts = [];
+$exclude_posts = [0];
 ?>
 <section class="trending container d-flex flex-column flex-md-row pb-2 align-items-start px-0 px-md-2" style="overflow: hidden;">
     <?php

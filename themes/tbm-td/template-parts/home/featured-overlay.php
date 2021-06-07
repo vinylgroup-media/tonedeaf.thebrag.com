@@ -15,6 +15,7 @@ $trending_story_ID = $trending_story->ID;
                 if (isset($genres)) :
                     foreach ($genres as $genre) :
                         echo $genre->name;
+                        break;
                     endforeach; // For Each genre
                 endif; // If there are genres for the post 
                 ?>
@@ -51,7 +52,7 @@ $trending_story_ID = $trending_story->ID;
 
                         $author_img_src = get_field('author_profile_picture', $storytrending_story->ID_ID) ? wp_get_attachment_image_src(get_field('author_profile_picture', $trending_story->ID), 'thumbnail') : CDN_URL . 'default-avatar.png';
                     else : // If custom author has not been set
-                        $author_byline = get_the_author_meta('display_name', $trending_story->post_author);
+                        $author_byline = get_the_author_meta('first_name', $trending_story->post_author) . ' ' . get_the_author_meta('last_name', $trending_story->post_author);
                     endif; // If custom author is set
                     ?>
                     <div class="align-items-center text-uppercase">
