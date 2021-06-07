@@ -673,7 +673,7 @@ function ssm_amp_additional_css_styles($amp_template)
     border-bottom: 1px solid #ccc;
     }
     .amp-wp-header a {
-    background-image: url( '<?php echo CDN_URL; ?>Tone-Deaf-300x166.png' );
+    background-image: url( '<?php echo CDN_URL; ?>Tone-Deaf-100px.png' );
     background-repeat: no-repeat;
     background-size: contain;
     display: block;
