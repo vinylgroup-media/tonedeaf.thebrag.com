@@ -83,7 +83,7 @@ class BragObserver
       add_meta_box(
         'observer-topic',
         'The Brag Observer topic',
-        [$this, 'add_observer_topic_field'],
+        [$this, 'add_observer_topic_field_post'],
         $screen
       );
     }
@@ -99,6 +99,30 @@ class BragObserver
       );
     }
   }
+
+  /*
+  * Add a field to New Genre Taxonomy for term meta
+  */
+  public function add_observer_topic_field_post($post)
+  {
+    $topics = wp_list_pluck($this->get_observer_topics(), 'title', 'id');
+    asort($topics);
+
+    $value = 0;
+    if (isset($post) && isset($post->ID)) {
+      $value = get_post_meta($post->ID, 'observer-topic', true);
+    }
+
+?><div class="form-field term-group">
+      <label>Observer topic</label>
+      <select class="postform" id="observer-topic" name="observer-topic">
+        <option value="">None</option>
+        <?php foreach ($topics as $id => $title) : ?>
+          <option value="<?php echo $id; ?>" <?php selected($value, $id); ?>><?php echo $title; ?></option>
+        <?php endforeach; ?>
+      </select>
+    </div><?php
+        }
 
   /*
   * Add a field to New Genre Taxonomy for term meta
