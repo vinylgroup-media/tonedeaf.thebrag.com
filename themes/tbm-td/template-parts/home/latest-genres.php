@@ -64,6 +64,8 @@ foreach ($genres_home as $i => $genre) :
     if ($news_query->have_posts()) :
         if ($vrec > 7)
             $vrec = 3;
+        if ($incontent > 5)
+            $vrec = 2;
 ?>
         <section class="container latest py-3">
             <div class="m-2">
