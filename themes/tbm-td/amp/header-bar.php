@@ -37,34 +37,28 @@
         </button>
         <?php
         $top_menu_items = [];
-        $exclude_cats = [288366, 303097, 288238, 284732]; // Competitions, Evergreen, News, Features
-        $menu_cats = get_categories(
+        $exclude_genres = [];
+        $menu_genres = get_terms(
+            'genre',
             array(
                 'parent' => null,
                 'orderby'    => 'count',
                 'order' => 'DESC',
-                'exclude' => $exclude_cats,
+                'exclude' => $exclude_genres,
+                'meta_query' => array(
+                    array(
+                        'key'     => 'observer-topic',
+                        'compare' => 'EXISTS',
+                    )
+                )
             )
         );
-        foreach ($menu_cats as $cat) :
+        foreach ($menu_genres as $genre) :
             array_push($top_menu_items, [
-                'link' => get_category_link($cat),
-                'text' => $cat->name,
+                'link' => get_term_link($genre),
+                'text' => $genre->name,
             ]);
         endforeach;
-        array_push($top_menu_items, [
-            'link' => home_url('/observer/competitions/'),
-            'text' => 'Competitions',
-        ]);
-        /* wp_nav_menu(array(
-            'theme_location' => 'top',
-            'menu_id'        => 'menu_main',
-            'menu_class' => 'menu',
-            'fallback_cb'   => false,
-            'add_li_class'  => 'nav-item',
-            'link_class'   => 'nav-link',
-            'container' => 'nav',
-        )); */
         ?>
         <nav>
             <ul class="menu">
