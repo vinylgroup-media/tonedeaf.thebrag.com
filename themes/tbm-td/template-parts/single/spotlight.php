@@ -25,7 +25,7 @@
                     <?php
                     while ($spotlight_articles->have_posts()) :
                         $spotlight_articles->the_post();
-                        $categories = get_the_category(get_the_ID());
+                        $genres = get_the_terms(get_the_ID(), 'genre');
                     ?>
                         <a href="<?php the_permalink(); ?>" class="story m-1 m-md-2 pb-0">
                             <div class="d-flex flex-column flex-md-row align-items-start">
@@ -37,16 +37,12 @@
                                 <div>
                                     <div class="mb-1 mt-1 mt-md-0 text-uppercase spotlight-story-category">
                                         <?php
-                                        if (isset($categories)) :
-                                            foreach ($categories as $category) :
-                                                if (in_array($category->cat_name, ['Instagram Explore', 'Evergreen'])) :
-                                                    continue;
-                                                else :
-                                                    echo $category->cat_name;
-                                                    break;
-                                                endif; // If category name is Evergreen
-                                            endforeach; // For Each Category
-                                        endif; // If there are categories for the post 
+                                        if ($genres) :
+                                            foreach ($genres as $genre) :
+                                                echo $genre->name;
+                                                break;
+                                            endforeach; // For Each Genre
+                                        endif; // If there are genres for the post 
                                         ?>
                                     </div><!-- Cats -->
                                     <h3 class="h6"><?php the_title(); ?></h3>
