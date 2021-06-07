@@ -165,7 +165,7 @@ class BragObserver
             <tr>
               <?php $count = 1;
               foreach ($topics as $id => $title) : ?>
-                <td>
+                <td style="padding: 5px;">
                   <label>
                     <input type="checkbox" name="observer-topic[]" value="<?php echo $id; ?>" <?php echo in_array($id, $genre_topics) ? ' checked' : ''; ?>>
                     <?php echo str_replace('Observer', '', $title); ?>
