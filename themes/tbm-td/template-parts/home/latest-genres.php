@@ -16,7 +16,7 @@ endif;
 $count = 1;
 $vrec = 3;
 $incontent = 2;
-$exclude_genres = [];
+$exclude_genres = [33911, 33111];
 
 if (isset($my_sub_lists) && !empty($my_sub_lists)) :
     $genres_home = get_terms(
@@ -94,7 +94,10 @@ foreach ($genres_home as $i => $genre) :
                 </div>
             </div>
             <div class="d-flex">
-                <a href="<?php echo get_term_link($genre); ?>" class="btn btn-dark text-uppercase">More <?php echo $genre->name; ?></a>
+                <a href="<?php echo get_term_link($genre); ?>" class="btn btn-dark text-uppercase">
+                    <?php echo 'More' != genre->name ? 'More' : ''; ?>
+                    <?php echo $genre->name; ?>
+                </a>
             </div>
         </section>
         <div class="container mb-4">
