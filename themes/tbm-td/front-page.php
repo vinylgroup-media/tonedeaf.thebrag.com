@@ -43,7 +43,7 @@ if (1 === $paged) {
 
         <?php get_template_part('template-parts/home/video-record'); ?>
 
-        <?php get_template_part('template-parts/home/latest-categories'); ?>
+        <?php get_template_part('template-parts/home/latest-genres'); ?>
     <?php } // If front page
     ?>
 </div>

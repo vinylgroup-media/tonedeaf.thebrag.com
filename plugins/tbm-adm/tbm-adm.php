@@ -122,7 +122,7 @@ class TBMAds
       $section = 'homepage';
       if (is_home() || is_front_page()) {
         $section = 'homepage';
-      } elseif (is_category()) {
+      } elseif (is_category() || is_tax('genre')) {
         $term = get_queried_object();
         if ($term) {
           $category_parent_id = $term->category_parent;

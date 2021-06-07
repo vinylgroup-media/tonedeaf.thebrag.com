@@ -44,7 +44,7 @@ if (!post_password_required($post)) :
         </div>
     <?php endif; ?>
     <article class="single-article p-2 p-md-3 pb-1 single-article-<?php echo $count_articles === 1 ? '1' : 'infinite'; ?>" id="<?php the_ID(); ?>">
-    <div class="overlay"></div>
+        <div class="overlay"></div>
         <?php
         $title = get_post_meta($the_post_id, '_yoast_wpseo_title', true) ? get_post_meta($the_post_id, '_yoast_wpseo_title', true) : get_the_title();
         if (strpos($title, '%%title%%') !== FALSE) {
@@ -66,16 +66,21 @@ if (!post_password_required($post)) :
                 $CategoryCD .= $category->slug . ' ';
             endforeach; // For Each Category
         endif; // If there are categories for the post
+
+        $genres = get_the_terms($the_post_id, 'genre');
+        $GenreCD = '';
+        if ($genres) :
+            foreach ($genres as $genre) :
+                $GenreCD .= $genre->slug . ' ';
+            endforeach; // For Each Genre
+        endif; // If there are genres for the post
         ?>
-        <div class="cats mb-3 text-center" data-category="<?php echo $CategoryCD; ?>" data-tags="<?php echo $TagsCD; ?>">
+        <div class="cats mb-3 text-center" data-category="<?php echo $CategoryCD; ?>" data-tags="<?php echo $TagsCD; ?>" data-genre="<?php echo $GenreCD; ?>">
             <?php
-            if (isset($categories)) :
-                foreach ($categories as $category) :
-                    if ('Evergreen' == $category->cat_name) :
-                        continue;
-                    endif; // If category name is Evergreen
+            if ($genres) :
+                foreach ($genres as $genre) :
             ?>
-                    <a class="text-uppercase cat mx-1" href="<?php echo get_category_link($category->term_id); ?>" style="color: #79746b; font-size: 90%;"><?php echo $category->cat_name; ?></a>
+                    <a class="text-uppercase cat mx-1" href="<?php echo get_term_link($genre->term_id); ?>" style="color: #79746b; font-size: 90%;"><?php echo $genre->name; ?></a>
             <?php
                 endforeach; // For Each Category
             endif; // If there are categories for the post 

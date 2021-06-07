@@ -12,16 +12,11 @@ $trending_story_ID = $trending_story->ID;
         <div class="details-wrap d-flex flex-column">
             <div class="mb-1 text-uppercase trending-story-category align-self-start">
                 <?php
-                if (isset($categories)) :
-                    foreach ($categories as $category) :
-                        if (in_array($category->cat_name, ['Instagram Explore', 'Evergreen'])) :
-                            continue;
-                        else :
-                            echo $category->cat_name;
-                            break;
-                        endif; // If category name is Evergreen
-                    endforeach; // For Each Category
-                endif; // If there are categories for the post 
+                if (isset($genres)) :
+                    foreach ($genres as $genre) :
+                        echo $genre->name;
+                    endforeach; // For Each genre
+                endif; // If there are genres for the post 
                 ?>
             </div>
             <div class="title-wrap flex-fill">

@@ -31,7 +31,8 @@ $exclude_posts = [];
         if (!is_null($trending_story_ID) && $trending_story_ID != '') :
             $trending_story = get_post($trending_story_ID);
             if ($trending_story) :
-                $categories = get_the_category($trending_story);
+                // $categories = get_the_category($trending_story);
+                $genres = get_the_terms($trending_story, 'genre');
 
                 $trending_story_image_id = get_post_thumbnail_id($trending_story->ID);
                 $trending_story_src = wp_get_attachment_image_src($trending_story_image_id, 'large');
@@ -44,7 +45,8 @@ $exclude_posts = [];
                     'trending_story' => $trending_story,
                     'trending_story_src' => $trending_story_src,
                     'trending_story_alt_text' => $trending_story_alt_text,
-                    'categories' => $categories,
+                    // 'categories' => $categories,
+                    'genres' => $genres,
                     'exclude_posts' => $exclude_posts,
                 ];
 
@@ -90,19 +92,16 @@ $exclude_posts = [];
                 <?php
                 while ($trending_articles->have_posts()) :
                     $trending_articles->the_post();
-                    $categories = get_the_category(get_the_ID());
+                    // $categories = get_the_category(get_the_ID());
+                    $genres = get_the_terms(get_the_ID(), 'genre');
                 ?>
                     <a href="<?php the_permalink(); ?>" class="story p-2 pb-0 mb-2">
                         <div class="mb-1 text-uppercase trending-story-category">
                             <?php
-                            if (isset($categories)) :
-                                foreach ($categories as $category) :
-                                    if (in_array($category->cat_name, ['Instagram Explore', 'Evergreen'])) :
-                                        continue;
-                                    else :
-                                        echo $category->cat_name;
-                                        break;
-                                    endif; // If category name is Evergreen
+                            if ($genres) :
+                                foreach ($genres as $genre) :
+                                    echo $genre->name;
+                                    break;
                                 endforeach; // For Each Category
                             endif; // If there are categories for the post 
                             ?>

@@ -10,7 +10,6 @@
 
   if (is_user_logged_in()) :
     $current_user = wp_get_current_user();
-
     $brag_api_url = $brag_api_url_base . 'wp-json/brag_observer/v1/get_topics/?key=' . BRAG_API_KEY . '&email=' . $current_user->user_email . '&site=tonedeaf.thebrag.com';
   else :
     $brag_api_url = $brag_api_url_base . 'wp-json/brag_observer/v1/get_topics/?key=' . BRAG_API_KEY . '&site=tonedeaf.thebrag.com';
