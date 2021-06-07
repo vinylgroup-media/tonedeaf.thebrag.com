@@ -120,7 +120,10 @@ class BragObserver
           <?php $count = 1;
           foreach ($topics as $id => $title) : ?>
             <td>
-              <label><input type="checkbox" name="observer-topic[]" value="<?php echo $id; ?>"><?php echo $title; ?></label>
+              <label>
+                <input type="checkbox" name="observer-topic[]" value="<?php echo $id; ?>">
+                <?php echo str_replace('Observer', '', $title); ?>
+              </label>
             </td>
             <?php echo $count % 3 === 0 ? '</tr><trd>' : ''; ?>
           <?php $count++;
@@ -163,9 +166,12 @@ class BragObserver
               <?php $count = 1;
               foreach ($topics as $id => $title) : ?>
                 <td>
-                  <label><input type="checkbox" name="observer-topic[]" value="<?php echo $id; ?>" <?php echo in_array($id, $genre_topics) ? ' checked' : ''; ?>><?php echo $title; ?></label>
+                  <label>
+                    <input type="checkbox" name="observer-topic[]" value="<?php echo $id; ?>" <?php echo in_array($id, $genre_topics) ? ' checked' : ''; ?>>
+                    <?php echo str_replace('Observer', '', $title); ?>
+                  </label>
                 </td>
-                <?php echo $count % 4 === 0 ? '</tr><trd>' : ''; ?>
+                <?php echo $count % 3 === 0 ? '</tr><trd>' : ''; ?>
               <?php $count++;
               endforeach; ?>
             </tr>
