@@ -95,7 +95,7 @@ foreach ($genres_home as $i => $genre) :
             </div>
             <div class="d-flex">
                 <a href="<?php echo get_term_link($genre); ?>" class="btn btn-dark text-uppercase">
-                    <?php echo 'More' != genre->name ? 'More' : ''; ?>
+                    <?php echo 'More' != $genre->name ? 'More' : ''; ?>
                     <?php echo $genre->name; ?>
                 </a>
             </div>
