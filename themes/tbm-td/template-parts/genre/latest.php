@@ -59,7 +59,11 @@ if ($news_query->have_posts()) :
                     <div class="m-3">
                         <?php
                         if ($paged == 1) :
-                            next_posts_link('MORE ' . strtoupper($genre->name), '');
+                            if ('More' != genre->name) :
+                                next_posts_link('MORE ' . strtoupper($genre->name), '');
+                            else :
+                                next_posts_link('MORE', '');
+                            endif;
                         else :
                             next_posts_link('Older', '');
                         endif;
