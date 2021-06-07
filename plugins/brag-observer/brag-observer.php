@@ -729,6 +729,7 @@ class BragObserver
           if (!is_null($topic)) {
             $api_url .= '&id=' . $topic;
           }
+          $api_url .= '&site=tonedeaf.thebrag.com';
           $response = wp_remote_get($api_url, ['sslverify' => !$this->is_sandbox]);
 
           $responseBody = wp_remote_retrieve_body($response);
