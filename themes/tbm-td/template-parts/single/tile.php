@@ -15,11 +15,9 @@
                 ?>
             </div>
             <div class="pl-2 post-content align-self-start col-auto">
-                <?php if (isset($genre_name)) : ?>
-                    <div class="mb-2 text-uppercase cat d-block d-md-none">
-                        <?php echo $genre_name; ?>
-                    </div>
-                <?php endif; ?>
+                <div class="mb-2 text-uppercase cat d-block d-md-none">
+                    <?php echo isset($genre_name) && '' != $genre_name ? $genre_name : '&nbsp;'; ?>
+                </div>
                 <h3 class="my-2"><?php the_title(); ?></h3>
                 <p class="excerpt d-none d-md-block">
                     <?php

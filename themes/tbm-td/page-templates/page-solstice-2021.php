@@ -3,7 +3,7 @@
  * Template Name: Solstice (2021)
  */
 
-get_header();
+get_template_part('template-parts/header/solstice');
 ?>
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous"> -->
 <style>
@@ -2187,32 +2187,25 @@ get_header();
     .events h4 {
         font-size: 1.5rem;
     }
+
+    header {
+        height: 50px !important;
+    }
+
+    main {
+        margin-top: 50px !important;
+    }
+
+    #network {
+        top: 50px;
+        height: auto;
+        position: fixed;
+    }
+    .btn-toggle-slidedown {
+        margin: auto;
+        padding-bottom: 1rem !important;
+    }
 </style>
-
-<div id="header-wrap" style="height: auto;">
-    <div id="header-solstice" class="container p-0">
-
-
-        <div id="masthead" class="navbar navbar-inverse navbar-fixed-top hidden-print px-0">
-            <div class="container d-flex  justify-content-center" style="position: relative; padding-left: 0; padding-right: 0;">
-                <!-- <div class="col-1 col-md-4 px-0">
-                            <button class="navbar-toggler" type="button" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation" style="outline: none;">
-                                <div class="navbar-button-bars"><i class="fa fa-bars"></i></div>
-                            </button>
-                        </div> -->
-                <div class="brand col-6 text-center">
-                    <a class="header-logo" href="<?php echo site_url(); ?>">
-                        <!-- <img src="<?php echo get_template_directory_uri(); ?>/images/solstice-2021/Tone-Deaf-Live-Series.png" width="200" height="200" style="width: 100px; height: auto;"> -->
-                        <!-- <img src="<?php echo get_template_directory_uri(); ?>/images/solstice-2021/TD_ss_LOGOpic_600px.jpg" width="200" height="200" style="width: 100%; height: auto;"> -->
-                    </a>
-                </div>
-                <!-- <div class="col-7 col-md-4 text-right">
-                            <a href="https://thebrag.com/observer/" target="_blank" class="btn btn-dark rounded text-uppercase" rel="noopener">Subscribe</a>
-                        </div> -->
-            </div><!-- / #masthead .container -->
-        </div><!-- / #masthead -->
-    </div>
-</div>
 <div id="content" class="py-2">
     <div class="container" style="padding-left: 15px; padding-right: 15px;">
         <?php
