@@ -29,10 +29,16 @@
         if ($the_query->have_posts()) :
             while ($the_query->have_posts()) :
                 $the_query->the_post();
+
+                $genre_name = '';
+                $genres = get_the_terms(get_the_ID(), 'genre');
+                if ($genres) :
+                    $genre_name = $genres[0]->name;
+                endif;
         ?>
                 <div class="article-wrap col-12 col-md-4">
                     <?php
-                    get_template_part('template-parts/single/tile');
+                    get_template_part('template-parts/single/tile', null, ['genre_name' => $genre_name]);
                     ?>
                 </div>
         <?php
