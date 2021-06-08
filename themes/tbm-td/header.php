@@ -127,7 +127,7 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
       j.src =
         'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
       f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-TQC6WRH');
+    })(window, document, 'script', 'dataLayer', 'GTM-522F5WH');
   </script>
   <!-- End Google Tag Manager -->
 
