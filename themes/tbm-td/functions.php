@@ -2224,3 +2224,19 @@ add_filter('the_content', function ($content) {
     endif;
     return $content;
 });
+
+
+add_action('wp_footer', 'inject_roymorgan', 99, 2);
+function inject_roymorgan()
+{
+?>
+    <script type="text/javascript">
+        jQuery(function() {
+            var cachebuster = Date.now();
+            var script = document.createElement('script');
+            script.src = 'https://pixel.roymorgan.com/stats_v2/Tress.php?u=k7b7oit54p&ca=20005195&a=6id59hbq' + '&cb=' + cachebuster;
+        script.async = true; document.body.appendChild(script);
+        });
+    </script>
+<?php
+}
