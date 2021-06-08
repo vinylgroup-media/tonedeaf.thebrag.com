@@ -195,7 +195,7 @@ $page_template = get_page_template_slug();
 
     $brag_api_url_base = 'https://thebrag.com/';
 
-    $brag_api_url = $brag_api_url_base . 'wp-json/brag_observer/v1/get_my_subs/?key=' . BRAG_API_KEY . '&email=' . $current_user->user_email;
+    $brag_api_url = $brag_api_url_base . 'wp-json/brag_observer/v1/get_my_subs/?key=' . BRAG_API_KEY . '&email=' . $current_user->user_email . '&site=tonedeaf.thebrag.com';
 
     $response = wp_remote_get($brag_api_url);
 
