@@ -4,7 +4,7 @@
         <a href="<?php the_permalink(); ?>" class="d-flex flex-row flex-md-column align-items-start">
             <?php if (isset($genre_name)) : ?>
                 <div class="mb-2 text-uppercase cat d-none d-md-block">
-                    <?php echo $genre_name; ?>
+                    <?php echo isset($genre_name) && '' != $genre_name ? $genre_name : '&nbsp;'; ?>
                 </div>
             <?php endif; ?>
             <div class="post-thumbnail p-r">
@@ -16,7 +16,7 @@
             </div>
             <div class="pl-2 post-content align-self-start col-auto">
                 <div class="mb-2 text-uppercase cat d-block d-md-none">
-                    <?php echo isset($genre_name) && '' != $genre_name ? $genre_name : '&nbsp;'; ?>
+                    <?php echo isset($genre_name) && '' != $genre_name ? $genre_name : ''; ?>
                 </div>
                 <h3 class="my-2"><?php the_title(); ?></h3>
                 <p class="excerpt d-none d-md-block">
