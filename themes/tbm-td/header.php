@@ -432,10 +432,8 @@ $page_template = get_page_template_slug();
             <?php
             if (is_user_logged_in()) :
             ?>
-              <a href="<?php echo home_url('/profile/'); ?>" class="user-name d-flex flex-row btn user text-white" style="padding: 0;">
+              <a href="https://thebrag.com/profile/" target="_blank" rel="noreferrer" class="user-name d-flex flex-row btn user text-white" style="padding: 0;">
                 <?php echo get_avatar($current_user, 24, 'mystery', $user_info->first_name, ['class' => 'rounded-circle']); ?>
-                <!-- <span class="ml-1"><?php // echo $user_info->first_name != '' ? $user_info->first_name : 'My profile'; 
-                                        ?></span> -->
               </a>
             <?php else : ?>
               <a href="<?php echo wp_login_url(); ?>" class="text-white" style="font-size: 0.9rem;">Login / Signup</a>
