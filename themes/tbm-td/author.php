@@ -48,41 +48,14 @@ get_header();
                     the_post();
                     $post_id = get_the_ID();
 
-                    $category = '&nbsp;';
-
-                    if ('snaps' == $post->post_type) :
-                        $category = 'GALLERY';
-                    elseif ('dad' == $post->post_type) :
-                        $categories = get_the_terms(get_the_ID(), 'dad-category');
-                        if ($categories) :
-                            if ($categories[0] && 'Uncategorised' != $categories[0]->name) :
-                                $category = $categories[0]->name;
-                            elseif (isset($categories[1])) :
-                                $category = $categories[1]->name;
-                            else :
-                            endif; // If Uncategorised 
-                        endif; // If there are Dad categories 
-                    else :
-                        $categories = get_the_category();
-                        if ($categories) :
-                            if (isset($categories[0]) && 'Evergreen' != $categories[0]->cat_name) :
-                                if (0 == $categories[0]->parent) :
-                                    $category = $categories[0]->cat_name;
-                                else : $parent_category = get_category($categories[0]->parent);
-                                    $category = $parent_category->cat_name;
-                                endif;
-                            elseif (isset($categories[1])) :
-                                if (0 == $categories[1]->parent) :
-                                    $category = $categories[1]->cat_name;
-                                else : $parent_category = get_category($categories[1]->parent);
-                                    $category = $parent_category->cat_name;
-                                endif;
-                            endif; // If Evergreen 
-                        endif; // If there are Dad categories 
-                    endif; // If Photo Gallery 
+                    $genre_name = '';
+                    $genres = get_the_terms(get_the_ID(), 'genre');
+                    if ($genres) :
+                        $genre_name = $genres[0]->name;
+                    endif;
                 ?>
                     <div class="col-12 col-md-4">
-                        <?php get_template_part('template-parts/single/tile', null, ['category' => $category]); ?>
+                        <?php get_template_part('template-parts/single/tile', null, ['genre_name' => $genre_name]); ?>
                     </div>
                 <?php
                 endwhile; ?>
