@@ -1803,7 +1803,7 @@ function tbm_ajax_load_next_post()
         $main_post = false;
 
         get_template_part('template-parts/single/single', 'post', ['count_articles' => $count_articles]);
-        
+
         wp_reset_query();
         wp_reset_postdata();
         $data['content'] = ob_get_clean();
@@ -2235,7 +2235,8 @@ function inject_roymorgan()
             var cachebuster = Date.now();
             var script = document.createElement('script');
             script.src = 'https://pixel.roymorgan.com/stats_v2/Tress.php?u=k7b7oit54p&ca=20005195&a=6id59hbq' + '&cb=' + cachebuster;
-        script.async = true; document.body.appendChild(script);
+            script.async = true;
+            document.body.appendChild(script);
         });
     </script>
 <?php
@@ -2248,3 +2249,14 @@ function inject_roymorgan()
 if (!current_user_can('edit_posts')) {
     add_filter('show_admin_bar', '__return_false');
 }
+
+/**
+ * Redirect non-admin users to home page
+ */
+add_action('admin_init', function () {
+    $user = wp_get_current_user();
+    if (!current_user_can('edit_posts') && !current_user_can('photo_gallery') && ('/wp-admin/admin-ajax.php' != $_SERVER['PHP_SELF'])) {
+        wp_redirect(home_url());
+        exit;
+    }
+}, 99);

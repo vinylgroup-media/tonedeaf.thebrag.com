@@ -276,6 +276,11 @@ $page_template = get_page_template_slug();
         'text' => $genre->name,
       ]);
     endforeach;
+
+    array_push($top_menu_items, [
+      'link' => wp_logout_url(),
+      'text' => 'Logout',
+    ]);
   endif; // If user picked niche
   ?>
   <nav class="menu-top-menu-container">
@@ -354,7 +359,7 @@ $page_template = get_page_template_slug();
                   <img src="<?php echo ICONS_URL; ?>icon_mail-td.svg" class="btn-img hover" width="24" height="24" alt="Mail">
                 </span>
               </button>
-              <a href="<?php echo home_url('/profile/'); ?>" class="ml-1 user-name d-flex flex-row btn user text-white" style="padding: 0;">
+              <a href="https://thebrag.com/profile/" target="_blank" rel="noreferrer" class="ml-1 user-name d-flex flex-row btn user text-white" style="padding: 0;">
                 <?php echo get_avatar($current_user, 24, 'mystery', $user_info->first_name, ['class' => 'rounded-circle']); ?>
               </a>
             <?php else : ?>
