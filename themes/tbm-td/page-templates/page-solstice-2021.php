@@ -2183,10 +2183,10 @@ get_header();
     .events h3 {
         font-size: 1.75rem;
     }
+
     .events h4 {
         font-size: 1.5rem;
     }
-    
 </style>
 
 <div id="header-wrap" style="height: auto;">
@@ -2408,6 +2408,7 @@ get_header();
         endif;
         ?>
     </div>
+</div>
 
-    <?php
-    get_footer();
+<?php
+get_footer();
