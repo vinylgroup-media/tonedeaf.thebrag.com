@@ -78,7 +78,7 @@ class TBMAds
     if ('' == $ad_location)
       return;
 
-    if (is_page_template('page-templates/page-solstice-2021.php')) :
+    if (is_page_template('page-templates/page-solstice-2021.php') || is_page_template('page-quiz.php')) :
       return;
     endif;
 
