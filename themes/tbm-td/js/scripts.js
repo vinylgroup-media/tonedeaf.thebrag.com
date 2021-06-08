@@ -111,12 +111,9 @@ jQuery(document).ready(function ($) {
       action: 'subscribe_observer',
       formData: 'list=' + list + '&status=' + status
     };
-    $.post(brag_observer.url, data, function (res) {
+    $.post(global.ajax_url, data, function (res) {
       if (res.success) {
-        // btn.toggleClass('subscribed');
         $('a[data-list=' + list + ']').toggleClass('subscribed');
-      } else {
-        // btn.prop('disabled', false);
       }
     });
   });
@@ -443,7 +440,8 @@ jQuery(document).ready(function ($) {
       $(this).remove();
     })
   }
-  if ($('.observer-subscribe-form').length) {
+  // if ($('.observer-subscribe-form').length)
+  {
     $(document).on('submit', '.observer-subscribe-form', function (e) {
       e.preventDefault();
       var theForm = $(this);
@@ -463,14 +461,14 @@ jQuery(document).ready(function ($) {
       var loadingElem = $(this).find('.loading');
       var button = $(this).find('.button');
 
-      var the_url = theForm.closest('.single_story').find('h1:first').data('href');
+      var the_url = theForm.closest('.single-article').find('h1:first').data('href');
       formData += '&source=' + the_url;
 
       $('.js-errors-subscribe,.js-msg-subscribe').html('').addClass('d-none');
       loadingElem.show();
       button.hide();
       var data = {
-        action: 'subscribe_observer_category',
+        action: 'subscribe_observer',
         formData: formData
       };
       $.post(tbm_load_next_post.url, data, function (res) {

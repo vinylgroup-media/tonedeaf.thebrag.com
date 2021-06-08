@@ -124,20 +124,20 @@ class BragObserver
     </div><?php
         }
 
-  /*
+        /*
   * Add a field to New Genre Taxonomy for term meta
   */
-  public function add_observer_topic_field($post)
-  {
-    $topics = wp_list_pluck($this->get_observer_topics(), 'title', 'id');
-    asort($topics);
+        public function add_observer_topic_field($post)
+        {
+          $topics = wp_list_pluck($this->get_observer_topics(), 'title', 'id');
+          asort($topics);
 
-    $value = 0;
-    if (isset($post) && isset($post->ID)) {
-      $value = get_post_meta($post->ID, 'observer-topic', true);
-    }
+          $value = 0;
+          if (isset($post) && isset($post->ID)) {
+            $value = get_post_meta($post->ID, 'observer-topic', true);
+          }
 
-?><div class="form-field term-group">
+          ?><div class="form-field term-group">
       <label>Observer topic</label>
       <table>
         <tr>
@@ -408,7 +408,7 @@ class BragObserver
               $topic->title .= ' Music';
             }
     ?>
-      <div class="observer-sub-form justify-content-center my-3 p-0 d-flex">
+      <div class="observer-sub-form justify-content-center my-3 p-0 d-flex align-items-stretch bg-dark text-white">
         <div class="img-wrap" style="background-image: url(<?php echo $topic->image_url; ?>);">
           <img src="<?php echo $topic->image_url; ?>" style="visibility: hidden;">
         </div>
@@ -421,19 +421,17 @@ class BragObserver
               Get the latest <?php echo $topic->title; ?> news, features, updates and giveaways straight to your inbox
               <a href="<?php echo $topic->link; ?>" class="l-learn-more text-dark" target="_blank" rel="noopener">Learn more</a>
             </p>
-            <button class="button btn btn-danger btn-join">JOIN</button>
-            <form action="#" method="post" id="observer-subscribe-form<?php echo $post_id; ?>" name="observer-subscribe-form" class="observer-subscribe-form d-none">
-              <div class="d-flex" style="box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 2px 3px rgba(0,0,0,.2); border-radius: .25rem;">
+            <?php if (!is_user_logged_in()) : ?>
+              <button class="button btn btn-primary btn-join">JOIN</button>
+            <?php endif; ?>
+            <form action="#" method="post" id="observer-subscribe-form<?php echo $post_id; ?>" name="observer-subscribe-form" class="observer-subscribe-form <?php echo !is_user_logged_in() ? 'd-none bg-white' : ''; ?>">
+              <div class="d-flex justify-content-start">
                 <input type="hidden" name="list" value="<?php echo $topic_id; ?>">
-                <input type="email" name="email" class="form-control observer-sub-email" placeholder="Your email" value="">
+                <?php if (!is_user_logged_in()) : ?>
+                  <input type="email" name="email" class="form-control observer-sub-email" placeholder="Your email" value="">
+                <?php endif; ?>
                 <div class="d-flex submit-wrap rounded">
                   <input type="submit" value="Join" name="subscribe" class="button btn btn-danger rounded">
-                  <div class="loading mx-3" style="display: none;">
-                    <div class="spinner">
-                      <div class="double-bounce1 bg-dark"></div>
-                      <div class="double-bounce2 bg-dark"></div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </form>
@@ -443,16 +441,6 @@ class BragObserver
         </div>
       </div>
     <?php
-          } else if (isset($primary_genre)) { // Topic not set
-    ?>
-      <a href="https://thebrag.com/observer/" target="_blank" class="text-dark">
-        <div class="observer-sub-form rounded justify-content-center my-3 p-3">
-          <h5>Love <?php echo $primary_genre->name; ?><?php echo in_array($primary_genre->name, ['Country', 'Pop']) ? ' Music' : ''; ?>?</h5>
-          <p>Get the latest <?php echo $primary_genre->name; ?> <?php echo in_array($primary_genre->name, ['Country', 'Pop']) ? ' Music' : ''; ?> news, features, updates and giveaways straight to your inbox</p>
-          <div class="btn btn-danger">Click here to join FREE</div>
-        </div>
-      </a>
-<?php
           }
           $html = ob_get_contents();
           ob_end_clean();
@@ -470,6 +458,11 @@ class BragObserver
             } else {
               $formData = $_POST;
             }
+
+            if (is_user_logged_in()) :
+              $current_user = wp_get_current_user();
+              $formData['email'] = $current_user->user_email;
+            endif;
 
             if (!is_numeric($formData['list'])) {
               error_log('Observer List _' . $formData['list'] . '_is not numeric');
