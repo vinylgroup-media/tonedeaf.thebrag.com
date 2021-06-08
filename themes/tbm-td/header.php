@@ -1,5 +1,6 @@
 <?php
 $page_template = get_page_template_slug();
+$current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?> class="no-js">
@@ -277,10 +278,13 @@ $page_template = get_page_template_slug();
       ]);
     endforeach;
 
-    array_push($top_menu_items, [
-      'link' => wp_logout_url(),
-      'text' => 'Logout',
-    ]);
+    if (is_user_logged_in()) :
+      array_push($top_menu_items, [
+        'link' => wp_logout_url(),
+        'text' => 'Logout',
+        'class' => 'nav-item-logout'
+      ]);
+    endif;
   endif; // If user picked niche
   ?>
   <nav class="menu-top-menu-container">
@@ -363,7 +367,7 @@ $page_template = get_page_template_slug();
                 <?php echo get_avatar($current_user, 24, 'mystery', $user_info->first_name, ['class' => 'rounded-circle']); ?>
               </a>
             <?php else : ?>
-              <a href="<?php echo wp_login_url(); ?>" class="text-white btn btn-primary">Login</a>
+              <a href="<?php echo esc_url(wp_login_url($current_url)); ?>" class="text-white btn btn-primary">Login</a>
             <?php endif; ?>
           </div>
         </div>
@@ -441,7 +445,7 @@ $page_template = get_page_template_slug();
                 <?php echo get_avatar($current_user, 24, 'mystery', $user_info->first_name, ['class' => 'rounded-circle']); ?>
               </a>
             <?php else : ?>
-              <a href="<?php echo wp_login_url(); ?>" class="text-white" style="font-size: 0.9rem;">Login / Signup</a>
+              <a href="<?php echo esc_url(wp_login_url($current_url)); ?>" class="text-white" style="font-size: 0.9rem;">Login / Signup</a>
             <?php endif; ?>
           </div>
           <button class="btn btn-primary btn-observer-top btn-toggle-slidedown d-flex" data-target="observer-list-top">

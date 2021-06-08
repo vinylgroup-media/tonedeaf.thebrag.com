@@ -18,6 +18,9 @@
             flex: auto;
             text-align: center;
             position: relative;
+            &.nav-item-logout {
+                opacity: .5;
+            }
             a {
                 padding: 0.5rem;
                 display: block;
