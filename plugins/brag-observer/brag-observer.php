@@ -19,6 +19,8 @@ class BragObserver
   protected $rest_api_key;
   protected $api_url;
 
+  protected $artist_keywords;
+
   public function __construct()
   {
 
@@ -34,6 +36,19 @@ class BragObserver
     } else {
       $this->api_url = 'https://thebrag.com/wp-json/brag_observer/v1/';
     }
+
+    $this->artist_keywords = [
+      'skegss',
+      'ruby fields',
+      'pierce',
+      'Foo Fighters',
+      'beatles',
+      'eminem',
+      'tekashi',
+      'prince',
+      'rage against the machine',
+      'joyner lucas',
+    ];
 
     // Shortcodes
     add_shortcode('observer_tastemaker_form', [$this, 'shortcode_observer_tastemaker_form']);
@@ -177,6 +192,7 @@ class BragObserver
           asort($topics);
 
           // get current topic
+          $genre_primary_topic = get_term_meta($term->term_id, 'primary-observer-topic', true);
           $genre_topics = get_term_meta($term->term_id, 'observer-topic');
 
           ?><tr class="form-field term-group-wrap">
@@ -185,6 +201,13 @@ class BragObserver
       </th>
       <td>
         <div style="height: 200px; overflow-y: scroll;">
+          Primary topic
+          <select class="postform" id="primary-observer-topic" name="primary-observer-topic">
+            <option value="">None</option>
+            <?php foreach ($topics as $id => $title) : ?>
+              <option value="<?php echo $id; ?>" <?php selected($genre_primary_topic, $id); ?>><?php echo $title; ?></option>
+            <?php endforeach; ?>
+          </select>
           <table>
             <tr>
               <?php $count = 1;
@@ -210,7 +233,9 @@ class BragObserver
   */
         public function update_genre_meta($term_id, $tt_id)
         {
-          if (isset($_POST['observer-topic']) && '' !== $_POST['observer-topic']) {
+          if (isset($_POST['primary-observer-topic']) && '' !== $_POST['primary-observer-topic']) {
+            update_term_meta($term_id, 'primary-observer-topic', $_POST['primary-observer-topic']);
+          } elseif (isset($_POST['observer-topic']) && '' !== $_POST['observer-topic']) {
             if (is_array($_POST['observer-topic'])) {
               delete_term_meta($term_id, 'observer-topic');
               foreach ($_POST['observer-topic'] as $post_topic) {
@@ -242,12 +267,16 @@ class BragObserver
           asort($topics);
 
           $term_id = absint($term_id);
+
+          $genre_primary_topic = get_term_meta($term_id, 'primary-observer-topic', true);
           $genre_topics = get_term_meta($term_id, 'observer-topic');
 
           if (!empty($genre_topics)) {
             $content .= '<ul>';
             foreach ($genre_topics as $topic) {
-              $content .= '<li>' . esc_attr($topics[$topic]) . '</li>';
+              $content .= '<li>';
+              $content .= $topic == $genre_primary_topic ? '<strong><u>' . esc_attr($topics[$topic]) . '</u></strong>' : esc_attr($topics[$topic]);
+              $content .= '</li>';
             }
             $content .= '</ul>';
           }
@@ -359,9 +388,34 @@ class BragObserver
           if (is_null($genre_atts['id']))
             return;
 
+          $topics = $this->get_observer_topics();
+          if ($topics) {
+            foreach ($topics as $topic) {
+              $keywords = explode(',', $topic->keywords);
+
+              if (!is_array($keywords) || empty($keywords)) {
+                continue;
+              }
+
+              foreach ($keywords as $keyword) {
+                if ('' == trim($keyword) || !in_array(strtolower($keyword), $this->artist_keywords)) {
+                  continue;
+                }
+                if (strpos(strtolower(get_the_content()), $keyword) !== false) {
+                  $topic_id = $topic->id;
+                  break;
+                }
+              }
+            }
+          }
+
+          // var_dump($topic_id); exit;
+
           $post_id = $genre_atts['id'];
 
-          $topic_id = get_post_meta(absint($post_id), 'observer-topic', true);
+          if (!isset($topic_id)) {
+            $topic_id = get_post_meta(absint($post_id), 'observer-topic', true);
+          }
 
           if (!$topic_id || '' == trim($topic_id)) {
             $genres = get_the_terms($post_id, 'genre');
@@ -382,31 +436,26 @@ class BragObserver
               $primary_genre = $genres[0];
             }
 
-            $topic_id = get_term_meta($primary_genre->term_id, 'observer-topic', true);
+            // print_r($primary_genre); exit;
+
+            $topic_id = get_term_meta($primary_genre->term_id, 'primary-observer-topic', true);
+            if (!$topic_id) {
+              $topic_id = get_term_meta($primary_genre->term_id, 'observer-topic', true);
+            }
           }
 
           ob_start();
           ?>
     <?php
           if ($topic_id) {
-            // $topics = wp_list_pluck( $this->get_observer_topics(), 'title', 'id' );
-            // $topic_title = trim( str_ireplace( 'Observer', '', $topics[$topic] ) );
             $topics = $this->get_observer_topics($topic_id);
             $topic = $topics[0];
-            /* $topic_titles = wp_list_pluck($topics, 'title', 'id');
-            $topic_links = wp_list_pluck($topics, 'link', 'id'); */
 
             if (!$topic) {
               return;
             }
 
-            // error_log($topic->id);
-
             $topic->title = trim(str_ireplace('Observer', '', $topic->title));
-
-            if (in_array($topic_id, [27])) {
-              $topic->title .= ' Music';
-            }
     ?>
       <div class="observer-sub-form justify-content-center my-3 p-0 d-flex align-items-stretch bg-dark text-white">
         <div class="img-wrap" style="background-image: url(<?php echo $topic->image_url; ?>);">
@@ -422,7 +471,7 @@ class BragObserver
               <a href="<?php echo $topic->link; ?>" class="l-learn-more text-dark" target="_blank" rel="noopener">Learn more</a>
             </p>
             <?php if (!is_user_logged_in()) : ?>
-              <button class="button btn btn-primary btn-join">JOIN</button>
+              <button class="button btn btn-primary btn-join" style="color: #fff !important">JOIN</button>
             <?php endif; ?>
             <form action="#" method="post" id="observer-subscribe-form<?php echo $post_id; ?>" name="observer-subscribe-form" class="observer-subscribe-form <?php echo !is_user_logged_in() ? 'd-none bg-white' : ''; ?>">
               <div class="d-flex justify-content-start">
@@ -431,7 +480,7 @@ class BragObserver
                   <input type="email" name="email" class="form-control observer-sub-email" placeholder="Your email" value="">
                 <?php endif; ?>
                 <div class="d-flex submit-wrap rounded">
-                  <input type="submit" value="Join" name="subscribe" class="button btn btn-danger rounded">
+                  <input type="submit" value="Join" name="subscribe" class="button btn btn-primary rounded" style="color: #fff !important">
                 </div>
               </div>
             </form>
@@ -440,7 +489,7 @@ class BragObserver
           </div>
         </div>
       </div>
-    <?php
+<?php
           }
           $html = ob_get_contents();
           ob_end_clean();

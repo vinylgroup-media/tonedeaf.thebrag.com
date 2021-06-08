@@ -12,7 +12,7 @@ $trending_story_ID = $trending_story->ID;
         <div class="details-wrap">
             <div class="mb-1 text-uppercase trending-story-category">
                 <?php
-                if (isset($genres)) :
+                if ($genres) :
                     foreach ($genres as $genre) :
                         echo $genre->name;
                         break;
