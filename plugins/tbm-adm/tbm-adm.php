@@ -78,6 +78,10 @@ class TBMAds
     if ('' == $ad_location)
       return;
 
+    if (is_page_template('page-templates/page-solstice-2021.php')) :
+      return;
+    endif;
+
     $html = '';
     $fuse_tags = self::fuse_tags();
 
@@ -193,7 +197,7 @@ class TBMAds
   {
     return [
       'amp' => [
-        'network_id' => '/22071836792/SSM_thebragcomprem/',
+        'network_id' => '/22071836792/SSM_tonedeafbrag/',
         'header' => [
           'width' => 320,
           'height' => 50,

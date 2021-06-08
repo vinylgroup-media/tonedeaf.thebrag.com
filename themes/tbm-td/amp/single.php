@@ -218,9 +218,9 @@ $amp_post_id = $this->get('post_id'); ?>
         <div class="clear"></div>
 
         <div class="amp-wp-article-content">
-            <amp-embed width=100 height=100 type=taboola layout=responsive heights="(min-width:1313px) 39%, (min-width:795px) 46%, (min-width:480px) 58%, (min-width:439px) 261%, 284%" data-publisher="thebragmedia-thebrag" data-mode="alternating-thumbnails-a" data-placement="Below Article Thumbnails AMP" data-target_type="mix" data-article="auto" data-url="">
-            </amp-embed>
-        </div>
+			<amp-embed width=100 height=100 type=taboola layout=responsive heights="(min-width:1839px) 280%, (min-width:1284px) 285%, (min-width:907px) 293%, (min-width:647px) 303%, (min-width:502px) 319%, (min-width:392px) 339%, 369%" data-publisher="thebragmedia-tonedeaf" data-mode="alternating-thumbnails-a-amp" data-placement="Below Article Thumbnails AMP" data-target_type="mix" data-article="auto" data-url="">
+			</amp-embed>
+		</div>
 
     </article>
 

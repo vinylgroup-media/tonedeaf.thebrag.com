@@ -1,9 +1,9 @@
 <?php
 
-define('ICONS_URL', get_template_directory_uri() . '/images/');
-define('CDN_URL', ICONS_URL);
-// define('ICONS_URL', 'https://cdn.thebrag.com/icons/');
-// define('CDN_URL', 'https://cdn.thebrag.com/td/');
+// define('ICONS_URL', get_template_directory_uri() . '/images/');
+// define('CDN_URL', ICONS_URL);
+define('ICONS_URL', 'https://cdn.thebrag.com/icons/');
+define('CDN_URL', 'https://cdn.thebrag.com/td/');
 
 define('BRAG_API_KEY', '3ce4efdd-a39c-4141-80f7-08a828500831');
 
@@ -690,7 +690,7 @@ function ssm_amp_additional_css_styles($amp_template)
     }
     .amp-wp-title { color: #0f0c0c; }
     .amp-wp-article, .amp-wp-article-header { margin-top: 0; background: #fff; }
-    .amp-wp-article { padding: 10px 0; }
+    .amp-wp-article { padding: 55px 0 10px 0; }
     #pagination { border-top: 1px solid #ccc; }
     #pagination .prev a, #pagination .next a {
     display: block;
