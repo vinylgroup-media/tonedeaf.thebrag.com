@@ -2240,3 +2240,11 @@ function inject_roymorgan()
     </script>
 <?php
 }
+
+
+/*
+ * Show admin bar only for admins and editors
+ */
+if (!current_user_can('edit_posts')) {
+    add_filter('show_admin_bar', '__return_false');
+}
