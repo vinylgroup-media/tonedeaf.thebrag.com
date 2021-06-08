@@ -260,9 +260,9 @@ jQuery(document).ready(function ($) {
                   "'" + res.data.category + "'",
                 ]);
 
-                var bbSlot = fusetag.getAdSlotsById('22339226185');
+                var bbSlot = fusetag.getAdSlotsById('22378619009');
                 if (typeof bbSlot != "undefined") {
-                  var slotResponseInformation = bbSlot[0].getResponseInformation(); // 22339226185 = Fuse ID for Billboard
+                  var slotResponseInformation = bbSlot[0].getResponseInformation();
                   if (typeof slotResponseInformation != "undefined") {
                     if (typeof slotResponseInformation.lineItemId != "undefined") {
                       fusetag.setTargeting("LineItemId", ["'" + slotResponseInformation.lineItemId + "'"]);
