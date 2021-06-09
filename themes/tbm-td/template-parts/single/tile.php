@@ -11,6 +11,8 @@
                 <?php
                 if ('' !== get_the_post_thumbnail()) :
                     the_post_thumbnail('thumbnail');
+                else :
+                    echo '<img src="' . CDN_URL . 'placeholder.png">';
                 endif;
                 ?>
             </div>
