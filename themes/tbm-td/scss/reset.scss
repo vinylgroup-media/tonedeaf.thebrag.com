@@ -119,7 +119,7 @@ textarea {
 }
 
 ul {
-    list-style: none;
+    // list-style: none;
 }
 
 blockquote,
@@ -491,7 +491,7 @@ p {
     margin-bottom: 1rem;
 }
 
-ol {
+ul, ol {
     padding-left: 2rem;
     margin-bottom: 2rem;
 }
