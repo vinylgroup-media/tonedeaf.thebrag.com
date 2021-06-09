@@ -2267,7 +2267,7 @@ get_template_part('template-parts/header/solstice');
                             </div>
                             <hr>
 
-                            <div class="row align-items-center">
+                            <!-- <div class="row align-items-center">
                                 <div class="col-md-4 my-3 align-self-stretch pr-0 pr-md-2">
                                     <div style="position: sticky; top: 1rem;">
                                         <img src="<?php echo get_template_directory_uri(); ?>/images/solstice-2021/TD_STAR_Nathaniel_600x849.jpg" style="border-radius: 0rem;">
@@ -2280,6 +2280,29 @@ get_template_part('template-parts/header/solstice');
                                     <hr>
                                     <p>Kicking off the proceedings is a free performance from pop stalwart Nathanial, multi-instrumentalist Dom Helson and K-Note, who will perform a free show at The Star’s Rocklily on Friday, June 11th.</p>
                                     <div><iframe width="560" height="315" src="https://www.youtube.com/embed/AdZUpmXAYVE" title="Nathaniel - You" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%"></iframe></div>
+                                    <div class="d-flex flex-row align-items-center justify-content-start mt-3">
+                                        <span class="mr-2 text-entry">Entry:</span>
+                                        <span class="btn btn-success">FREE</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr> -->
+
+                            <div class="row align-items-center">
+                                <div class="col-md-4 my-3 align-self-stretch pr-0 pr-md-2">
+                                    <div style="position: sticky; top: 1rem;">
+                                        <img src="<?php echo get_template_directory_uri(); ?>/images/solstice-2021/Jazzy-K-600px.jpg" style="border-radius: 0rem;">
+                                    </div>
+                                </div>
+                                <div class="col-md-8 my-3">
+                                    <h3>Jazzy K + Special Guests</h3>
+                                    <h4>Friday, June 11<sup>th</sup>, 7 pm</h4>
+                                    <h5>Rocklily, The Star</h5>
+                                    <hr>
+                                    <p>Jazzy K’s soulful tone and empowering lyrics turned the heads of some of the biggest players in the music industry. This has led Australian singer/ songwriter to launch her career in the U.S. with her first single, “You Are”. Jazzy K managed to tell a story about bullying in her own way.</p>
+                                    <p>Forward to 2021, during her time in quarantine she had been working with top producers on new music and used her time to develop her skills in writing and engineering.</p>
+                                    <p>Jazzy today releases to radio her new single, “Trap House”produced by multi-Grammy award winning producer My Guy Mars. With R&B and pop being the roots of her sound, it’s her melodies that truly makes the song her own.</p>
+                                    <!-- <div><iframe width="560" height="315" src="https://www.youtube.com/embed/AdZUpmXAYVE" title="Nathaniel - You" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%"></iframe></div> -->
                                     <div class="d-flex flex-row align-items-center justify-content-start mt-3">
                                         <span class="mr-2 text-entry">Entry:</span>
                                         <span class="btn btn-success">FREE</span>
