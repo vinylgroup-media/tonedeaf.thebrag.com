@@ -235,7 +235,8 @@ class BragObserver
         {
           if (isset($_POST['primary-observer-topic']) && '' !== $_POST['primary-observer-topic']) {
             update_term_meta($term_id, 'primary-observer-topic', $_POST['primary-observer-topic']);
-          } elseif (isset($_POST['observer-topic']) && '' !== $_POST['observer-topic']) {
+          }
+          if (isset($_POST['observer-topic']) && '' !== $_POST['observer-topic']) {
             if (is_array($_POST['observer-topic'])) {
               delete_term_meta($term_id, 'observer-topic');
               foreach ($_POST['observer-topic'] as $post_topic) {
