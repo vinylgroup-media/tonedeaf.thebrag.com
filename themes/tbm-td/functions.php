@@ -33,7 +33,7 @@ add_theme_support('post-thumbnails');
  * To-do
  */
 register_nav_menus(array(
-    'top' => __('Top Menu', 'thebrag'),
+    'top' => __('Top Menu', 'tonedeaf'),
 ));
 
 /*
