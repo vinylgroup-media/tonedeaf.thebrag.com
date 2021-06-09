@@ -64,6 +64,9 @@ if (!post_password_required($post)) :
         if ($categories) :
             foreach ($categories as $category) :
                 $CategoryCD .= $category->slug . ' ';
+                if( 'op-ed-comment' == $category->slug) :
+                    $is_oped = true;
+                endif;
             endforeach; // For Each Category
         endif; // If there are categories for the post
 
@@ -88,7 +91,12 @@ if (!post_password_required($post)) :
         </div><!-- Cats -->
 
         <h1 id="story_title<?php echo $the_post_id; ?>" class="story-title mb-3" data-href="<?php the_permalink(); ?>" data-title="<?php echo htmlentities($title); ?>" data-share-title="<?php echo urlencode($title); ?>" data-share-url="<?php echo urlencode(get_permalink()); ?>" data-article-number="<?php echo $count_articles; ?>" style="text-align: center;">
-            <?php the_title(); ?>
+            <?php
+            the_title();
+            if( isset($is_oped) && $is_oped ) {
+                echo ' [OP-ED]';
+            }
+            ?>
         </h1>
 
         <p class="text-center excerpt">
