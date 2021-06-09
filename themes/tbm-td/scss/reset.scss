@@ -111,13 +111,13 @@ section {
     display: block;
 }
 
-body, textarea {
+body,
+textarea {
     line-height: 1.5;
     font-family: $bodyFonts;
     font-weight: 400;
 }
 
-ol,
 ul {
     list-style: none;
 }
@@ -464,11 +464,13 @@ a {
     padding: 0.2em 0;
 }
 
-strong, b {
+strong,
+b {
     font-weight: 600;
 }
 
-i, em {
+i,
+em {
     font-style: italic;
 }
 
@@ -487,4 +489,9 @@ h3 {
 }
 p {
     margin-bottom: 1rem;
+}
+
+ol {
+    padding-left: 2rem;
+    margin-bottom: 2rem;
 }
