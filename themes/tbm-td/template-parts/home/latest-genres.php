@@ -44,7 +44,7 @@ else :
 endif;
 
 foreach ($genres_home as $i => $genre) :
-    if ($i >= 3)
+    if ($i >= 4)
         break;
     if (!$genre)
         continue;
