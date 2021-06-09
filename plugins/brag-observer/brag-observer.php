@@ -200,7 +200,7 @@ class BragObserver
         <label for="observer-topic">Observer topic</label>
       </th>
       <td>
-        <div style="height: 200px; overflow-y: scroll;">
+        <div>
           Primary topic
           <select class="postform" id="primary-observer-topic" name="primary-observer-topic">
             <option value="">None</option>
