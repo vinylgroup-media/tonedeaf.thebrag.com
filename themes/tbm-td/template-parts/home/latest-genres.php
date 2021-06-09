@@ -44,6 +44,8 @@ else :
 endif;
 
 foreach ($genres_home as $i => $genre) :
+    if ($i >= 3)
+        break;
     if (!$genre)
         continue;
     $news_args = array(
