@@ -1,7 +1,7 @@
 <?php /* Template Name: Festivals ( List ) */ ?>
 <?php get_header(); ?>
 
-<section class="container latest p-2">
+<section class="container latest px-2 bg-white">
     <div class="row">
         <h1 class="col-12 archive-title my-3"><?php the_title(); ?></h1>
     </div>
