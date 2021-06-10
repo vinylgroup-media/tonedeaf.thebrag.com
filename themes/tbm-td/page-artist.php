@@ -40,15 +40,15 @@
             <h1 class="col-12 m-3"><?php echo $artist->artist_name; ?></h1>
 
             <div class="col-12">
-                <ul class="nav flex-row">
+                <ul class="nav flex-row" style="list-style: none;">
                     <?php if ($artist->facebook) : ?>
-                        <li class="l_social facebook"><a href="<?php echo addhttp($artist->facebook); ?>" target="_blank" class="text-dark px-2"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+                        <li class="l_social facebook"><a href="<?php echo addhttp($artist->facebook); ?>" target="_blank" class="text-dark px-2"><img src="https://cdn.thebrag.com/icons/facebook-dark.svg" width="32" height="32" alt="Facebook" title="Facebook"></li>
                     <?php endif; ?>
                     <?php if ($artist->twitter) : ?>
-                        <li class="l_social twitter"><a href="<?php echo addhttp($artist->twitter); ?>" target="_blank" class="text-dark px-2"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+                        <li class="l_social twitter"><a href="<?php echo addhttp($artist->twitter); ?>" target="_blank" class="text-dark px-2"><img src="https://cdn.thebrag.com/icons/twitter-dark.svg" width="32" height="32" alt="Twitter" title="Twitter"></a></li>
                     <?php endif; ?>
                     <?php if ($artist->instagram) : ?>
-                        <li class="l_social instagram"><a href="<?php echo addhttp($artist->instagram); ?>" target="_blank" class="text-dark px-2"><i class="fa fa-instagram fa-lg" aria-hidden="true"></i></a></li>
+                        <li class="l_social instagram"><a href="<?php echo addhttp($artist->instagram); ?>" target="_blank" class="text-dark px-2"><img src="https://cdn.thebrag.com/icons/instagram-dark.svg" width="32" height="32" alt="Instagram" title="Instagram"></a></li>
                     <?php endif; ?>
                 </ul>
             </div>
