@@ -20,7 +20,7 @@
                 if (isset($artist->image_id) && $artist->image_id > 0) :
                     $artist_img_src = wp_get_attachment_image_src($artist->image_id, 'medium_large');
         ?>
-                    <div class="article-wrap col-12 col-md-4">
+                    <div class="col-12 col-md-4">
                         <article class="my-1 my-md-3">
                             <div class="mb-4 mx-0 mx-md-3">
                                 <a href="/<?php echo $artist->url_slug; ?>/<?php echo $artist->artist_slug; ?>" class="d-flex flex-row flex-md-column align-items-start">

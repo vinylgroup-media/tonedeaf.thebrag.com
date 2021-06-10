@@ -103,14 +103,17 @@
             if (have_posts()) :
                 $count = 1;
             ?>
-                <div class="col-12">
-                    <div class="row posts">
-
+                <div class="container latest px-2 bg-white">
+                    <div class="d-flex flex-wrap align-items-start mt-2">
                         <?php
                         $show_cats = true;
                         while (have_posts()) :
                             the_post();
-                            get_template_part('template-parts/single/tile');
+                        ?>
+                            <div class="article-wrap col-12 col-md-4">
+                                <?php get_template_part('template-parts/single/tile'); ?>
+                            </div>
+                        <?php
                             $count++;
                         endwhile;
                         ?>
