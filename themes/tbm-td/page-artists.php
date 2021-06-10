@@ -7,7 +7,7 @@
     </div>
 </div>
 
-<section class="container latest px-2 bg-white">
+<section class="container latest p-2 bg-white">
     <div class="row">
         <h1 class="col-12 archive-title mb-3">Top Australian Artists</h1>
     </div>
