@@ -2301,8 +2301,7 @@ get_template_part('template-parts/header/solstice');
                                     <hr>
                                     <p>Jazzy K’s soulful tone and empowering lyrics turned the heads of some of the biggest players in the music industry. This has led Australian singer/ songwriter to launch her career in the U.S. with her first single, “You Are”. Jazzy K managed to tell a story about bullying in her own way.</p>
                                     <p>Forward to 2021, during her time in quarantine she had been working with top producers on new music and used her time to develop her skills in writing and engineering.</p>
-                                    <p>Jazzy today releases to radio her new single, “Trap House”produced by multi-Grammy award winning producer My Guy Mars. With R&B and pop being the roots of her sound, it’s her melodies that truly makes the song her own.</p>
-                                    <!-- <div><iframe width="560" height="315" src="https://www.youtube.com/embed/AdZUpmXAYVE" title="Nathaniel - You" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%"></iframe></div> -->
+                                    <div><iframe width="560" height="315" src="https://www.youtube.com/embed/bXu9s7HOuVI" title="You Are" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
                                     <div class="d-flex flex-row align-items-center justify-content-start mt-3">
                                         <span class="mr-2 text-entry">Entry:</span>
                                         <span class="btn btn-success">FREE</span>
