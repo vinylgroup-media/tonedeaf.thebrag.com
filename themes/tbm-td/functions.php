@@ -1460,7 +1460,7 @@ function ssm_amp_add_custom_analytics($analytics)
         ),
         'config_data' => array(
             'vars' => array(
-                'account' => "UA-101631840-1"
+                'account' => "UA-306739-6"
             ),
             'triggers' => array(
                 'trackPageview' => array(
