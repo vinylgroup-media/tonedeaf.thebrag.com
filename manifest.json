@@ -1,0 +1,52 @@
+{
+    "name": "Tone Deaf",
+    "short_name": "Tone-Deaf",
+    "description": "We have a commitment and passion for supporting the local music community, as well as delivering fun, informative, and hopefully thought-provoking insight into the issues affecting music today.",
+    "icons": [
+        {
+            "src": "icons/Tone-Deaf-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Tone-Deaf-384x384.png",
+            "sizes": "384x384",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Tone-Deaf-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Tone-Deaf-152x152.png",
+            "sizes": "152x152",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Tone-Deaf-144x144.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Tone-Deaf-128x128.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Tone-Deaf-96x96.png",
+            "sizes": "96x96",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Tone-Deaf-72x72.png",
+            "sizes": "72x72",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#1E81EF",
+    "background_color": "#fff",
+    "display": "browser",
+    "scope": "/",
+    "start_url": "/"
+}
