@@ -7,7 +7,6 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
 
 <head>
   <meta charset="<?php bloginfo('charset'); ?>">
-  <link rel="shortcut icon" href="<?php echo CDN_URL; ?>favicon.png?v=<?php echo time(); ?>" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="profile" href="http://gmpg.org/xfn/11">
