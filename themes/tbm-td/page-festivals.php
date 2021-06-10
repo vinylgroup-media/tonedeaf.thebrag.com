@@ -1,6 +1,12 @@
 <?php /* Template Name: Festivals ( List ) */ ?>
 <?php get_header(); ?>
 
+<div class="ad-billboard ad-billboard-top container py-1 py-md-2">
+    <div class="mx-auto text-center">
+        <?php render_ad_tag('leaderboard'); ?>
+    </div>
+</div>
+
 <section class="container latest px-2 bg-white">
     <div class="row">
         <h1 class="col-12 archive-title my-3"><?php the_title(); ?></h1>
