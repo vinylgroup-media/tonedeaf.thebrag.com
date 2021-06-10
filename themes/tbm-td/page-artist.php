@@ -7,7 +7,7 @@
     </div>
 </div>
 
-<section class="container px-2 bg-white">
+<section class="container p-2 bg-white">
     <div class="row">
         <?php
         $pa = get_query_var('paged');
