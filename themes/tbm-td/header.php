@@ -391,7 +391,7 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
             <div style="flex: 1 1 auto;">
               <input type="text" name="s" class="search-field form-control" placeholder="Search..." autocomplete="off" aria-label="Search" style="padding: .35rem; border: none; border-radius: .5rem; margin-left: .25rem; background-color: transparent;">
             </div>
-            <button type="submit" class="btn p-2" aria-label="Search" style="padding: .25rem .5rem .5rem; background-color: rgba(255,255,255,.15) !important; border-radius: 0; border-radius: .5rem;">
+            <button type="submit" class="btn p-2" aria-label="Search" style="padding: .25rem .5rem .5rem; background-color: rgba(0,0,0,.5) !important; border-radius: 0; border-radius: .5rem;">
               <img src="<?php echo ICONS_URL; ?>magnifying-glass-dark.svg" width="22" height="22"></button>
           </form>
         </div>
