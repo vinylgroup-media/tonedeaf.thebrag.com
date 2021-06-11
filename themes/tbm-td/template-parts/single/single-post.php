@@ -30,9 +30,9 @@ if ($count_articles === 1) : ?>
             <?php render_ad_tag('leaderboard', $count_articles); ?>
         </div>
     </div>
-<?php endif; ?>
+    <?php
+endif;
 
-<?php
 $the_post_id = get_the_ID();
 $count_articles = isset($_POST['count_articles']) ? (int) $_POST['count_articles'] : 1;
 if (!post_password_required($post)) :
@@ -59,9 +59,9 @@ if (!post_password_required($post)) :
         $author_image = get_avatar($post->post_author, 64, CDN_URL . 'default-avatar.png', $author_name, array('class' => 'rounded-circle'));
 
     endif; // If custom author is set
-?>
 
-    <?php if ($count_articles > 1) : ?>
+    if ($count_articles > 1) :
+    ?>
         <div class="ad-billboard ad-billboard-<?php echo $count_articles === 1 ? '1' : 'infinite'; ?> container py-2 py-md-4">
             <div class="mx-auto text-center">
                 <?php render_ad_tag('leaderboard', $count_articles); ?>
