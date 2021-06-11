@@ -389,7 +389,7 @@ class BragObserver
           if (is_null($genre_atts['id']))
             return;
 
-
+          $post_id = $genre_atts['id'];
           $topic_id = get_post_meta(absint($post_id), 'observer-topic', true);
 
           if (!$topic_id) {
@@ -414,11 +414,8 @@ class BragObserver
               }
             }
           }
-
           // var_dump($topic_id); exit;
-
-          $post_id = $genre_atts['id'];
-
+          
           /* if (!isset($topic_id)) {
           } */
 
