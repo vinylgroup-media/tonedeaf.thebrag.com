@@ -2254,6 +2254,7 @@ get_template_part('template-parts/header/solstice');
                                 <div class="col-md-8 my-3">
                                     <h3>Space 44 Live: Ruby Fields, Pist Idiots, Adam Newling + Brown Snake</h3>
                                     <h4>Saturday, June 19th</h4>
+                                    <h5>Rocklily, The Star</h5>
                                     <hr>
                                     <p>Space 44, the beating heart of Cronulla’s underground art and music scene, is set to celebrate the Sydney Solstice with a curated live performance featuring some of the most beloved names on their roster. Ruby Fields, Pist Idiots, Adam Newling will headline The Star Sydney on Saturday, June 19th.</p>
                                     <p>Ruby Fields is undoubtedly one of the most cherished acts in the Australian music scene. Since the release of her debut single ‘I Want’ at just seventeen, she’s dominated Australia’s consciousness. In the years since, she’s soundtracked adolescence in all its messy glory with a slew of cracking releases, her debut <a href="https://tonedeaf.thebrag.com/ruby-fields-your-ads-opinion-for-dinner/" target="_blank" rel="noopener">Your Dad’s Opinion For Dinner</a> in 2018, and Permanent Hermit – with the song <a href="https://tonedeaf.thebrag.com/ruby-fields-new-song/" target="_blank" rel="noopener">“Dinosaurs”</a> making it to the top ten of <a href="https://tonedeaf.thebrag.com/triple-j-hottest-2018-live-updates/" target="_blank" rel="noopener">triple j’s Hottest 100</a> for that year.</p>
