@@ -389,22 +389,27 @@ class BragObserver
           if (is_null($genre_atts['id']))
             return;
 
-          $topics = $this->get_observer_topics();
-          if ($topics) {
-            foreach ($topics as $topic) {
-              $keywords = explode(',', $topic->keywords);
 
-              if (!is_array($keywords) || empty($keywords)) {
-                continue;
-              }
+          $topic_id = get_post_meta(absint($post_id), 'observer-topic', true);
 
-              foreach ($keywords as $keyword) {
-                if ('' == trim($keyword) || !in_array(strtolower($keyword), $this->artist_keywords)) {
+          if (!$topic_id) {
+            $topics = $this->get_observer_topics();
+            if ($topics) {
+              foreach ($topics as $topic) {
+                $keywords = explode(',', $topic->keywords);
+
+                if (!is_array($keywords) || empty($keywords)) {
                   continue;
                 }
-                if (strpos(strtolower(get_the_content()), $keyword) !== false) {
-                  $topic_id = $topic->id;
-                  break;
+
+                foreach ($keywords as $keyword) {
+                  if ('' == trim($keyword) || !in_array(strtolower($keyword), $this->artist_keywords)) {
+                    continue;
+                  }
+                  if (strpos(strtolower(get_the_content()), $keyword) !== false) {
+                    $topic_id = $topic->id;
+                    break;
+                  }
                 }
               }
             }
@@ -414,9 +419,8 @@ class BragObserver
 
           $post_id = $genre_atts['id'];
 
-          if (!isset($topic_id)) {
-            $topic_id = get_post_meta(absint($post_id), 'observer-topic', true);
-          }
+          /* if (!isset($topic_id)) {
+          } */
 
           if (!$topic_id || '' == trim($topic_id)) {
             $genres = get_the_terms($post_id, 'genre');

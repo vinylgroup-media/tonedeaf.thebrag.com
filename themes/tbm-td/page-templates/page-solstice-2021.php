@@ -2247,8 +2247,8 @@ get_template_part('template-parts/header/solstice');
 
                             <div class="row align-items-center">
                                 <div class="col-md-4 my-3 align-self-stretch pr-0 pr-md-2">
-                                    <div style="position: sticky; top: 1rem;">
-                                        <img src="<?php echo get_template_directory_uri(); ?>/images/solstice-2021/Tone-Deaf_STAR_RUBY.jpg" style="border-radius: 1rem;">
+                                    <div style="position: sticky; top: 60px;">
+                                        <img src="<?php echo get_template_directory_uri(); ?>/images/solstice-2021/Tone-Deaf_STAR_RUBY.jpg">
                                     </div>
                                 </div>
                                 <div class="col-md-8 my-3">
@@ -2269,7 +2269,7 @@ get_template_part('template-parts/header/solstice');
 
                             <!-- <div class="row align-items-center">
                                 <div class="col-md-4 my-3 align-self-stretch pr-0 pr-md-2">
-                                    <div style="position: sticky; top: 1rem;">
+                                    <div style="position: sticky; top: 60px;">
                                         <img src="<?php echo get_template_directory_uri(); ?>/images/solstice-2021/TD_STAR_Nathaniel_600x849.jpg" style="border-radius: 0rem;">
                                     </div>
                                 </div>
@@ -2290,8 +2290,8 @@ get_template_part('template-parts/header/solstice');
 
                             <div class="row align-items-center">
                                 <div class="col-md-4 my-3 align-self-stretch pr-0 pr-md-2">
-                                    <div style="position: sticky; top: 1rem;">
-                                        <img src="<?php echo get_template_directory_uri(); ?>/images/solstice-2021/Jazzy-K-600px.jpg" style="border-radius: 0rem;">
+                                    <div style="position: sticky; top: 60px;">
+                                        <img src="<?php echo get_template_directory_uri(); ?>/images/solstice-2021/TD_STAR_JazzyK_600px.jpg" style="border-radius: 0rem;">
                                     </div>
                                 </div>
                                 <div class="col-md-8 my-3">
@@ -2312,7 +2312,7 @@ get_template_part('template-parts/header/solstice');
 
                             <div class="row align-items-center">
                                 <div class="col-md-4 my-3 align-self-stretch pr-0 pr-md-2">
-                                    <div style="position: sticky; top: 1rem;">
+                                    <div style="position: sticky; top: 60px;">
                                         <img src="<?php echo get_template_directory_uri(); ?>/images/solstice-2021/TD_ThandiPhoenix_600px.jpg" style="border-radius: 0rem;">
                                     </div>
                                 </div>
@@ -2332,7 +2332,7 @@ get_template_part('template-parts/header/solstice');
                             <hr>
                             <div class="row align-items-center">
                                 <div class="col-md-4 my-3 align-self-stretch pr-0 pr-md-2">
-                                    <div style="position: sticky; top: 1rem;">
+                                    <div style="position: sticky; top: 60px;">
                                         <img src="<?php echo get_template_directory_uri(); ?>/images/solstice-2021/TD_MikeChampion_600px.jpg" style="border-radius: 0rem;">
                                     </div>
                                 </div>
@@ -2352,7 +2352,7 @@ get_template_part('template-parts/header/solstice');
                             <hr>
                             <div class="row align-items-center">
                                 <div class="col-md-4 my-3 align-self-stretch pr-0 pr-md-2">
-                                    <div style="position: sticky; top: 1rem;">
+                                    <div style="position: sticky; top: 60px;">
                                         <img src="<?php echo get_template_directory_uri(); ?>/images/solstice-2021/TD_TheWeirdAssembly_600px.jpg" style="border-radius: 0rem;">
                                     </div>
                                 </div>
@@ -2374,7 +2374,7 @@ get_template_part('template-parts/header/solstice');
 
                             <div class="row align-items-center">
                                 <div class="col-md-4 my-3 align-self-stretch pr-0 pr-md-2">
-                                    <div style="position: sticky; top: 1rem;">
+                                    <div style="position: sticky; top: 60px;">
                                         <img src="<?php echo get_template_directory_uri(); ?>/images/solstice-2021/TD_BrownSugar_600px.jpg" style="border-radius: 0rem;">
                                     </div>
                                 </div>
@@ -2396,7 +2396,7 @@ get_template_part('template-parts/header/solstice');
 
                             <div class="row align-items-center">
                                 <div class="col-md-4 my-3 align-self-stretch pr-0 pr-md-2">
-                                    <div style="position: sticky; top: 1rem;">
+                                    <div style="position: sticky; top: 60px;">
                                         <img src="<?php echo get_template_directory_uri(); ?>/images/solstice-2021/TD_KarenLeeAndrews_600px.jpg" style="border-radius: 0rem;">
                                     </div>
                                 </div>
