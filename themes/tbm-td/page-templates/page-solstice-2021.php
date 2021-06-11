@@ -2201,6 +2201,7 @@ get_template_part('template-parts/header/solstice');
         height: auto;
         position: fixed;
     }
+
     .btn-toggle-slidedown {
         margin: auto;
         padding-bottom: 1rem !important;
@@ -2373,7 +2374,7 @@ get_template_part('template-parts/header/solstice');
                             <hr>
 
 
-                            <div class="row align-items-center">
+                            <!-- <div class="row align-items-center">
                                 <div class="col-md-4 my-3 align-self-stretch pr-0 pr-md-2">
                                     <div style="position: sticky; top: 60px;">
                                         <img src="<?php echo get_template_directory_uri(); ?>/images/solstice-2021/TD_BrownSugar_600px.jpg" style="border-radius: 0rem;">
@@ -2386,6 +2387,27 @@ get_template_part('template-parts/header/solstice');
                                     <hr>
                                     <p>Brown Sugar is undoubtedly one of Sydney’s most beloved R&B & Soul bands. Fronted by powerhouse vocalist, Angel Tupai, the band have backed a number of the most revered names in Australian music, including the likes of John Butler Trio, Delta Goodrem, Natalie Bassingwaighte and Brian McFadden. Brown Sugar will be joined by an as-yet-announced acoustic act and DJ Trey.</p>
                                     <div><iframe width="560" height="315" src="https://www.youtube.com/embed/uP9VwSOd4Mc" title="Lyric McFarland Sings Let's Stay Together: The Voice Australia Season 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%"></iframe></div>
+                                    <div class="d-flex flex-row align-items-center justify-content-start mt-3">
+                                        <span class="mr-2 text-entry">Entry:</span>
+                                        <span class="btn btn-success">FREE</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr> -->
+
+                            <div class="row align-items-center">
+                                <div class="col-md-4 my-3 align-self-stretch pr-0 pr-md-2">
+                                    <div style="position: sticky; top: 60px;">
+                                        <img src="<?php echo get_template_directory_uri(); ?>/images/solstice-2021/TD_STAR_G-Wizard_600px.jpg" style="border-radius: 0rem;">
+                                    </div>
+                                </div>
+                                <div class="col-md-8 my-3">
+                                    <h3>G-Wizard + Special Guests</h3>
+                                    <h4>Saturday, June 19<sup>th</sup>, 7 pm</h4>
+                                    <h5>Rocklily, The Star</h5>
+                                    <hr>
+                                    <p>In an era when Australian teenagers are becoming electronic superstars overnight, Sydney DJ G-Wizard has forged his own path. After cutting his teeth as a Radio DJ, G-Wizard has adapted and evolved into one of Australia’s finest commercial dance commodities. From stage to studio, G-wizard’s sound brings just as much energy and originality as his live performances.</p>
+                                    <div><iframe width="560" height="315" src="https://www.youtube.com/embed/j6E1vU3BTFw" title="G-Wizard Feat. Kaynana - Jah" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%"></iframe></div>
                                     <div class="d-flex flex-row align-items-center justify-content-start mt-3">
                                         <span class="mr-2 text-entry">Entry:</span>
                                         <span class="btn btn-success">FREE</span>
