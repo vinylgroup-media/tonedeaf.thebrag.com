@@ -24,8 +24,7 @@ if ($spotlight_article_ids && count($spotlight_article_ids) > 0) :
     $spotlight_articles = new WP_Query($spotlight_articles_args);
 endif;
 
-?>
-<?php if ($count_articles === 1) : ?>
+if ($count_articles === 1) : ?>
     <div class="ad-billboard ad-billboard-top container py-1 py-md-2">
         <div class="mx-auto text-center">
             <?php render_ad_tag('leaderboard', $count_articles); ?>
