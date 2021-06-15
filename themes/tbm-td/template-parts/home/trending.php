@@ -76,13 +76,13 @@ $exclude_posts = [0];
                     ) AS temptable
                 WHERE post_id NOT IN ( {$exclude_posts_str} )
                 ORDER BY RAND()
-                LIMIT 2"
+                LIMIT 3"
             );
             $trending_articles_args = [
                 'post_status' => 'publish',
                 'post_type' => array('any'),
                 'ignore_sticky_posts' => 1,
-                'posts_per_page' => 2,
+                'posts_per_page' => 3,
             ];
             if ($trending_article_ids && count($trending_article_ids) > 0) :
                 $trending_articles_args['post__in'] = wp_list_pluck($trending_article_ids, 'post_id');
