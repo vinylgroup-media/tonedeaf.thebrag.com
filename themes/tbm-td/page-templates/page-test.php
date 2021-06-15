@@ -18,12 +18,22 @@ get_header();
                         allow_corner_position: false,
                         allow_top_position: false
                     },
-                    "css": " padding: 15px 0px;",
+                    "css": "margin: 0auto; max-width: 550px;",
                     "format": "inread",
                     "slot": {
                         "selector": "#ad-incontent-1",
                         "minimum": 1
                     }
+                }).passback(function passback() {
+                    (function(d) {
+                        var js = d.createElement("script"),
+                            s = _tt_slot[minSlot - 1];
+                        js.innerHTML = "var unruly = window.unruly || {}; unruly.native = unruly.native || {}; unruly.native.siteId = 1082790; unruly.native.onFallback = function adFallback() {        return '';    };";
+                        s.parentNode.insertBefore(js, s);
+                        js = d.createElement("script");
+                        js.src = "//video.unrulymedia.com/native/native-loader.js";
+                        s.parentNode.insertBefore(js, s);
+                    })(window.top.document);
                 }).serve();
             };
             if (w.teads && w.teads.page) {
