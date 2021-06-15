@@ -7,7 +7,7 @@ $genre = get_term_by('slug', get_query_var('term'), get_query_var('taxonomy'));
 
 $hero_stories_args = [
     'post_status' => 'publish',
-    'posts_per_page' => 3,
+    'posts_per_page' => 4,
     'tax_query' => [
         [
             'taxonomy' => 'genre',
