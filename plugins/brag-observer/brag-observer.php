@@ -45,7 +45,7 @@ class BragObserver
       'beatles',
       'eminem',
       'tekashi',
-      'prince',
+      // 'prince',
       'rage against the machine',
       'joyner lucas',
     ];
