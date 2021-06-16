@@ -285,6 +285,12 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
       ]);
     endforeach;
 
+    array_push($top_menu_items, [
+      'link' => 'https://thebrag.com/observer/competitions/',
+      'text' => 'Competitions',
+      'target' => '_blank',
+    ]);
+
     if (is_user_logged_in()) :
       array_push($top_menu_items, [
         'link' => wp_logout_url(),
@@ -312,7 +318,7 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
               <?php endif; // $number_of_menu_items th menu item 
               ?>
               <li class="<?php echo isset($top_menu_item['class']) ? $top_menu_item['class'] : ''; ?>">
-                <a href="<?php echo $top_menu_item['link']; ?>"><?php echo $top_menu_item['text']; ?></a>
+                <a href="<?php echo $top_menu_item['link']; ?>"<?php echo isset($top_menu_item['target']) ? ' target="' . $top_menu_item['target'] . '"' : ''; ?>><?php echo $top_menu_item['text']; ?></a>
               </li>
             <?php endif; ?>
           <?php endforeach; ?>
