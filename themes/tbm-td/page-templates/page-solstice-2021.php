@@ -2253,8 +2253,8 @@ get_template_part('template-parts/header/solstice');
                                     </div>
                                 </div>
                                 <div class="col-md-8 my-3">
-                                    <h3>Space 44 Live: Ruby Fields, Pist Idiots, Adam Newling + Brown Snake</h3>
-                                    <h4>Saturday, June 19th</h4>
+                                    <h3>[SOLD OUT] <span>Space 44 Live: Ruby Fields, Pist Idiots, Adam Newling + Brown Snake</span></h3>
+                                    <h4>Saturday, June 19th, 6pm - 10:30pm</h4>
                                     <h5>Rocklily, The Star</h5>
                                     <hr>
                                     <p>Space 44, the beating heart of Cronulla’s underground art and music scene, is set to celebrate the Sydney Solstice with a curated live performance featuring some of the most beloved names on their roster. Ruby Fields, Pist Idiots, Adam Newling will headline The Star Sydney on Saturday, June 19th.</p>
@@ -2385,7 +2385,7 @@ get_template_part('template-parts/header/solstice');
                                 </div>
                                 <div class="col-md-8 my-3">
                                     <h3>Brown Sugar + Special Guests</h3>
-                                    <h4>Saturday, June 19<sup>th</sup>, 7 pm</h4>
+                                    <h4>Saturday, June 19<sup>th</sup>, from 11:30pm</h4>
                                     <h5>Rocklily, The Star</h5>
                                     <hr>
                                     <p>Brown Sugar is undoubtedly one of Sydney’s most beloved R&B & Soul bands. Fronted by powerhouse vocalist, Angel Tupai, the band have backed a number of the most revered names in Australian music, including the likes of John Butler Trio, Delta Goodrem, Natalie Bassingwaighte and Brian McFadden. Brown Sugar will be joined by an as-yet-announced acoustic act and DJ Trey.</p>
