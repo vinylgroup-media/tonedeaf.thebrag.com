@@ -2249,7 +2249,7 @@ get_template_part('template-parts/header/solstice');
                             <div class="row align-items-center">
                                 <div class="col-md-4 my-3 align-self-stretch pr-0 pr-md-2">
                                     <div style="position: sticky; top: 60px;">
-                                        <img src="<?php echo get_template_directory_uri(); ?>/images/solstice-2021/TD_STARGIG_600px.jpg">
+                                        <img src="<?php echo get_template_directory_uri(); ?>/images/solstice-2021/space44_STAR_600x849_NEW.jpg">
                                     </div>
                                 </div>
                                 <div class="col-md-8 my-3">
@@ -2264,7 +2264,10 @@ get_template_part('template-parts/header/solstice');
                                     <p>Entry: $40.80</p>
                                     <div><iframe width="560" height="315" src="https://www.youtube.com/embed/MYE2xhO56L4" title="RUBY FIELDS - PRETTY GRIM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%"></iframe></div>
                                     <p><em>A percentage of proceeds from each ticket sale will be donated to <a href="https://www.wirringabaiya.org.au/" target="_blank" rel="noopener">Wirringa Baiya Aboriginal Womens Legal Centre</a></em></p>
-                                    <a href=" https://premier.ticketek.com.au/shows/show.aspx?sh=SOLSTICE21" class="btn btn-lg btn-block mt-3 text-center" target="_blank" style="background-color: rgb(150,49,56); color: rgb(233,209,73);" rel="noopener">Buy tickets</a>
+                                    <!-- <a href=" https://premier.ticketek.com.au/shows/show.aspx?sh=SOLSTICE21" class="btn btn-lg btn-block mt-3 text-center" target="_blank" style="background-color: rgb(150,49,56); color: rgb(233,209,73);" rel="noopener">Buy tickets</a> -->
+                                    <div class="btn btn-lg btn-block mt-3 text-center" target="_blank" style="background-color: rgb(150,49,56); color: rgb(233,209,73); text-decoration: line-through;">
+                                        SOLD OUT
+                                    </div>
                                 </div>
                             </div>
                             <hr>
@@ -2374,10 +2377,10 @@ get_template_part('template-parts/header/solstice');
                             <hr>
 
 
-                            <!-- <div class="row align-items-center">
+                            <div class="row align-items-center">
                                 <div class="col-md-4 my-3 align-self-stretch pr-0 pr-md-2">
                                     <div style="position: sticky; top: 60px;">
-                                        <img src="<?php echo get_template_directory_uri(); ?>/images/solstice-2021/TD_BrownSugar_600px.jpg" style="border-radius: 0rem;">
+                                        <img src="<?php echo get_template_directory_uri(); ?>/images/solstice-2021/TD_BrownSugar_600x849.jpg" style="border-radius: 0rem;">
                                     </div>
                                 </div>
                                 <div class="col-md-8 my-3">
@@ -2393,7 +2396,7 @@ get_template_part('template-parts/header/solstice');
                                     </div>
                                 </div>
                             </div>
-                            <hr> -->
+                            <hr>
 
                             <div class="row align-items-center">
                                 <div class="col-md-4 my-3 align-self-stretch pr-0 pr-md-2">
