@@ -112,7 +112,7 @@ header {
     height: $headerHeightMobile;
 }
 .ad-billboard-top {
-    min-height: calc(50px + 1rem);
+    // min-height: calc(50px + 1rem);
     position: fixed;
     bottom: 0;
     border: 0;
@@ -121,6 +121,8 @@ header {
     text-align: center;
     z-index: 4;
     width: 100%;
+    background-color: #fff;
+    padding: 1rem 0 0 !important;
 }
 
 @media (min-width: $tablet) {
