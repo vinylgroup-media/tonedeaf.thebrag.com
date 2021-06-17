@@ -113,6 +113,14 @@ header {
 }
 .ad-billboard-top {
     min-height: calc(50px + 1rem);
+    position: fixed;
+    bottom: 0;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    z-index: 4;
+    width: 100%;
 }
 
 @media (min-width: $tablet) {
@@ -133,7 +141,8 @@ header {
     .px-md-2 {
         padding-left: 1rem !important;
     }
-    .mt-md-0, .my-md-0 {
+    .mt-md-0,
+    .my-md-0 {
         margin-top: 0rem !important;
     }
     .mr-md-0,
@@ -145,6 +154,7 @@ header {
     }
     .ad-billboard-top {
         height: calc(250px + 2rem) !important;
+        position: relative;
     }
     .socials-top a {
         margin: 0 !important;
