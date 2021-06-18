@@ -112,17 +112,21 @@ header {
     height: $headerHeightMobile;
 }
 .ad-billboard-top {
-    // min-height: calc(50px + 1rem);
-    position: fixed;
-    bottom: 0;
-    border: 0;
-    padding: 0;
-    margin: 0;
-    text-align: center;
-    z-index: 4;
-    width: 100%;
-    background-color: #fff;
-    padding: .25rem 0 !important;
+    min-height: calc(50px + .5rem);
+    bottom: -50px;
+    transition: .5s all linear;
+    &.sticky {
+        position: fixed;
+        bottom: 0;
+        border: 0;
+        padding: 0;
+        margin: 0;
+        text-align: center;
+        z-index: 4;
+        width: 100%;
+        background-color: #fff;
+        padding: 0.25rem 0 !important;
+    }
 }
 
 @media (min-width: $tablet) {
