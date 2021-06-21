@@ -38,7 +38,7 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
     <meta property="og:url" content="<?php echo get_permalink(); ?>" />
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@TheBrag">
+    <meta name="twitter:site" content="@tonedeaf">
     <meta name="twitter:title" content="<?php the_title(); ?>">
     <meta name="twitter:image" content="<?php if (has_post_thumbnail()) {
                                           echo $src[0];
@@ -318,7 +318,7 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
               <?php endif; // $number_of_menu_items th menu item 
               ?>
               <li class="<?php echo isset($top_menu_item['class']) ? $top_menu_item['class'] : ''; ?>">
-                <a href="<?php echo $top_menu_item['link']; ?>"<?php echo isset($top_menu_item['target']) ? ' target="' . $top_menu_item['target'] . '"' : ''; ?>><?php echo $top_menu_item['text']; ?></a>
+                <a href="<?php echo $top_menu_item['link']; ?>" <?php echo isset($top_menu_item['target']) ? ' target="' . $top_menu_item['target'] . '"' : ''; ?>><?php echo $top_menu_item['text']; ?></a>
               </li>
             <?php endif; ?>
           <?php endforeach; ?>
