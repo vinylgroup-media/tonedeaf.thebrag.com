@@ -29,6 +29,33 @@ $the_post_id = get_the_ID();
     $photos = new Attachments('photo_gallery_attachments');
     if (have_posts()) : while (have_posts()) : the_post(); ?>
             <article class="single-article single-article-1 p-3 pb-1" id="<?php the_ID(); ?>">
+
+                <?php
+                $genres = get_the_terms($the_post_id, 'genre');
+                $GenreCD = '';
+                if ($genres) :
+                    foreach ($genres as $genre) :
+                        $GenreCD .= $genre->slug . ' ';
+                    endforeach; // For Each Genre
+                endif; // If there are genres for the post
+                ?>
+                <div class="cats mb-3 text-center" data-category="<?php echo $CategoryCD; ?>" data-tags="<?php echo $TagsCD; ?>" data-genre="<?php echo $GenreCD; ?>">
+                    <?php
+                    if ($genres) :
+                        foreach ($genres as $genre) :
+                    ?>
+                            <a class="text-uppercase cat mx-1" href="<?php echo get_term_link($genre->term_id); ?>" style="color: #79746b; font-size: 90%;"><?php echo $genre->name; ?></a>
+                        <?php
+                        endforeach; // For Each Category
+                    endif; // If there are categories for the post 
+
+                    if (isset($is_oped) && $is_oped) {
+                        ?>
+                        <a class="text-uppercase cat mx-1" href="<?php echo get_category_link($oped_termid); ?>" style="color: #79746b; font-size: 90%;">Op-Ed/Comment</a>
+                    <?php
+                    }
+                    ?>
+                </div><!-- Cats -->
                 <h1 id="story_title<?php echo $the_post_id; ?>" class="story-title mb-3" data-href="<?php the_permalink(); ?>" data-title="<?php echo htmlentities($title); ?>" data-share-title="<?php echo urlencode($title); ?>" data-share-url="<?php echo urlencode(get_permalink()); ?>"><?php the_title(); ?></h1>
 
                 <p class="text-center excerpt">
