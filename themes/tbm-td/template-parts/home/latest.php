@@ -3,7 +3,7 @@ extract($args);
 $posts_per_page = 1 === $paged ? 5 : 11;
 $news_args = array(
     'post_status' => 'publish',
-    'post_type' => array('post', 'snaps', 'dad'),
+    'post_type' => array('post', 'photo_gallery'),
     'ignore_sticky_posts' => 1,
     // 'post__not_in' => $exclude_posts,
     'posts_per_page' => $posts_per_page,
