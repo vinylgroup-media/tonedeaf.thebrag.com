@@ -13,7 +13,7 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
 
   <meta name="google-site-verification" content="-9QoGQoc9ebynhrt1eaPTr9PfOFzD6a6Ei9cL7aAA1E" />
   <meta name="bitly-verification" content="f72fcd04077a" />
-  <meta property="fb:pages" content="105156786184223" />
+  <!-- <meta property="fb:pages" content="105156786184223" /> -->
   <meta property="fb:app_id" content="812299355633906" />
 
   <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
