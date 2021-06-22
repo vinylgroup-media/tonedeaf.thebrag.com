@@ -287,14 +287,14 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
   endif; // If user picked niche
 
   array_push($top_menu_items, [
-    'link' => 'https://thebrag.com/observer/competitions/',
-    'text' => 'Competitions',
-    'target' => '_blank',
+    'link' => home_url('photo'),
+    'text' => 'Photos',
   ]);
 
   array_push($top_menu_items, [
-    'link' => home_url('photo'),
-    'text' => 'Photos',
+    'link' => 'https://thebrag.com/observer/competitions/',
+    'text' => 'Competitions',
+    'target' => '_blank',
   ]);
 
   if (is_user_logged_in()) :
