@@ -10,6 +10,21 @@ $story_ID = $story->ID;
             </div>
         </div>
         <div class="details-wrap">
+            <?php
+            if (isset($show_genre) && $show_genre === true) :
+                $genres = get_the_terms(get_the_ID(), 'genre');
+            ?>
+                <div class="mb-1 text-uppercase trending-story-category">
+                    <?php
+                    if ($genres) :
+                        foreach ($genres as $genre) :
+                            echo $genre->name;
+                            break;
+                        endforeach; // For Each genre
+                    endif; // If there are genres for the post 
+                    ?>
+                </div>
+            <?php endif; ?>
             <div class="title-wrap">
                 <h2 class="story-title">
                     <?php echo get_the_title($story); ?>
