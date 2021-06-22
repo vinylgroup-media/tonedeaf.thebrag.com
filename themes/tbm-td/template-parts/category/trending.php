@@ -39,7 +39,7 @@ extract($args);
                 <a href="<?php the_permalink($story->ID); ?>" class="story p-2 pb-0 mb-2">
                     <?php
                     if (isset($show_genre) && $show_genre === true) :
-                        $genres = get_the_terms(get_the_ID(), 'genre');
+                        $genres = get_the_terms($story->ID, 'genre');
                     ?>
                         <div class="mb-1 text-uppercase trending-story-category">
                             <?php
