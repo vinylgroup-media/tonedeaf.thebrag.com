@@ -31,12 +31,12 @@ $template_args = [
 
 <?php
 if (1 === $paged) {
-    get_template_part('template-parts/category/trending', null, array_merge($template_args, ['hero_stories' => $hero_stories]));
+    get_template_part('template-parts/category/trending', null, array_merge($template_args, ['hero_stories' => $hero_stories, 'show_genre' => true]));
 }
 ?>
 
 <div class="container bg-yellow pt-1">
-    <?php get_template_part('template-parts/category/latest', null, array_merge($template_args, ['exclude_posts' => $exclude_posts, 'post_type' => 'photo_gallery'])); ?>
+    <?php get_template_part('template-parts/category/latest', null, array_merge($template_args, ['exclude_posts' => $exclude_posts, 'post_type' => 'photo_gallery', 'show_genre' => true])); ?>
 </div>
 
 <?php get_footer();

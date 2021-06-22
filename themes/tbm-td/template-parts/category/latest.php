@@ -8,13 +8,13 @@ $news_args = [
     'post__not_in' => $exclude_posts,
     'paged' => $paged,
 ];
-if ( isset($cat_id) ) {
+if (isset($cat_id)) {
     $news_args['cat'] = $cat_id;
 }
-if ( isset($post_type) ) {
+if (isset($post_type)) {
     $news_args['post_type'] = $post_type;
 } else {
-    $news_args['post_type'] = ['post', 'snaps', 'dad',];
+    $news_args['post_type'] = ['post', 'photo_gallery',];
 }
 $news_query = new WP_Query($news_args);
 $no_of_columns = 2;
@@ -28,9 +28,17 @@ if ($news_query->have_posts()) :
                 while ($news_query->have_posts()) :
                     $news_query->the_post();
                     $post_id = get_the_ID();
+
+                    $genre_name = '';
+                    if (isset($show_genre) && $show_genre === true) {
+                        $genres = get_the_terms($post_id, 'genre');
+                        if ($genres) :
+                            $genre_name = $genres[0]->name;
+                        endif;
+                    }
                 ?>
                     <div class="article-wrap col-12 col-md-4">
-                        <?php get_template_part('template-parts/single/tile'); ?>
+                        <?php get_template_part('template-parts/single/tile', null, ['genre_name' => $genre_name]); ?>
                     </div>
                 <?php
                     $count++;
