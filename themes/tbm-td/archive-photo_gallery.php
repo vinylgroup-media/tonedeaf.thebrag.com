@@ -7,7 +7,7 @@ $exclude_posts = [];
 $hero_stories_args = [
     'post_status' => 'publish',
     'posts_per_page' => 3,
-    'post_type' => 'dad',
+    'post_type' => 'photo_gallery',
 ];
 $hero_stories_query = new WP_Query($hero_stories_args);
 $hero_stories = [];
@@ -18,7 +18,7 @@ endif;
 $exclude_posts = array_merge($exclude_posts, wp_list_pluck($hero_stories, 'ID'));
 
 $template_args = [
-    'post_type' => 'dad',
+    'post_type' => 'photo_gallery',
     'paged' => $paged,
 ];
 ?>
@@ -36,7 +36,7 @@ if (1 === $paged) {
 ?>
 
 <div class="container bg-yellow pt-1">
-    <?php get_template_part('template-parts/category/latest', null, array_merge($template_args, ['exclude_posts' => $exclude_posts, 'post_type' => 'dad'])); ?>
+    <?php get_template_part('template-parts/category/latest', null, array_merge($template_args, ['exclude_posts' => $exclude_posts, 'post_type' => 'photo_gallery'])); ?>
 </div>
 
 <?php get_footer();
