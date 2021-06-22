@@ -556,7 +556,7 @@ function register_cpt_photo_gallery()
                 if ($genres) {
                     $output = array();
                     foreach ($genres as $genre) {
-                        $output[] = '<a href="' . get_term_link($genre->slug, 'genre') . '">' . $genre->name . '</a>';
+                        // $output[] = '<a href="' . get_term_link($genre->slug, 'genre') . '">' . $genre->name . '</a>';
                     }
                     echo join(', ', $output);
                 }
