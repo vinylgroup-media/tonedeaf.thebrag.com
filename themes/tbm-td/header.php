@@ -291,6 +291,11 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
       'target' => '_blank',
     ]);
 
+    array_push($top_menu_items, [
+      'link' => home_url('photos'),
+      'text' => 'Photos',
+    ]);
+
     if (is_user_logged_in()) :
       array_push($top_menu_items, [
         'link' => wp_logout_url(),
