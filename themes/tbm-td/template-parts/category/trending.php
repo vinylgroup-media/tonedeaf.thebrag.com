@@ -19,10 +19,11 @@ extract($args);
                 'story_src' => $story_src,
                 'story_alt_text' => $story_alt_text,
                 // 'exclude_posts' => $exclude_posts,
+                'show_genre' => isset($show_genre) && $show_genre === true ? true : false,
             ];
 
             get_template_part('template-parts/category/featured', null, $featured_args);
-            /* if (get_field('image_has_text', $story_image_id)) {
+        /* if (get_field('image_has_text', $story_image_id)) {
                 get_template_part('template-parts/category/featured', null, $featured_args);
             } else {
                 get_template_part('template-parts/category/featured', 'overlay', $featured_args);
@@ -36,6 +37,21 @@ extract($args);
             foreach ($hero_stories as $story) :
             ?>
                 <a href="<?php the_permalink($story->ID); ?>" class="story p-2 pb-0 mb-2">
+                    <?php
+                    if (isset($show_genre) && $show_genre === true) :
+                        $genres = get_the_terms(get_the_ID(), 'genre');
+                    ?>
+                        <div class="mb-1 text-uppercase trending-story-category">
+                            <?php
+                            if ($genres) :
+                                foreach ($genres as $genre) :
+                                    echo $genre->name;
+                                    break;
+                                endforeach; // For Each Category
+                            endif; // If there are categories for the post 
+                            ?>
+                        </div><!-- Cats -->
+                    <?php endif; ?>
                     <div class="d-flex flex-row justify-content-between align-items-start">
                         <div class="pb-3">
                             <h3><?php echo get_the_title($story->ID); ?></h3>
