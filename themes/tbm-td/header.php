@@ -262,7 +262,7 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
         ]);
       endforeach;
     endif;
-  else : // Show all categories
+  else : // Show all genres
     $menu_genres = get_terms(
       'genre',
       array(
@@ -284,26 +284,27 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
         'text' => $genre->name,
       ]);
     endforeach;
-
-    array_push($top_menu_items, [
-      'link' => 'https://thebrag.com/observer/competitions/',
-      'text' => 'Competitions',
-      'target' => '_blank',
-    ]);
-
-    array_push($top_menu_items, [
-      'link' => home_url('photo'),
-      'text' => 'Photos',
-    ]);
-
-    if (is_user_logged_in()) :
-      array_push($top_menu_items, [
-        'link' => wp_logout_url(),
-        'text' => 'Logout',
-        'class' => 'nav-item-logout'
-      ]);
-    endif;
   endif; // If user picked niche
+
+  array_push($top_menu_items, [
+    'link' => 'https://thebrag.com/observer/competitions/',
+    'text' => 'Competitions',
+    'target' => '_blank',
+  ]);
+
+  array_push($top_menu_items, [
+    'link' => home_url('photo'),
+    'text' => 'Photos',
+  ]);
+
+  if (is_user_logged_in()) :
+    array_push($top_menu_items, [
+      'link' => wp_logout_url(),
+      'text' => 'Logout',
+      'class' => 'nav-item-logout'
+    ]);
+  endif;
+
   ?>
   <nav class="menu-top-menu-container">
     <ul id="menu_main" class="nav flex-column flex-md-row">
