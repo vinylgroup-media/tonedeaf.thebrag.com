@@ -292,7 +292,7 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
     ]);
 
     array_push($top_menu_items, [
-      'link' => home_url('photos'),
+      'link' => home_url('photo'),
       'text' => 'Photos',
     ]);
 
