@@ -1,5 +1,5 @@
 <?php global $amp_post_id;
-$amp_post_id = $this->get('post_id'); ?>
+$amp_post_id = $post_id = $this->get('post_id'); ?>
 <!doctype html>
 <html amp <?php echo AMP_HTML_Utils::build_attributes_string($this->get('html_tag_attributes')); ?>>
 
@@ -74,25 +74,89 @@ $amp_post_id = $this->get('post_id'); ?>
             $content = explode("</p>", $content);
             for ($i = 0; $i < count($content); $i++) :
                 if (!in_array($this->post->post_type, array('gig', 'snaps'))) :
-                    if (count($content) > 4 && $i == 4) :
+                    if (count($content) > 2 && $i == 2) :
             ?>
                         <div class="amp-ad" style="text-align: center; margin: auto;">
                             <?php echo render_ad_tag('mrec_1'); ?>
                         </div>
-            <?php
+                    <?php
                     endif; // Para 2
                 endif;
+
+                if (count($content) > 7 && $i == 7) :
+                    ?>
+                    <div style="text-align: center">
+
+                        <?php
+
+                        $topic = get_post_meta($post_id, 'observer-topic', true);
+
+                        if (!$topic) {
+
+                            $genres = get_the_terms($post_id, 'genre');
+                            if ($genres) {
+                                $primary_genre = null;
+
+                                foreach ($genres as $genre) {
+                                    if (get_post_meta($post_id, '_yoast_wpseo_primary_genre', true) == $genre->term_id) {
+                                        $primary_genre = $genre;
+                                        break;
+                                    }
+                                }
+
+                                if (is_null($primary_genre)) {
+                                    $primary_genre = $genres[0];
+                                }
+
+                                $topic = get_term_meta($genre->term_id, 'observer-topic', true);
+                            }
+                        }
+                        if ($topic) {
+
+                            include_once WP_PLUGIN_DIR . '/brag-observer/brag-observer.php';
+                            $bo = new BragObserver();
+                            $topics = $bo->get_observer_topics();
+                            $topic_titles = wp_list_pluck($topics, 'title', 'id');
+                            $topic_links = wp_list_pluck($topics, 'link', 'id');
+                            $topic_title = trim(str_ireplace('Observer', '', $topic_titles[$topic]));
+
+                            if (in_array($topic, [27])) {
+                                $topic_title .= ' Music';
+                            }
+                        ?>
+
+                            <form method="post" action-xhr="<?php echo admin_url('admin-ajax.php'); ?>" target="_top">
+                                <input type="hidden" name="list" value="<?php echo $topic; ?>">
+                                <input type="hidden" name="source" value="<?php echo get_permalink(); ?>">
+                                <input type="hidden" name="action" value="subscribe_observer">
+                                <div style="background-color: #1E81EF; border-radius: .5rem; padding: .5rem 1rem 1rem; margin: .25rem auto 1rem; color: #fff; text-align: left;">
+                                    <h3 class="text-white">
+                                        <a href="<?php echo $topic_links[$topic]; ?>" target="_blank" style="color: #fff; text-decoration: none;">Love <?php echo $topic_title; ?>?</a>
+                                    </h3>
+                                    <p class="text-white">Get the latest <?php echo $topic_title; ?> news, features, updates and giveaways straight to your inbox</p>
+                                    <div>
+                                        <input type="email" name="email" placeholder="Your email" required style="width: calc(100% - 30px); font-size: 16px; color: #000; border: none; border-radius: .25rem; padding: 15px;">
+                                        <div>
+                                            <input type="submit" value="Join" style="padding: 10px; font-size: 16px; font-weight: 300; color: #fff; background: #000; border-radius: .25rem; cursor: pointer; border: none;">
+                                        </div>
+                                    </div>
+                                    <div submit-success style="padding-top: 1rem; text-align: center;">
+                                        <template type="amp-mustache">
+                                            Thank you!
+                                        </template>
+                                    </div>
+                                    <!-- <div style="display: inline-block; padding: .375rem .75rem; border-radius: .25rem; color: #f8f9fa; border: 1px solid #f8f9fa;">Click here to join FREE</div> -->
+                                </div>
+                            </form>
+                        <?php
+                        } // If $topic
+                        ?>
+                    </div>
+            <?php
+                endif;
+
                 echo $content[$i] . "</p>";
             endfor;
-
-            //                    echo $content;
-            if ('venue' == $this->post->post_type) {
-                include('single-venue.php');
-            } elseif ('gig' == $this->post->post_type) {
-                include('single-gig.php');
-            } elseif ('snaps' == $this->post->post_type) {
-                include('single-snaps.php');
-            }
             ?>
         </div>
 
@@ -218,9 +282,9 @@ $amp_post_id = $this->get('post_id'); ?>
         <div class="clear"></div>
 
         <div class="amp-wp-article-content">
-			<amp-embed width=100 height=100 type=taboola layout=responsive heights="(min-width:1839px) 280%, (min-width:1284px) 285%, (min-width:907px) 293%, (min-width:647px) 303%, (min-width:502px) 319%, (min-width:392px) 339%, 369%" data-publisher="thebragmedia-tonedeaf" data-mode="alternating-thumbnails-a-amp" data-placement="Below Article Thumbnails AMP" data-target_type="mix" data-article="auto" data-url="">
-			</amp-embed>
-		</div>
+            <amp-embed width=100 height=100 type=taboola layout=responsive heights="(min-width:1839px) 280%, (min-width:1284px) 285%, (min-width:907px) 293%, (min-width:647px) 303%, (min-width:502px) 319%, (min-width:392px) 339%, 369%" data-publisher="thebragmedia-tonedeaf" data-mode="alternating-thumbnails-a-amp" data-placement="Below Article Thumbnails AMP" data-target_type="mix" data-article="auto" data-url="">
+            </amp-embed>
+        </div>
 
     </article>
 
