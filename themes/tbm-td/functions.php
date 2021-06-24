@@ -1931,11 +1931,16 @@ add_action('wp_ajax_nopriv_tbm_set_cookie', 'ajax_tbm_set_cookie');
 add_action('wp_ajax_tbm_set_cookie', 'ajax_tbm_set_cookie');
 function ajax_tbm_set_cookie()
 {
-    $data = isset($_POST) ? $_POST : array('asdf');
-    if (!is_null($data)) :
+    $data = isset($_POST) ? $_POST : [];
+    tbm_set_cookie($data);
+    wp_die();
+}
+
+function tbm_set_cookie($data)
+{
+    if (!empty($data) && isset($data['key']) && isset($data['value']) && isset($data['duration'])) :
         setcookie($data['key'], $data['value'], time() + (int) $data['duration'], '/', $_SERVER['HTTP_HOST']);
     endif;
-    wp_die();
 }
 
 function render_ad_tag($tag, $slot_no = 1)
