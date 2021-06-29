@@ -2099,7 +2099,7 @@ function brands()
             'title' => 'Don\'t Bore Us',
             'link' => 'https://dontboreus.thebrag.com/',
             'logo_name' => 'Dont-Bore-Us',
-            'ext' => 'png',
+            'ext' => 'svg',
         ],
         'tio' => [
             'title' => 'The Industry Observer',
