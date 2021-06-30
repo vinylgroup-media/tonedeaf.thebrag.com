@@ -16,6 +16,11 @@ $the_post_id = get_the_ID();
         height: 100px;
         overflow: hidden;
     }
+
+    .gallery figure img {
+        width: 100%;
+        height: auto;
+    }
 </style>
 
 <div class="ad-billboard ad-billboard-top container py-1 py-md-2">
@@ -153,7 +158,6 @@ $the_post_id = get_the_ID();
                                 <?php
                                 while ($photo = $photos->get()) :
                                     $photo_meta = wp_get_attachment_metadata($photo->id);
-                                    //                    $link = str_replace( '/beta/', '/', get_permalink($photo->id) );
                                     $link = get_permalink($photo->id);
                                 ?>
                                     <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject" class="col-md-3 col-6">

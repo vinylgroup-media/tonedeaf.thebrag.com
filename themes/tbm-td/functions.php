@@ -1684,7 +1684,7 @@ function ssm_inject_ads($content)
         return $content;
     endif;
 
-    if (is_singular('page')) {
+    if (!is_singular('post')) {
         return $content;
     }
 
@@ -2291,7 +2291,7 @@ add_filter('the_content', function ($content) {
         return $content;
     } */
 
-    if (is_singular('page'))
+    if (!is_singular('post'))
         return $content;
 
     $content .= '<div class="comp-footer"><a href="https://thebrag.com/observer/competitions/" target="_blank" rel="noopener">Did you know we\'re constantly giving away <strong>FREE</strong> stuff? Check out our giveaways here.</a></div>';

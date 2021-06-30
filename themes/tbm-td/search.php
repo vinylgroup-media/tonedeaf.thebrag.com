@@ -21,7 +21,7 @@
         $args = array(
             's' => $s,
             'paged' => $paged,
-            'post_type' => 'post'
+            'post_type' => ['post', 'photo_gallery']
         );
 
         // The Query
