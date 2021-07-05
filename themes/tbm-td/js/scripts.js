@@ -182,8 +182,6 @@ jQuery(document).ready(function ($) {
     var count_articles = 2;
   }
 
-  var progress_top = 0;
-
   var winTop = $(window).scrollTop();
   var page_title = document.title;
   var page_url =
@@ -193,9 +191,6 @@ jQuery(document).ready(function ($) {
     document.location.pathname;
 
   var $news_stories = $(".single-article");
-  var top_news_story = $.grep($news_stories, function (item) {
-    return $(item).position().top <= winTop + 100;
-  });
   var visible_news_story = $.grep($news_stories, function (item) {
     return $(item).position().top <= winTop + $(window).height() / 2; // + $('#header').outerHeight() - 30;
   });
@@ -206,6 +201,9 @@ jQuery(document).ready(function ($) {
     $.each(
       $(".single-article .post-content").find("h2"),
       function (index, elem) {
+        if ($(this).hasClass("observer-title")) {
+          return;
+        }
         var url_slug = $(this)
           .text()
           .toLowerCase()
@@ -213,6 +211,7 @@ jQuery(document).ready(function ($) {
           .replace(/[^\w-]+/g, "");
         var page_url_scroll =
           $(visible_news_story).last().find("h1").data("href") + url_slug + "/";
+        console.log(page_url_scroll);
         $(this).data("href", page_url_scroll);
         $(this).data("id", url_slug);
       }
@@ -261,17 +260,16 @@ jQuery(document).ready(function ($) {
         $.each(
           $(".single-article .post-content").find("h2"),
           function (index, elem) {
+            if (!$(this).data("href")) {
+              return;
+            }
+
             var offset_top = $(window).scrollTop() + $("header").outerHeight();
 
             if (
               offset_top <= $(this).offset().top + 50 &&
               offset_top >= $(this).offset().top - 50
             ) {
-              var url_slug = $(this)
-                .text()
-                .toLowerCase()
-                .replace(/ /g, "-")
-                .replace(/[^\w-]+/g, "");
               var page_url_scroll =
                 document.location.protocol +
                 "//" +
@@ -374,24 +372,10 @@ jQuery(document).ready(function ($) {
 
       if (typeof button !== "undefined") {
         $news_stories = $(".single-article");
-        top_news_story = $.grep($news_stories, function (item) {
-          return $(item).position().top <= winTop + 100;
-        });
         visible_news_story = $.grep($news_stories, function (item) {
           return $(item).position().top <= winTop + $(window).height() / 2; // + $('#header').outerHeight() - 30;
         });
-        if ($(visible_news_story).last().prop("id") != "") {
-          progress_top =
-            $(visible_news_story).last().offset().top +
-            $(visible_news_story).last().outerHeight() -
-            30; // - $(window).height() / 2;
 
-          var progress =
-            1 -
-            (progress_top - winTop - $(window).height()) /
-              $(visible_news_story).last().outerHeight();
-          progress < 0 ? (progress = 0) : progress > 1 && (progress = 1);
-        }
         if (
           $(visible_news_story).last().find("h1").text() != "" &&
           page_url != $(visible_news_story).last().find("h1").data("href")
