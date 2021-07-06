@@ -295,6 +295,45 @@ jQuery(document).ready(function ($) {
             }
           }
         );
+      } else if ($(".single-article .post-content").find("h3").length >= 6) {
+        $.each(
+          $(".single-article .post-content").find("h3"),
+          function (index, elem) {
+            if (!$(this).data("href")) {
+              return;
+            }
+
+            var offset_top = $(window).scrollTop() + $("header").outerHeight();
+
+            if (
+              offset_top <= $(this).offset().top + 50 &&
+              offset_top >= $(this).offset().top - 50
+            ) {
+              var page_url_scroll =
+                document.location.protocol +
+                "//" +
+                document.location.host +
+                document.location.pathname;
+              if (
+                $(this).text() != "" &&
+                page_url_scroll != $(this).data("href")
+              ) {
+                page_title_html_scroll = $(this).text();
+                page_title_scroll = $("<textarea />")
+                  .html(page_title_html_scroll)
+                  .text();
+                page_url_scroll = $(this).data("href");
+
+                document.title = page_title_scroll;
+                window.history.pushState(
+                  null,
+                  page_title_scroll,
+                  page_url_scroll
+                );
+              }
+            }
+          }
+        );
       }
 
       if ($("#articles-wrap").length && count_articles < 4) {
