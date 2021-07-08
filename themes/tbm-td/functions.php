@@ -1684,7 +1684,7 @@ function ssm_inject_ads($content)
         return $content;
     endif;
 
-    if (!is_singular('post')) {
+    if (!is_singular('post') || !is_singular('country')) {
         return $content;
     }
 
