@@ -104,7 +104,7 @@ foreach ($genres_home as $i => $genre) :
                 </a>
             </div>
         </section>
-        <div class="container mb-4">
+        <div class="container py-2">
             <div class="mx-auto text-center">
                 <?php
                 if ($count % 2 !== 0) {
