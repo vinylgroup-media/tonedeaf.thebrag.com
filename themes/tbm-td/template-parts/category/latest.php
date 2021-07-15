@@ -11,6 +11,9 @@ $news_args = [
 if (isset($cat_id)) {
     $news_args['cat'] = $cat_id;
 }
+if (isset($tag_id)) {
+    $news_args['tag_id'] = $tag_id;
+}
 if (isset($post_type)) {
     $news_args['post_type'] = $post_type;
 } else {
