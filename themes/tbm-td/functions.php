@@ -2233,6 +2233,9 @@ add_filter('the_content', function ($content) {
     if ('single-template-featured.php' == get_page_template_slug(get_the_ID())) {
         return $content;
     }
+    if (get_field('hide_observer_form'))
+        return $content;
+
     if (shortcode_exists('observer_subscribe_genre')) :
         ob_start();
         echo do_shortcode('[observer_subscribe_genre id="' . get_the_ID() . '"]');
@@ -2292,6 +2295,9 @@ add_filter('the_content', function ($content) {
     } */
 
     if (!is_singular('post'))
+        return $content;
+
+    if (get_field('hide_observer_form'))
         return $content;
 
     $content .= '<div class="comp-footer"><a href="https://thebrag.com/observer/competitions/" target="_blank" rel="noopener">Did you know we\'re constantly giving away <strong>FREE</strong> stuff? Check out our giveaways here.</a></div>';
