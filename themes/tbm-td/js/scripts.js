@@ -210,7 +210,10 @@ jQuery(document).ready(function ($) {
           .replace(/ /g, "-")
           .replace(/[^\w-]+/g, "");
         var page_url_scroll =
-          $(visible_news_story).last().find("h1").data("href") + url_slug + "/";
+          $(visible_news_story).last().find("h1").data("href") +
+          "list/" +
+          url_slug +
+          "/";
         console.log(page_url_scroll);
         $(this).data("href", page_url_scroll);
         $(this).data("id", url_slug);
@@ -226,7 +229,10 @@ jQuery(document).ready(function ($) {
           .replace(/ /g, "-")
           .replace(/[^\w-]+/g, "");
         var page_url_scroll =
-          $(visible_news_story).last().find("h1").data("href") + url_slug + "/";
+          $(visible_news_story).last().find("h1").data("href") +
+          "list/" +
+          url_slug +
+          "/";
         $(this).data("href", page_url_scroll);
         $(this).data("id", url_slug);
       }
