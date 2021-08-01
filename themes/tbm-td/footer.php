@@ -83,14 +83,14 @@
       "dateModified": "<?php echo the_modified_date('Y-m-d\TH:i:s+10:00'); ?>",
       "author": {
         "@type": "Person",
-        "name": "<?php echo $author; ?>"
+        "name": "<?php echo urlencode($author); ?>"
       },
       "publisher": {
         "@type": "Organization",
         "name": "<?php echo get_bloginfo('name'); ?>",
         "logo": {
           "@type": "ImageObject",
-          "url": "<?php echo CDN_URL; ?>The-Brag-300px.png"
+          "url": "<?php echo CDN_URL; ?>Tone-Deaf-300px.png"
         }
       },
       "description": "<?php echo get_bloginfo('description'); ?>"
