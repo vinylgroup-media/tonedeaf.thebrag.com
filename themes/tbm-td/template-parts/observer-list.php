@@ -33,6 +33,11 @@
       <?php endforeach; // For Each $list in $lists 
       ?>
     </div>
+    <style>
+      .observer-list .topics a span {
+        pointer-events: none;
+      }
+    </style>
   <?php
   endif; // If $lists
   ?>
