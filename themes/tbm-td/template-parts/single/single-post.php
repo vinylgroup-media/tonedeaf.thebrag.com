@@ -156,7 +156,7 @@ if (!post_password_required($post)) :
                     <div class="d-flex mb-3 mb-md-0">
                         <div class="author d-flex font-primary" data-author="<?php echo $author_name; ?>">
                             <div class="pr-1 text-uppercase d-flex">
-                                <div class="mr-1"><?php echo $author_image; ?></div>
+                                <div class="mr-1 img-wrap"><?php echo $author_image; ?></div>
                                 <div><strong><?php echo $author_byline; ?></strong></div>
                             </div>
                             <div class="v-divider">|</div>
@@ -239,8 +239,8 @@ if (!post_password_required($post)) :
                     <?php if (in_category('Op-Ed/Comment')) : ?>
                         <div class="mt-5 py-3" style="border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;">
                             <div class="d-flex flex-column">
-                                <div class="post-meta row">
-                                    <div class="col-2 text-right"><?php echo $author_image; ?></div>
+                                <div class="post-meta row author">
+                                    <div class="col-2 text-right img-wrap"><?php echo $author_image; ?></div>
                                     <div class="author col-10 align-self-center">
                                         <div class="d-flex flex-row justify-content-between">
                                             <div data-author="<?php echo $author_name; ?>" class="align-self-center"><?php echo $author_byline; ?></div>
