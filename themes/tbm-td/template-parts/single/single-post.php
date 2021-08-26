@@ -49,9 +49,9 @@ if (!post_password_required($post)) :
 
         $author_img_src = wp_get_attachment_image_src(get_field('author_profile_picture'), 'thumbnail');
         if ($author_img_src) :
-            $author_image = '<img src="' . $author_img_src[0] . '" width="64" class="rounded-circle">';
+            $author_image = '<img src="' . $author_img_src[0] . '" width="64" class="rounded-circle" style="margin: 0;">';
         else :
-            $author_image = '<img src="' . CDN_URL . 'default-avatar.png" width="64" height="64" class="rounded-circle" alt="' . $author_name . '">';
+            $author_image = '<img src="' . CDN_URL . 'default-avatar.png" width="64" height="64" class="rounded-circle" alt="' . $author_name . '" style="margin: 0;">';
         endif; // If custom author image is set
     else : // If custom author has not been set
         $author_name = get_the_author_meta('display_name', $post->post_author);
@@ -239,8 +239,8 @@ if (!post_password_required($post)) :
                     <?php if (in_category('Op-Ed/Comment')) : ?>
                         <div class="mt-5 py-3" style="border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;">
                             <div class="d-flex flex-column">
-                                <div class="post-meta row author">
-                                    <div class="col-2 text-right img-wrap"><?php echo $author_image; ?></div>
+                                <div class="post-meta d-flex align-items-start author">
+                                    <div class="col-2 text-right img-wrap mr-1" style="flex: 0 0 64px;"><?php echo $author_image; ?></div>
                                     <div class="author col-10 align-self-center">
                                         <div class="d-flex flex-row justify-content-between">
                                             <div data-author="<?php echo $author_name; ?>" class="align-self-center"><?php echo $author_byline; ?></div>
