@@ -1815,7 +1815,11 @@ function tbm_ajax_load_next_post()
         ob_start();
         $main_post = false;
 
-        get_template_part('template-parts/single/single', 'post', ['count_articles' => $count_articles]);
+        if ('single-template-featured.php' == get_page_template_slug($post->ID)) {
+            get_template_part('template-parts/single/single', 'featured', ['count_articles' => $count_articles]);
+        } else {
+            get_template_part('template-parts/single/single', 'post', ['count_articles' => $count_articles]);
+        }
 
         wp_reset_query();
         wp_reset_postdata();
