@@ -285,7 +285,7 @@ if (!post_password_required($post)) :
 
                 </div><!-- /.post-content -->
 
-                <div style="width: 300px; margin: auto;">
+                <div class="mt-2" style="width: 300px; margin: auto;">
                     <?php
                     if (shortcode_exists('shout_writer_beer')) :
                         echo do_shortcode('[shout_writer_beer author="' . $author_name . '"]');
