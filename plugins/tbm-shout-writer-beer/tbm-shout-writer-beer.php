@@ -87,7 +87,7 @@ class TBM_Shout_Writer_Beer
         </div>
       </div>
     </form>
-  <?php
+    <?php
   }
 
   private function get_paypal_config()
@@ -214,17 +214,17 @@ class TBM_Shout_Writer_Beer
     ob_start();
 
     if ($this->enableRecaptcha) {
-  ?>
-    <script src="https://www.google.com/recaptcha/api.js?render=<?php echo $this->recaptchaSiteKey; ?>"></script>
-    <script>
-      grecaptcha.ready(function() {
-        grecaptcha.execute("<?php echo $this->recaptchaSiteKey; ?>", {
-          action: "shout_beer"
-        }).then(function(token) {
-          jQuery(".recaptchaResponse").val(token);
+    ?>
+      <script src="https://www.google.com/recaptcha/api.js?render=<?php echo $this->recaptchaSiteKey; ?>"></script>
+      <script>
+        grecaptcha.ready(function() {
+          grecaptcha.execute("<?php echo $this->recaptchaSiteKey; ?>", {
+            action: "shout_beer"
+          }).then(function(token) {
+            jQuery(".recaptchaResponse").val(token);
+          });
         });
-      });
-    </script>
+      </script>
     <?php } ?>
     <div style="width: auto; max-width: 100%; margin: 0 auto;">
       <div class="btn-shout-writer-beer" data-toggle="form-shout-writer-beer">
@@ -237,18 +237,25 @@ class TBM_Shout_Writer_Beer
         <span class="text-right">Love this article?<br>Shout <?php echo $a['author']; ?> a beer</span>
       </div>
       <form action="" method="post" name="form-shout-writer-beer" class="form-shout-writer-beer" target="_blank" style="display: none;">
-        <textarea name="message" class="shout-writer-coffe-message form-control" placeholder="Your note to <?php echo $a['author']; ?> (optional)"></textarea>
-        <div class="input-group">
-          <div class="input-group-prepend">
+        <textarea name="message" class="shout-writer-coffe-message form-control" placeholder="Your note to <?php echo $a['author']; ?> (optional)" style="border-bottom-width: 0 !important;"></textarea>
+        <div class="input-group d-flex align-items-stretch">
+          <div class="input-group-prepend d-flex" style="border: 1px solid #ced4da !important;
+    border-bottom-left-radius: .25rem;
+    border-right: none !important;
+    padding: .25rem;
+    background: #ced4da;">
             <div class="input-group-text">$</div>
           </div>
-          <input type="number" name="amount" class="required form-control shout-writer-beer-amount" min="5" value="5" required>
+          <input type="number" name="amount" class="required form-control shout-writer-beer-amount" min="5" value="5" required style="border-left: none !important;
+    border-radius: 0 !important;">
           <input type="hidden" name="author" value="<?php echo $a['author']; ?>">
           <input type="hidden" name="article_url" value="<?php echo get_the_permalink(); ?>">
           <?php if ($this->enableRecaptcha) { ?>
-          <input type="hidden" name="recaptcha_response" id="recaptchaResponse" class="recaptchaResponse">
+            <input type="hidden" name="recaptcha_response" id="recaptchaResponse" class="recaptchaResponse">
           <?php } ?>
-          <input type="submit" value="Proceed" name="submit-shout-writer-beer" class="button btn btn-dark submit-shout-writer-beer form-control">
+          <input type="submit" value="Proceed" name="submit-shout-writer-beer" class="button btn btn-dark submit-shout-writer-beer form-control" style="padding: .55rem !important;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;">
         </div>
     <?php
     $html = ob_get_contents();
