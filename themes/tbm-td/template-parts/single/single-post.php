@@ -248,20 +248,36 @@ if (!post_password_required($post)) :
                                             else :
                                                 $author = get_userdata(intval($post->post_author));
                                             ?>
-                                                <ul class="nav align-self-center">
+                                                <div class="d-flex flex-row">
                                                     <?php if ($author->twitter != '') : ?>
-                                                        <li class="nav-item"><a href="<?php echo $author->twitter; ?>" target="_blank" class="nav-link px-1 text-dark"><i class="fa fa-twitter-square fa-lg" aria-hidden="true"></i></a></li>
+                                                        <div class="nav-item">
+                                                            <a href="<?php echo $author->twitter; ?>" target="_blank" class="d-block rounded-circle bg-dark" style="padding: .25rem; margin: .25rem;">
+                                                                <img src="<?php echo ICONS_URL; ?>twitter.svg" width="32" style="width: 24px; margin: 0;">
+                                                            </a>
+                                                        </div>
                                                     <?php endif; ?>
                                                     <?php if ($author->facebook != '') : ?>
-                                                        <li class="nav-item"><a href="<?php echo $author->facebook; ?>" target="_blank" class="nav-link px-1 text-dark"><i class="fa fa-facebook-square fa-lg" aria-hidden="true"></i></a></li>
+                                                        <div class="nav-item">
+                                                            <a href="<?php echo $author->facebook; ?>" target="_blank" class="d-block rounded-circle bg-dark" style="padding: .25rem; margin: .25rem;">
+                                                                <img src="<?php echo ICONS_URL; ?>facebook.svg" width="32" style="width: 24px; margin: 0;">
+                                                            </a>
+                                                        </div>
                                                     <?php endif; ?>
                                                     <?php if ($author->linkedin != '') : ?>
-                                                        <li class="nav-item"><a href="<?php echo $author->linkedin; ?>" target="_blank" class="nav-link px-1 text-dark"><i class="fa fa-linkedin-square fa-lg" aria-hidden="true"></i></a></li>
+                                                        <div class="nav-item">
+                                                            <a href="<?php echo $author->linkedin; ?>" target="_blank" class="d-block rounded-circle bg-dark" style="padding: .25rem; margin: .25rem;">
+                                                                <img src="<?php echo ICONS_URL; ?>linkedin.svg" width="32" style="width: 24px; margin: 0;">
+                                                            </a>
+                                                        </div>
                                                     <?php endif; ?>
                                                     <?php if ($author->instagram != '') : ?>
-                                                        <li class="nav-item"><a href="<?php echo $author->instagram; ?>" target="_blank" class="nav-link px-1 text-dark"><i class="fa fa-instagram fa-lg" aria-hidden="true"></i></a></li>
+                                                        <div class="nav-item">
+                                                            <a href="<?php echo $author->instagram; ?>" target="_blank" class="d-block rounded-circle bg-dark" style="padding: .25rem; margin: .25rem;">
+                                                                <img src="<?php echo ICONS_URL; ?>instagram.svg" width="32" style="width: 24px; margin: 0;">
+                                                            </a>
+                                                        </div>
                                                     <?php endif; ?>
-                                                </ul>
+                                                </div>
                                             <?php
                                             endif;
                                             ?>
