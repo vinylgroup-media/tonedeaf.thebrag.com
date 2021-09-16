@@ -4,6 +4,7 @@ plugins/*
 !plugins/tbm-shout-writer-beer
 !plugins/tbm-adm
 !plugins/brag-observer
+!plugins/theme-options
 
 # ignore specific themes
 themes/twenty*/

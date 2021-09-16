@@ -1,0 +1,617 @@
+<?php
+
+/**
+ * Plugin Name: Theme Options
+ * Plugin URI: https://thebrag.media/
+ * Description: Theme Options
+ * Version: 1.0.0
+ * Author: Sachin Patel
+ * Author URI: http://www.patelsachin.com
+ */
+
+add_action('admin_menu', 'tbm_theme_options_plugin_menu');
+function tbm_theme_options_plugin_menu()
+{
+    add_menu_page('Theme Options', 'Theme Options', 'edit_pages', 'tbm_theme_options', 'tbm_theme_options');
+    // add_menu_page('Country Theme Options', 'Country Theme Options', 'country', 'tbm_theme_options_country', 'tbm_theme_options_country');
+
+    add_submenu_page('tbm_theme_options', 'Re-publish Evergreen', 'Re-publish Evergreen', 'edit_pages', 'tbm_theme_options_republish', 'tbm_theme_options_republish');
+}
+
+function tbm_theme_options()
+{
+    wp_enqueue_script('bs', get_template_directory_uri() . '/bs/js/bootstrap.bundle.min.js', array('jquery'), '20190424', true);
+    wp_enqueue_style('bs', get_template_directory_uri() . '/bs/css/bootstrap.min.css');
+    wp_enqueue_style('edm-mailchimp', plugin_dir_url(__FILE__) . '/css/style.css');
+
+    wp_enqueue_script('td-jquery-autocomplete', get_template_directory_uri() . '/js/jquery.auto-complete.min.js', array('jquery'), NULL, true);
+    wp_enqueue_script('td-options-ajax-search', get_template_directory_uri() . '/js/scripts-admin.js', array('jquery'), NULL, true);
+
+    wp_enqueue_script('tbm-theme-options', plugin_dir_url(__FILE__) . '/js/scripts.js', array('jquery'), '20190429', true);
+
+    /*
+     * Save options
+     */
+
+    if (isset($_POST['force_most_viewed'])) :
+        $force_most_viewed = absint($_POST['force_most_viewed']);
+        if ($force_most_viewed > 0) :
+            update_option('force_most_viewed', absint($_POST['force_most_viewed']));
+            update_option('most_viewed_yesterday', absint($_POST['force_most_viewed']));
+        else :
+            update_option('force_most_viewed', '');
+        endif;
+    endif; // force_most_viewed
+
+    if (isset($_POST) && count($_POST) > 0) :
+        foreach ($_POST as $key => $value) :
+            if (strpos($key, 'tbm_') !== false) :
+                update_option($key, sanitize_text_field($value));
+            endif;
+        endforeach;
+        echo '<div class="alert alert-success">Options have been saved!</div>';
+    endif;
+?>
+    <style>
+        label.reset {
+            background: #ccc;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            color: #fff;
+            text-align: center;
+        }
+    </style>
+    <h1>Theme Options - Main site</h1>
+    <form method="post" class="form">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-12">
+                        <h3>Video of the week</h3>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Link URL</label>
+                            <label class="reset">x</label>
+                            <input name="tbm_featured_video_link" id="tbm_featured_video_link" type="text" value="<?php echo stripslashes(get_option('tbm_featured_video_link')); ?>" placeholder="https://" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>YouTube URL</label>
+                            <label class="reset">x</label>
+                            <input name="tbm_featured_video" id="tbm_featured_video" type="text" value="<?php echo stripslashes(get_option('tbm_featured_video')); ?>" placeholder="https://" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Featured Video Artist Title</label>
+                            <label class="reset">x</label>
+                            <input name="tbm_featured_video_artist" id="tbm_featured_video_artist" type="text" value="<?php echo stripslashes(get_option('tbm_featured_video_artist')); ?>" placeholder="" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Featured Video Song Title</label>
+                            <label class="reset">x</label>
+                            <input name="tbm_featured_video_song" id="tbm_featured_video_song" type="text" value="<?php echo stripslashes(get_option('tbm_featured_video_song')); ?>" placeholder="" class="form-control">
+                        </div>
+                    </div>
+                </div><!-- Video of the week -->
+            </div>
+            <div class="col-md-6">
+
+                <div class="row">
+                    <div class="col-12">
+                        <h3>Record of the week</h3>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Artist</label>
+                            <label class="reset">x</label>
+                            <input name="tbm_featured_album_artist" id="tbm_featured_album_title" type="text" value="<?php echo stripslashes(get_option('tbm_featured_album_artist')); ?>" placeholder="" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Title</label>
+                            <label class="reset">x</label>
+                            <input name="tbm_featured_album_title" id="tbm_featured_album_title" type="text" value="<?php echo stripslashes(get_option('tbm_featured_album_title')); ?>" placeholder="" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Image URL</label>
+                            <label class="reset">x</label>
+                            <input type="text" name="tbm_featured_album_image_url" id="tbm_featured_album_image_url" class="form-control" value="<?php echo get_option('tbm_featured_album_image_url') != '' ? get_option('tbm_featured_album_image_url')  : ''; ?>">
+                            <?php
+                            if (function_exists('wp_enqueue_media')) {
+                                wp_enqueue_media();
+                            } else {
+                                wp_enqueue_style('thickbox');
+                                wp_enqueue_script('media-upload');
+                                wp_enqueue_script('thickbox');
+                            }
+                            ?>
+                            <?php if (get_option('tbm_featured_album_image_url') != '') : ?>
+                                <img src="<?php echo get_option('tbm_featured_album_image_url'); ?>" width="100" id="tbm_featured_album_image" class="img-fluid d-block">
+                            <?php endif; ?>
+                            <button id="btn-featured-album-image" type="button" class="button">Upload / Select from Library</button>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Link</label>
+                            <label class="reset">x</label>
+                            <input name="tbm_featured_album_link" id="tbm_featured_album_link" type="text" value="<?php echo stripslashes(get_option('tbm_featured_album_link')); ?>" placeholder="" class="form-control">
+                        </div>
+                    </div>
+                </div><!-- Record of the week -->
+            </div>
+
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-12">
+                        <h3>Featured Article for Infinite Scroll</h3>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Post ID</label>
+                            <label class="reset">x</label>
+                            <input name="tbm_featured_infinite_ID" id="tbm_featured_infinite_ID" type="number" value="<?php echo stripslashes(get_option('tbm_featured_infinite_ID')); ?>" placeholder="" class="form-control">
+                        </div>
+                    </div>
+                </div><!-- Featured Article for Infinite Scroll ID -->
+
+                <div class="row">
+                    <div class="col-12">
+                        <h3>Force Trending on Home page</h3>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Post ID</label>
+                            <label class="reset">x</label>
+                            <input name="force_most_viewed" id="force_most_viewed" type="number" value="<?php echo stripslashes(get_option('force_most_viewed')); ?>" placeholder="" class="form-control">
+                        </div>
+                    </div>
+                </div><!-- Force Trending on Home page -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <input type="submit" name="submit" id="submit-campaign" class="button button-primary" value="Save">
+            </div>
+        </div>
+    </form>
+<?php
+}
+
+function tbm_theme_options_country()
+{
+    wp_enqueue_script('bs', get_template_directory_uri() . '/bs/js/bootstrap.bundle.min.js', array('jquery'), '20190424', true);
+    wp_enqueue_style('bs', get_template_directory_uri() . '/bs/css/bootstrap.min.css');
+    wp_enqueue_style('edm-mailchimp', plugin_dir_url(__FILE__) . '/css/style.css');
+
+    wp_enqueue_script('td-jquery-autocomplete', get_template_directory_uri() . '/js/jquery.auto-complete.min.js', array('jquery'), NULL, true);
+    wp_enqueue_script('td-options-ajax-search', get_template_directory_uri() . '/js/scripts-admin.js', array('jquery'), NULL, true);
+
+    wp_enqueue_script('tbm-theme-options', plugin_dir_url(__FILE__) . '/js/scripts.js', array('jquery'), '20190429', true);
+
+    /*
+     * Save options
+     */
+    if (isset($_POST) && count($_POST) > 0) :
+        foreach ($_POST as $key => $value) :
+            if (strpos($key, 'tbm_') !== false) :
+                update_option($key, sanitize_text_field($value));
+            endif;
+        endforeach;
+        echo '<div class="alert alert-success">Options have been saved!</div>';
+    endif;
+?>
+    <style>
+        label.reset {
+            background: #ccc;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            color: #fff;
+            text-align: center;
+        }
+    </style>
+    <h1>Theme Options - Country site</h1>
+    <form method="post" class="form">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-12">
+                        <h3>Video of the week</h3>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>YouTube URL</label>
+                            <label class="reset">x</label>
+                            <input name="tbm_featured_video_country" id="tbm_featured_video_country" type="text" value="<?php echo stripslashes(get_option('tbm_featured_video_country')); ?>" placeholder="https://" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Featured Video Artist Title</label>
+                            <label class="reset">x</label>
+                            <input name="tbm_featured_video_artist_country" id="tbm_featured_video_artist_country" type="text" value="<?php echo stripslashes(get_option('tbm_featured_video_artist_country')); ?>" placeholder="" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Featured Video Song Title</label>
+                            <label class="reset">x</label>
+                            <input name="tbm_featured_video_song_country" id="tbm_featured_video_song_country" type="text" value="<?php echo stripslashes(get_option('tbm_featured_video_song_country')); ?>" placeholder="" class="form-control">
+                        </div>
+                    </div>
+                </div><!-- Video of the week -->
+
+                <div class="row">
+                    <div class="col-12">
+                        <h3>Record of the week</h3>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Artist</label>
+                            <label class="reset">x</label>
+                            <input name="tbm_featured_album_artist_country" id="tbm_featured_album_title_country" type="text" value="<?php echo stripslashes(get_option('tbm_featured_album_artist_country')); ?>" placeholder="" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Title</label>
+                            <label class="reset">x</label>
+                            <input name="tbm_featured_album_title_country" id="tbm_featured_album_title_country" type="text" value="<?php echo stripslashes(get_option('tbm_featured_album_title_country')); ?>" placeholder="" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Image URL</label>
+                            <label class="reset">x</label>
+                            <input type="text" name="tbm_featured_album_image_url_country" id="tbm_featured_album_image_url_country" class="form-control" value="<?php echo get_option('tbm_featured_album_image_url_country') != '' ? get_option('tbm_featured_album_image_url_country')  : ''; ?>">
+                            <?php
+                            if (function_exists('wp_enqueue_media')) {
+                                wp_enqueue_media();
+                            } else {
+                                wp_enqueue_style('thickbox');
+                                wp_enqueue_script('media-upload');
+                                wp_enqueue_script('thickbox');
+                            }
+                            ?>
+                            <?php if (get_option('tbm_featured_album_image_url_country') != '') : ?>
+                                <img src="<?php echo get_option('tbm_featured_album_image_url_country'); ?>" width="100" id="tbm_featured_album_image_country" class="img-fluid d-block">
+                            <?php endif; ?>
+                            <button id="btn-featured-album-image-country" type="button" class="button">Upload / Select from Library</button>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Link</label>
+                            <label class="reset">x</label>
+                            <input name="tbm_featured_album_link_country" id="tbm_featured_album_link" type="text" value="<?php echo stripslashes(get_option('tbm_featured_album_link_country')); ?>" placeholder="" class="form-control">
+                        </div>
+                    </div>
+                </div><!-- Record of the week -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <input type="submit" name="submit" id="submit-campaign" class="button button-primary" value="Save">
+            </div>
+        </div>
+    </form>
+<?php
+}
+
+/*
+ * API to update theme options remotely from thebrag.com WP
+ */
+function tbm_update_theme_options_remote_func($data)
+{
+    if ('cacU1r_3wUpusw9cadltIratL8+glt*s' == $_POST['auth_key']) :
+        $data = $_POST['data'];
+        if (is_array($data) && count($data) > 0) :
+            foreach ($data as $key => $value) :
+                if (strpos($key, 'tbm_') !== false) :
+                    update_option($key, sanitize_text_field($value));
+                endif;
+            endforeach;
+        endif;
+    endif;
+}
+add_action('rest_api_init', function () {
+    register_rest_route('api/v1', '/update_theme_options', array(
+        'methods' => 'POST',
+        'callback' => 'tbm_update_theme_options_remote_func',
+    ));
+});
+
+
+/*
+* Apple News
+*/
+add_filter('get_the_author_display_name', 'tbm_the_author_display_name');
+add_filter('apple_news_exporter_content_pre', 'apple_news_exporter_content_pre', 10, 2);
+
+function tbm_the_author_display_name()
+{
+    global $post;
+    if (get_field('author') && '' != trim(get_field('author'))) {
+        return get_field('author');
+    } else if (get_field('Author') && '' != trim(get_field('Author'))) {
+        return get_field('Author');
+    }
+    $author_id = $post->post_author;
+    return get_the_author_meta('first_name', $author_id) . ' ' . get_the_author_meta('last_name', $author_id);
+}
+
+function apple_news_exporter_content_pre($content, $postID)
+{
+    global $post;
+
+    remove_filter('the_content', 'ssm_youtube_lazy_load');
+
+    return $content;
+}
+
+/* add_action('wp_head', function () {
+    if (is_single()) {
+        $publisher_id = 'GC_e00d3427b7b032a1b4932b87ea438558a0dc3e03';
+    ?>
+        <script>
+            (function(c, e, n, o, i, r, s, t, u, a, h, f, l, d, p) {
+                s = "querySelector";
+                a = new Date;
+                d = 0;
+                c["GotChosenObject"] = o;
+                c[o] = c[o] || function() {
+                    (c[o].q = c[o].q || []).push(arguments);
+                    r = r || c[o].q.filter(function(t) {
+                        return t[0] === "init"
+                    })[0][1];
+                    p = function() {
+                        try {
+                            try {
+                                h = [];
+                                c[o].q[0][2].widgets.autoinstall.forEach(function(t) {
+                                    h.push(t.selector)
+                                });
+                                h = h.join()
+                            } catch (t) {
+                                h = ".gcwp-carousel"
+                            }
+                            if (d < 6e4 && !e[s]("#" + r)) {
+                                if (e[s](h)) {
+                                    f = e.createElement(n);
+                                    f.id = r;
+                                    f.async = 1;
+                                    f.src = i + "/gcjs/" + r + "/gc.js?cb=" + a.toJSON().slice(0, 13);
+                                    e.head.appendChild(f)
+                                } else {
+                                    setTimeout(p, 100)
+                                }
+                                d += 100
+                            }
+                        } catch (t) {
+                            throw new Error(t)
+                        }
+                    };
+                    if (r) {
+                        p()
+                    }
+                }
+            })(window, document, "script", "gc", "https://cdn.gotchosen.com");
+            gc("init", "<?php echo $publisher_id; ?>", {
+                widgets: {
+                    autoinstall: [{
+                        selector: '.gcwp-carousel',
+                        insertion: 'into'
+                    }]
+                }
+            });
+        </script>
+<?php
+    }
+}); */
+
+add_action('edit_form_after_title', function ($post) {
+    $screen = get_current_screen();
+    if ($screen->id != 'post') {
+        return;
+    }
+    if ($post && ('post' != $post->post_type || 'publish' == $post->post_status)) {
+        return;
+    }
+?>
+    <div style="background-color: lightyellow; padding: 0.25rem 0.5rem">
+        <h3>Checklist:</h3>
+        <ol>
+            <li>Does this article adhere EXACTLY to the Crib Notes for this publication?</li>
+            <li>If it’s a news piece: Was it first published by another publication within the last hour?</li>
+            <li>If it was first published over an hour ago, do you have an original & exclusive angle?!</li>
+            <li>Are there any opps to add in a link to a relevant Observer newsletter?</li>
+        </ol>
+    </div>
+<?php
+});
+
+// Coil - Monetize content
+add_action('wp_head', function () {
+    echo '<meta name="monetization" content="$ilp.uphold.com/68Q7DryfNX4d">';
+});
+
+class TBM_WP_HTML_Compression
+{
+    // Settings
+    protected $compress_css = true;
+    protected $compress_js = false;
+    protected $info_comment = false;
+    protected $remove_comments = true;
+
+    // Variables
+    protected $html;
+    public function __construct($html)
+    {
+        if (!empty($html)) {
+            $this->parseHTML($html);
+        }
+    }
+    public function __toString()
+    {
+        return $this->html;
+    }
+    protected function bottomComment($raw, $compressed)
+    {
+        $raw = strlen($raw);
+        $compressed = strlen($compressed);
+
+        $savings = ($raw - $compressed) / $raw * 100;
+
+        $savings = round($savings, 2);
+
+        return '<!--HTML compressed, size saved ' . $savings . '%. From ' . $raw . ' bytes, now ' . $compressed . ' bytes-->';
+    }
+    protected function minifyHTML($html)
+    {
+        $pattern = '/<(?<script>script).*?<\/script\s*>|<(?<style>style).*?<\/style\s*>|<!(?<comment>--).*?-->|<(?<tag>[\/\w.:-]*)(?:".*?"|\'.*?\'|[^\'">]+)*>|(?<text>((<[^!\/\w.:-])?[^<]*)+)|/si';
+        preg_match_all($pattern, $html, $matches, PREG_SET_ORDER);
+        $overriding = false;
+        $raw_tag = false;
+        // Variable reused for output
+        $html = '';
+        foreach ($matches as $token) {
+            $tag = (isset($token['tag'])) ? strtolower($token['tag']) : null;
+
+            $content = $token[0];
+
+            if (is_null($tag)) {
+                if (!empty($token['script'])) {
+                    $strip = $this->compress_js;
+                } else if (!empty($token['style'])) {
+                    $strip = $this->compress_css;
+                } else if ($content == '<!--wp-html-compression no compression-->') {
+                    $overriding = !$overriding;
+
+                    // Don't print the comment
+                    continue;
+                } else if ($this->remove_comments) {
+                    if (!$overriding && $raw_tag != 'textarea') {
+                        // Remove any HTML comments, except MSIE conditional comments
+                        $content = preg_replace('/<!--(?!\s*(?:\[if [^\]]+]|<!|>))(?:(?!-->).)*-->/s', '', $content);
+                    }
+                }
+            } else {
+                if ($tag == 'pre' || $tag == 'textarea') {
+                    $raw_tag = $tag;
+                } else if ($tag == '/pre' || $tag == '/textarea') {
+                    $raw_tag = false;
+                } else {
+                    if ($raw_tag || $overriding) {
+                        $strip = false;
+                    } else {
+                        $strip = true;
+
+                        // Remove any empty attributes, except:
+                        // action, alt, content, src
+                        $content = preg_replace('/(\s+)(\w++(?<!\baction|\balt|\bcontent|\bsrc)="")/', '$1', $content);
+
+                        // Remove any space before the end of self-closing XHTML tags
+                        // JavaScript excluded
+                        $content = str_replace(' />', '/>', $content);
+                    }
+                }
+            }
+
+            if ($strip) {
+                $content = $this->removeWhiteSpace($content);
+            }
+
+            $html .= $content;
+        }
+
+        return $html;
+    }
+
+    public function parseHTML($html)
+    {
+        $this->html = $this->minifyHTML($html);
+
+        if ($this->info_comment) {
+            $this->html .= "\n" . $this->bottomComment($html, $this->html);
+        }
+    }
+
+    protected function removeWhiteSpace($str)
+    {
+        $str = str_replace("\t", ' ', $str);
+        $str = str_replace("\n",  '', $str);
+        $str = str_replace("\r",  '', $str);
+
+        while (stristr($str, '  ')) {
+            $str = str_replace('  ', ' ', $str);
+        }
+
+        return $str;
+    }
+}
+
+function tbm_wp_html_compression_finish($html)
+{
+    return new TBM_WP_HTML_Compression($html);
+}
+
+function tbm_wp_html_compression_start()
+{
+    ob_start('tbm_wp_html_compression_finish');
+}
+add_action('get_header', 'tbm_wp_html_compression_start');
+
+
+function tbm_theme_options_republish()
+{
+
+    $str_month_ago = strtotime('1 month ago');
+
+    $the_query = new WP_Query(
+        [
+            'post_status' => 'publish',
+            'posts_per_page' => 10,
+            'date_query' => [
+                [
+                    'year' => date('Y', $str_month_ago),
+                    'month' => date('m', $str_month_ago),
+                    'day' => date('d', $str_month_ago),
+                ],
+            ],
+            'category_name' => 'Evergreen'
+        ]
+    );
+
+    if ($the_query->have_posts()) :
+        echo '<ul>';
+        while ($the_query->have_posts()) :
+            $the_query->the_post();
+            echo '<li>';
+            echo get_the_date();
+            echo '<a href="' . get_the_permalink() . '" target="_blank">';
+
+            echo get_the_title();
+            echo '</a>';
+
+            echo '</li>';
+        endwhile;
+        echo '</ul>';
+    endif;
+}
+
+// JS to make BB sticky
+add_action('wp_footer', function () {
+?>
+    <script>
+        const ad_billboard = parent.document.querySelector('.ad-billboard .mx-auto')
+
+        ad_billboard.style.position = 'fixed'
+        ad_billboard.style.zIndex = 999
+        ad_billboard.style.bottom = '15px'
+
+        setTimeout(function() {
+            ad_billboard.style.position = 'relative'
+        }, 3000)
+    </script>
+<?php
+});
