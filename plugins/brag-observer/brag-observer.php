@@ -48,6 +48,7 @@ class BragObserver
       // 'prince',
       'rage against the machine',
       'joyner lucas',
+      'pist idiots',
     ];
 
     // Shortcodes
