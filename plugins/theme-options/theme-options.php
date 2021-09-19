@@ -604,23 +604,22 @@ add_action('wp_footer', function () {
 ?>
     <script>
         fusetag.onSlotRenderEnded((e) => {
-            if (e.slotId === 'fuse-slot-22378618988-1' || e.slotId === 'fuse-slot-22378619009-1') {
+            if (e.slotId === 'fuse-slot-22378628779-1' || e.slotId === 'fuse-slot-22378628842-1') {
                 googletag.pubads().addEventListener('slotRenderEnded', function(event) {
                     const slot = event.slot
-                    if (slot.getSlotElementId() === 'fuse-slot-22378618988-1' || slot.getSlotElementId() === 'fuse-slot-22378619009-1') {
+                    if (slot.getSlotElementId() === 'fuse-slot-22378628779-1' || slot.getSlotElementId() === 'fuse-slot-22378628842-1') {
                         if (event.creativeId === 138363696766) {
                             const ad_billboard = parent.document.querySelector('.ad-billboard .mx-auto')
-                            const ad_header = parent.document.querySelector('.fixed-top')
 
                             ad_billboard.style.position = 'fixed'
                             ad_billboard.style.zIndex = 999
                             ad_billboard.style.bottom = '15px'
-
-                            ad_header.style.position = 'relative'
+                            ad_billboard.style.transform = 'translateX(-50%)';
+                            ad_billboard.style.left = '50%';
 
                             setTimeout(function() {
+                                ad_billboard.style.bottom = '0'
                                 ad_billboard.style.position = 'relative'
-                                ad_header.style.position = 'fixed'
                             }, 6000)
                         }
                     }
