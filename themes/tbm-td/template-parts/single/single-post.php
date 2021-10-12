@@ -149,7 +149,7 @@ if (!post_password_required($post)) :
                         endif; // If custom field - image credit - is set
                         ?>
                     </div><!-- .post-thumbnail -->
-                <?php endif; // If post has thumbnail AND post type is not issue 
+                <?php endif; // If post has thumbnail
                 ?>
 
                 <div class="post-meta d-block d-md-flex my-3 justify-content-around align-items-start">
@@ -195,27 +195,6 @@ if (!post_password_required($post)) :
 
                 <div class="post-content">
                     <?php
-                    if ('issue' == get_post_type()) :
-                        if (get_field('document_id')) :
-                            $document_id = get_field('document_id');
-                    ?>
-                            <div style="width: 600px; margin: auto; max-width: 100%;">
-                                <object classid="clsid:<?php echo $document_id; ?>" style="width: 600px; height:400px; max-width: 100%;" id="<?php echo $document_id; ?>">
-                                    <param name="movie" value="https://static.issuu.com/webembed/viewers/style1/v2/IssuuReader.swf?mode=mini&amp;backgroundColor=&amp;documentId=<?php echo $document_id; ?>">
-                                    <param name="allowfullscreen" value="true">
-                                    <param name="menu" value="false">
-                                    <param name="wmode" value="transparent">
-                                    <embed src="https://static.issuu.com/webembed/viewers/style1/v2/IssuuReader.swf" type="application/x-shockwave-flash" allowfullscreen="true" menu="false" wmode="transparent" style="width: 600px; height:400px; max-width: 100%;" flashvars="mode=mini&amp;backgroundColor=&amp;documentId=<?php echo $document_id; ?>">
-                                </object>
-                            </div>
-                        <?php endif; // If document_id is set for Post type Issue 
-                        ?>
-
-                        <?php if (get_field('issuu_link')) : ?>
-                            <a href="<?php echo get_field('issuu_link'); ?>" target="_blank">PDF Download Link</a>
-                    <?php endif; // If issuu_link is set for Post type Issue
-                    endif; // If the post type is Issue
-
                     if (!get_field('paid_content', $the_post_id)) :
                         $content = apply_filters('the_content', $post->post_content);
                         echo $content;
