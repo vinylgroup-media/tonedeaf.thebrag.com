@@ -311,7 +311,7 @@ class BragObserver
 
           $id = absint($tastemaker_atts['id']);
 
-          wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . '/js/scripts.js', array('jquery'), time(), true);
+          wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . '/js/scripts.min.js', array('jquery'), '20211014', true);
           $args = array(
             'url'   => admin_url('admin-ajax.php'),
             // 'ajax_nonce' => wp_create_nonce( $this->plugin_slug . '-nonce' ),
@@ -353,7 +353,7 @@ class BragObserver
 
           $id = absint($lead_generator_atts['id']);
 
-          wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . '/js/scripts.js', array('jquery'), time(), true);
+          wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . '/js/scripts.min.js', array('jquery'), '20211014', true);
           $args = array(
             'url'   => admin_url('admin-ajax.php'),
             // 'ajax_nonce' => wp_create_nonce( $this->plugin_slug . '-nonce' ),
