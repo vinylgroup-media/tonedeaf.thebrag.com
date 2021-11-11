@@ -1195,7 +1195,7 @@ function ssm_chat_bot_articles()
  * + Remove canonical URL from AMP pages
  * + Add Robots noindex for AMP pages
  */
-add_filter('wpseo_exclude_from_sitemap_by_post_ids', function ($ex) {
+/* add_filter('wpseo_exclude_from_sitemap_by_post_ids', function ($ex) {
     $args = array(
         'numberposts'    => -1,
         'post_type'    => 'post',
@@ -1213,7 +1213,8 @@ add_filter('wpseo_exclude_from_sitemap_by_post_ids', function ($ex) {
     return array_merge($ex, $excludes);
 
     return $excludes;
-});
+}); */
+
 add_action('amp_post_template_head', 'ssm_amp_post_template_add', 9);
 function ssm_amp_post_template_add($amp_template)
 {
