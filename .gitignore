@@ -6,6 +6,10 @@ plugins/*
 !plugins/brag-observer
 !plugins/theme-options
 
+!plugins/ssm-ga
+plugins/ssm-ga/*
+!plugins/ssm-ga/ssm-ga.php
+
 # ignore specific themes
 themes/twenty*/
 
