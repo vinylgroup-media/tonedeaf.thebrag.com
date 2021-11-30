@@ -616,7 +616,7 @@ add_action('wp_footer', function () {
                 googletag.pubads().addEventListener('slotRenderEnded', function(event) {
                     const slot = event.slot
                     if (slot.getSlotElementId() === 'fuse-slot-22378618988-1' || slot.getSlotElementId() === 'fuse-slot-22378619009-1') {
-                        if (event.creativeId === 138369961761) {
+                        if (event.creativeId === 138373276463) {
                             const skin = document.getElementById('skin')
                             skin.style.setProperty('display', 'none', 'important')
 
