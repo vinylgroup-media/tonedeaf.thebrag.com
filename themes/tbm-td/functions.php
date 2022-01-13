@@ -2269,7 +2269,7 @@ function inject_roymorgan()
             document.body.appendChild(script);
         });
     </script>
-<?php
+    <?php
 }
 
 
@@ -2309,9 +2309,56 @@ add_filter('the_content', function ($content) {
     $content .= '<div class="comp-footer"><a href="https://thebrag.com/observer/competitions/" target="_blank" rel="noopener">Did you know we\'re constantly giving away <strong>FREE</strong> stuff? Check out our giveaways here.</a></div>';
 
     return $content;
-});
+}, 99);
 
 // URL rewrite for (fake) list pages
 add_action('init', function () {
     add_rewrite_rule('^([^/]*)/list/([^/]*)/?', 'index.php?name=$matches[1]', 'top');
 }, 10, 0);
+
+/*
+* Add Post attachment (old TD theme had for few articles)
+*/
+add_filter('the_content', function ($content) {
+    global $post;
+    if (!in_array($post->ID, [465843]))
+        return $content;
+    $args = array(
+        'post_type' => 'attachment',
+        'post_status' => array('publish', 'draft', 'inherit'),
+        'numberposts' => 10000,
+        'offset' => 1,
+        'post_parent' => $post->ID,
+        'orderby' => 'menu_order',
+        'order' => 'asc',
+    );
+    $attachments2 = get_posts($args);
+
+    $content_attchments = '';
+    if ($attachments2) {
+        foreach ($attachments2 as $attachment) {
+            ob_start();
+            $caption = $attachment->post_excerpt;
+    ?>
+            <div class="mt-5">
+                <div>
+                    <p><?php echo wpautop($attachment->post_content); ?></p>
+                </div>
+                <div>
+                    <?php
+                    if (!empty($caption)) {
+                        // echo wpautop($caption);
+                    }
+                    ?>
+                </div>
+            </div>
+<?php
+            $content_attchments .= ob_get_contents();
+            ob_end_clean();
+        }
+    }
+
+    $content .= $content_attchments;
+
+    return $content;
+});

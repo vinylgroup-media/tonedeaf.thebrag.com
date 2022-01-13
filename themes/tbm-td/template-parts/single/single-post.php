@@ -215,6 +215,9 @@ if (!post_password_required($post)) :
                     endif; // If it's a paid content
                     ?>
 
+                    <?php
+                    ?>
+
                     <?php if (in_category('Op-Ed/Comment')) : ?>
                         <div class="mt-5 py-3" style="border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;">
                             <div class="d-flex flex-column">

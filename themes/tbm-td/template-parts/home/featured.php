@@ -57,8 +57,11 @@ $trending_story_ID = $trending_story->ID;
                             <div class="author-avatar mr-1" style="width: 24px; height: 24px; position: relative; overflow: hidden; border-radius: 50%;">
                                 <?php
                                 if (isset($author_img_src)) {
+                                    if (is_array($author_img_src)) {
+                                        $author_img_src = $author_img_src[0];
+                                    }
                                     if ($author_img_src) {
-                                        echo  '<img src="' . $author_img_src[0] . '" class="rounded" width="24" height="24" style="height: 100%; width: auto; max-width: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">';
+                                        echo  '<img src="' . $author_img_src . '" class="rounded" width="24" height="24" style="height: 100%; width: auto; max-width: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">';
                                     }
                                 } else {
                                     echo get_avatar($trending_story->post_author, 24, CDN_URL . 'default-avatar.png', '', array('class' => 'rounded'));
