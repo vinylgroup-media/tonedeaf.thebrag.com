@@ -1549,7 +1549,7 @@ function ssm_youtube_lazy_load($content)
     $lazy_content = preg_replace($pattern, $replacement, $content);
     return $lazy_content;
 }
-// add_filter('the_content', 'ssm_youtube_lazy_load');
+add_filter('the_content', 'ssm_youtube_lazy_load');
 
 add_filter('xmlrpc_enabled', '__return_false');
 
