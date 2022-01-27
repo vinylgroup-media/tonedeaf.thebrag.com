@@ -395,6 +395,23 @@
       display: none !important;
     }
   }
+
+  #nav-primary ul {
+    flex-wrap: wrap;
+    flex-direction: row;
+    li.menu-more {
+      flex: 0 0 100% !important;
+    }
+    li {
+      flex: 0 0 50%;
+      ul {
+        flex-direction: row;
+      }
+      a {
+        padding: 1rem 0.5rem;
+      }
+    }
+  }
 }
 
 @media (max-width: $extraSmall) {
