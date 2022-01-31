@@ -351,7 +351,7 @@ class BragObserver
           if (is_null($lead_generator_atts['id']))
             return;
 
-          $id = absint($lead_generator_atts['id']);
+          $lead_generator_atts['id'] = (int)filter_var($lead_generator_atts['id'], FILTER_SANITIZE_NUMBER_INT);
 
           wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . '/js/scripts.min.js', array('jquery'), '20211014', true);
           $args = array(
