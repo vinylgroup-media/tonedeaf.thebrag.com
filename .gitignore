@@ -5,6 +5,7 @@ plugins/*
 !plugins/tbm-adm
 !plugins/brag-observer
 !plugins/theme-options
+!plugins/tbm-media-helper
 
 !plugins/ssm-ga
 plugins/ssm-ga/*
