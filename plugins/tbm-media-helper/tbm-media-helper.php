@@ -41,6 +41,7 @@ class MediaHelper
             'staging.theindustryobserver.thebrag.com',
             'tonedeaf.thebrag.com',
             'staging.tonedeaf.thebrag.com',
+            'staging.tonedeaf.thebrag.com',
             'dontboreus.thebrag.com',
             'thebrag.com',
         ];
