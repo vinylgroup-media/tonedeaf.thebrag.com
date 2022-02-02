@@ -36,14 +36,19 @@ class MediaHelper
         $this->allowed_hosts = [
             'images.thebrag.com',
             'au.rollingstone.com',
+
             'theindustryobserver.thebrag.com',
             'theindustryobserver.the-brag.com',
             'staging.theindustryobserver.thebrag.com',
+
             'tonedeaf.thebrag.com',
             'staging.tonedeaf.thebrag.com',
-            'staging.tonedeaf.thebrag.com',
+
             'dontboreus.thebrag.com',
+            'staging.dontboreus.thebrag.com',
+
             'thebrag.com',
+            'staging.thebrag.com',
         ];
 
         add_action('parse_request', [$this, 'parse_request']);
