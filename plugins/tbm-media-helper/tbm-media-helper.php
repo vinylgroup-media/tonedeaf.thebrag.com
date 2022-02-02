@@ -111,8 +111,6 @@ class MediaHelper
         $type = exif_imagetype($url);
 
         if ($type == (IMAGETYPE_PNG || IMAGETYPE_JPEG)) {
-            error_log($type);
-
             $logo_url = "https://images.thebrag.com/common/brands/{$this->logo_file_name}.png";
 
             $x = $this->social_img_width;
