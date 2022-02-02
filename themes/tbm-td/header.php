@@ -29,14 +29,6 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
   <?php if (is_single()) {
     $src = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'full');
   ?>
-    <meta property="og:title" content="<?php the_title(); ?>" />
-    <meta property="og:image" content="<?php if (has_post_thumbnail()) {
-                                          echo $src[0];
-                                        } ?>" />
-    <meta property="og:type" content="article" />
-    <meta property="og:site_name" content="Tone Deaf" />
-    <meta property="og:url" content="<?php echo get_permalink(); ?>" />
-
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@tonedeaf">
     <meta name="twitter:title" content="<?php the_title(); ?>">
