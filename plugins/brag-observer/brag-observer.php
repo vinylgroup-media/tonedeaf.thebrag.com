@@ -462,7 +462,8 @@ class BragObserver
     ?>
       <div class="observer-sub-form justify-content-center my-3 p-0 d-flex align-items-stretch bg-dark text-white">
         <div class="img-wrap" style="background-image: url(<?php echo $topic->image_url; ?>);">
-          <img src="<?php echo $topic->image_url; ?>" width="200" height="200" style="visibility: hidden;">
+          <!-- <img src="<?php //echo $topic->image_url; 
+                          ?>" width="200" height="200" style="visibility: hidden;"> -->
         </div>
         <div class="p-3 d-flex justify-content-center align-items-center">
           <div>
