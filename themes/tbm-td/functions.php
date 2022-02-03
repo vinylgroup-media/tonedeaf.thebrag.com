@@ -2321,7 +2321,7 @@ add_filter('the_content', function ($content) {
     $content .= '<div class="rs-subscribe-footer"><a href="https://au.rollingstone.com/subscribe-magazine/" target="_blank" rel="noopener">Want more in-depth culture content? <span>Subscribe</span> to <strong>Rolling Stone magazine</strong> for deep reporting, unforgettable interviews, and criticism you can trust.</a></div>';
 
     return $content;
-});
+}, 99);
 
 
 // URL rewrite for (fake) list pages
@@ -2334,7 +2334,7 @@ add_action('init', function () {
 */
 add_filter('the_content', function ($content) {
     global $post;
-    if (!in_array($post->ID, [465843]))
+    if (!in_array($post->ID, [476242, 465843]))
         return $content;
     $args = array(
         'post_type' => 'attachment',
