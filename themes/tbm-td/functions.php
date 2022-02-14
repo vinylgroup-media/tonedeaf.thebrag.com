@@ -2129,6 +2129,48 @@ function brands()
             'ext' => 'svg',
             'width' => 80
         ],
+
+        /**
+         * EPIC
+         */
+        'lwa' => [
+            'title' => 'Life Without Andy',
+            'link' => 'https://lifewithoutandy.com/',
+            'logo_name' => 'lwa',
+            'ext' => 'png',
+            'width' => 60
+        ],
+        'hypebeast' => [
+            'title' => 'Hypebeast',
+            'link' => 'https://hypebeast.com/',
+            'logo_name' => 'Hypebeast',
+            'ext' => 'png',
+        ],
+        'funimation' => [
+            'title' => 'Funimation',
+            'link' => 'https://www.funimation.com/',
+            'logo_name' => 'Funimation',
+            'ext' => 'png',
+        ],
+        'crunchyroll' => [
+            'title' => 'Crunchyroll',
+            'link' => 'https://www.crunchyroll.com/en-gb',
+            'logo_name' => 'Crunchyroll',
+            'ext' => 'png',
+        ],
+        'enthusiast' => [
+            'title' => 'Enthusiast Gaming',
+            'link' => 'https://www.enthusiastgaming.com/',
+            'logo_name' => 'enthusiast',
+            'ext' => 'png',
+        ],
+        'gamelancer' => [
+            'title' => 'Gamelancer',
+            'link' => 'https://gamelancer.com/',
+            'logo_name' => 'Gamelancer',
+            'ext' => 'png',
+        ],
+
     ];
     return $pub_logos;
 } // brands()
@@ -2145,6 +2187,7 @@ function brands_network()
             'title' => 'BGR',
             'link' => 'https://bgr.com/',
             'logo_name' => 'bgr',
+            'width' => 80
         ],
         'billboard' => [
             'title' => 'Billboard',
@@ -2160,11 +2203,13 @@ function brands_network()
             'title' => 'Dirt',
             'link' => 'https://www.dirt.com/',
             'logo_name' => 'Dirt',
+            'width' => 80
         ],
         'footwear' => [
             'title' => 'Footwear News',
             'link' => 'https://footwearnews.com/',
             'logo_name' => 'FootwearNews',
+            'width' => 60
         ],
         'gold-derby' => [
             'title' => 'Gold Derby',
@@ -2195,6 +2240,7 @@ function brands_network()
             'title' => 'Spy',
             'link' => 'https://spy.com/',
             'logo_name' => 'Spy',
+            'width' => 120,
         ],
         'stylecaster' => [
             'title' => 'Stylecaster',
@@ -2210,16 +2256,19 @@ function brands_network()
             'title' => 'TVLine',
             'link' => 'https://tvline.com/',
             'logo_name' => 'TVLine',
+            'width' => 120,
         ],
         'variety' => [
             'title' => 'Variety',
             'link' => 'https://variety.com/',
             'logo_name' => 'Variety',
+            'width' => 120,
         ],
         'vibe' => [
             'title' => 'VIBE',
             'link' => 'https://www.vibe.com/',
             'logo_name' => 'Vibe',
+            'width' => 120,
         ],
     ];
     return $pub_logos;
