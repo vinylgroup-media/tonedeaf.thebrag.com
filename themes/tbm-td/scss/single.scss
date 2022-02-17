@@ -212,9 +212,9 @@
   }
 }
 
-.rs-subscribe-footer a,
+a.rs-subscribe-footer,
 .comp-footer a {
-  display: block;
+  // display: block;
   background-color: #fff;
   border-radius: $roundedRadius;
   padding: 1rem;
@@ -227,11 +227,21 @@
   color: $primaryColor;
   border: 1px solid $primaryColor;
 }
-.rs-subscribe-footer a {
+a.rs-subscribe-footer {
   color: #d32531;
   border: 1px solid #d32531;
-  line-height: 1.75;
-  span {
+  overflow: hidden;
+  .img-wrap {
+    min-width: 80px;
+  }
+  img {
+    width: 80px !important;
+    margin: 0 !important;
+    transform: rotate(6deg);
+    box-shadow: 0 0.125rem 0.25rem 0 rgb(0 0 0 / 50%);
+    transition: transform 0.2s cubic-bezier(0.6, -0.28, 0.74, 0.05);
+  }
+  span.subscribe {
     background-color: #d32531;
     color: #fff;
     border-radius: $roundedRadius / 2;
