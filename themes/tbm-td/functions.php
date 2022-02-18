@@ -2129,7 +2129,13 @@ function brands()
             'ext' => 'svg',
             'width' => 80
         ],
+    ];
+    return $pub_logos;
+} // brands()
 
+function brands_network()
+{
+    $pub_logos = [
         /**
          * EPIC
          */
@@ -2171,13 +2177,9 @@ function brands()
             'ext' => 'png',
         ],
 
-    ];
-    return $pub_logos;
-} // brands()
-
-function brands_network()
-{
-    $pub_logos = [
+        /**
+         * PMC
+         */
         'artnews' => [
             'title' => 'ARTnews',
             'link' => 'https://www.artnews.com/',
