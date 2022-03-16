@@ -11,21 +11,29 @@ function ssm_ga_func($data)
 {
     //    var_dump( $_GET );
     $return = array();
-    $from = isset($_GET['from']) ? date_i18n('Y-m-d', strtotime('-1 day', strtotime(trim($_GET['from'])))) : NULL;
-    $to = isset($_GET['to']) ? date_i18n('Y-m-d', strtotime('+1 day', strtotime(trim($_GET['to'])))) : NULL;
+
+    // $from = isset($_GET['from']) ? date_i18n('Y-m-d', strtotime('-1 day', strtotime(trim($_GET['from'])))) : NULL;
+    // $to = isset($_GET['to']) ? date_i18n('Y-m-d', strtotime('+1 day', strtotime(trim($_GET['to'])))) : NULL;
+
+    $from = isset($_GET['from']) ? date_i18n('c', strtotime(trim($_GET['from']))) : NULL;
+    $to = isset($_GET['to']) ? date_i18n('c', strtotime(trim($_GET['to']))) : NULL;
+
     $query_author = isset($_GET['author']) ? trim($_GET['author']) : NULL;
     if (is_null($from) || is_null($to))
         return $return;
-    $posts = new WP_Query(array(
+
+
+    $args = array(
         'date_query' => array(
-            'after' => $from,
-            'before' => $to,
+            'after' => date('c', strtotime($from)),
+            'before' => date('c', strtotime($to)),
         ),
-        'post_type' => array('post', 'photo_gallery'),
+        'post_type' => $post_types,
         'post_status' => 'publish',
         'posts_per_page' => -1
-    ));
+    );
 
+    $posts = new WP_Query($args);
 
     global $post;
     if ($posts->have_posts()) {
@@ -54,6 +62,7 @@ function ssm_ga_func($data)
                 'url' => $url,
                 'path' => $url_parsed['path'],
                 'publish_date' => get_the_date(),
+                'publish_datetime' => get_the_time('Y-m-d H:i:s'),
                 'author' => $author,
                 'categories' => $category_names
             );
