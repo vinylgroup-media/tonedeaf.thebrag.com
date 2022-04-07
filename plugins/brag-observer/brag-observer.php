@@ -801,6 +801,7 @@ class BragObserver
   */
         public function get_observer_topics($topic = NULL)
         {
+          /*
           $api_url = $this->api_url . 'get_topics?key=' . $this->rest_api_key;
           if (!is_null($topic)) {
             $api_url .= '&id=' . $topic;
@@ -814,6 +815,19 @@ class BragObserver
             $topics = isset($resonseJson->success) && $resonseJson->success ? $resonseJson->data : [];
           } else {
             $topics = '';
+          }
+          */
+
+          $responseJson = file_get_contents(get_stylesheet_directory() . '/template-parts/observer-lists.json');
+          $resonse = json_decode($responseJson);
+          $topics = $resonse->data;
+
+          if (!is_null($topic)) {
+            foreach ($topics as $t) {
+              if ($topic == $t->id) {
+                return [$t];
+              }
+            }
           }
           return $topics;
         }
