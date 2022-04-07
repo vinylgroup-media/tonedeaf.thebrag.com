@@ -6,7 +6,7 @@
   <?php
   $my_sub_lists = [];
 
-  $brag_api_url_base = 'https://thebrag.com/';
+  /* $brag_api_url_base = 'https://thebrag.com/';
 
   if (is_user_logged_in()) :
     $current_user = wp_get_current_user();
@@ -18,7 +18,12 @@
   $response = wp_remote_get($brag_api_url);
   $responseBody = wp_remote_retrieve_body($response);
   $resonseJson = json_decode($responseBody);
-  $lists = $resonseJson->data;
+  $lists = $resonseJson->data; */
+
+  // Original source: https://thebrag.com/wp-json/brag_observer/v1/get_topics/?key=3ce4efdd-a39c-4141-80f7-08a828500831&site=tonedeaf.thebrag.com
+  $responseJson = file_get_contents(__DIR__ . '/observer-lists.json');
+  $resonse = json_decode($responseJson);
+  $lists = $resonse->data;
 
   if ($lists) :
   ?>
