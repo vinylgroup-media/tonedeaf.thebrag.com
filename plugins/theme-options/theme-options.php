@@ -736,3 +736,11 @@ add_action('wp_footer', function () {
     </style>
 <?php
 });
+
+
+add_action('admin_post_thumbnail_html', function ($content, $post_id, $thumbnail_id) {
+    $html = '<div style="background-color: lightyellow; padding: 0.25rem">
+    <em>Recommended size: 1200 x 630 (px)</em>
+    </div>';
+    return  $content . $html;
+}, 10, 3);
