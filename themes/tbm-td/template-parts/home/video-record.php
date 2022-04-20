@@ -1,7 +1,6 @@
 <section class="container video-record mb-4">
     <div class="py-4 px-2 d-block d-md-flex align-items-start">
         <?php
-
         $votw_response = wp_remote_get('https://thebrag.com/wp-json/tbm/votw');
         if (is_array($votw_response) && !is_wp_error($votw_response)) {
             $votw = json_decode($votw_response['body']);
