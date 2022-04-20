@@ -65,7 +65,7 @@ function tbm_theme_options()
     <h1>Theme Options - Main site</h1>
     <form method="post" class="form">
         <div class="row">
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
                 <div class="row">
                     <div class="col-12">
                         <h3>Video of the week</h3>
@@ -94,8 +94,8 @@ function tbm_theme_options()
                             <input name="tbm_featured_video_song" id="tbm_featured_video_song" type="text" value="<?php echo stripslashes(get_option('tbm_featured_video_song')); ?>" placeholder="" class="form-control">
                         </div>
                     </div>
-                </div><!-- Video of the week -->
-            </div>
+                </div>
+            </div> -->
 
             <!-- <div class="col-md-6">
                 <div class="row">
