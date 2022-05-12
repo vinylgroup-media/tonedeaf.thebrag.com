@@ -2403,7 +2403,7 @@ add_filter('the_content', function ($content) {
         return $content;
     endif;
 
-    if (is_singular('page'))
+    if (!is_singular('post'))
         return $content;
 
     if (function_exists('amp_is_request') && amp_is_request()) {
