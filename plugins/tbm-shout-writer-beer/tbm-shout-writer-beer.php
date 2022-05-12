@@ -232,7 +232,7 @@ class TBM_Shout_Writer_Beer
           <a href="https://younghenrys.com/" target="_blank" class="l-logo-beer" rel="noopener" aria-label="Young Henrys">
             <span class="logo-beer" style="display: none;"><img data-src="<?php echo plugins_url('images/yh-logo-blk.png', __FILE__); ?>" class="lazyload"></span>
           </a>
-          <span class="ico-beer"><img src="<?php echo esc_url(plugins_url('images/younghenrys.gif', __FILE__)); ?>" loading="lazy"></span>
+          <span class="ico-beer"><img src="<?php echo esc_url(plugins_url('images/younghenrys.gif', __FILE__)); ?>" width="35" height="60" loading="lazy"></span>
         </div>
         <span class=" text-right">Love this article?<br>Shout <?php echo $a['author']; ?> a beer</span>
       </div>
