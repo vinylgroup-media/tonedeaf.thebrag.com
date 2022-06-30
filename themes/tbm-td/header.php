@@ -71,73 +71,15 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
 
   <?php
   if (is_single()) :
-    if (get_field('author')) {
-      $author = get_field('author');
-    } else if (get_field('Author')) {
-      $author = get_field('Author');
-    } else {
-      if ('' != get_the_author_meta('first_name', $post->post_author) && '' != get_the_author_meta('last_name', $post->post_author)) {
-        $author = get_the_author_meta('first_name', $post->post_author) . ' ' . get_the_author_meta('last_name', $post->post_author);
-      } else {
-        $author = get_the_author_meta('display_name', $post->post_author);
-      }
-    }
-
-    $categories = get_the_category(get_the_ID());
-    $CategoryCD = '';
-    if ($categories) :
-      foreach ($categories as $category) :
-        $CategoryCD .= $category->slug . ' ';
-      endforeach; // For Each Category
-    endif; // If there are categories for the post
-
-    $tags = get_the_tags(get_the_ID());
-    $TagsCD = '';
-    if ($tags) :
-      foreach ($tags as $tag) :
-        $TagsCD .= $tag->slug . ' ';
-      endforeach; // For Each Tag
-    endif; // If there are tags for the post
-  ?>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        'AuthorCD': '<?php echo $author; ?>',
-        'CategoryCD': '<?php echo $CategoryCD; ?>',
-        'TagsCD': '<?php echo $TagsCD; ?>',
-        'PubdateCD': '<?php echo get_the_time('M d, Y', get_the_ID()); ?>'
-      });
-    </script>
-
-    <?php
     if (get_field('page_background_colour')) : ?>
       <style>
         body {
           background-color: <?php echo get_field('page_background_colour'); ?> !important;
         }
       </style>
-    <?php endif; ?>
-  <?php endif; // If it's a Single Post 
+  <?php endif;
+  endif; // If it's a Single Post 
   ?>
-
-  <!-- Google Tag Manager -->
-  <script>
-    (function(w, d, s, l, i) {
-      w[l] = w[l] || [];
-      w[l].push({
-        'gtm.start': new Date().getTime(),
-        event: 'gtm.js'
-      });
-      var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s),
-        dl = l != 'dataLayer' ? '&l=' + l : '';
-      j.async = true;
-      j.src =
-        'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-      f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-522F5WH');
-  </script>
-  <!-- End Google Tag Manager -->
 
   <?php wp_head(); ?>
 

@@ -11,6 +11,9 @@ plugins/*
 plugins/ssm-ga/*
 !plugins/ssm-ga/ssm-ga.php
 
+!plugins/tbm-braze
+!plugins/tbm-gtm
+
 # ignore specific themes
 themes/twenty*/
 
