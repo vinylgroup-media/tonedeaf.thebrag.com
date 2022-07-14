@@ -13,6 +13,7 @@ plugins/ssm-ga/*
 
 !plugins/tbm-braze
 !plugins/tbm-gtm
+!plugins/tbm-floating-player
 
 # ignore specific themes
 themes/twenty*/
