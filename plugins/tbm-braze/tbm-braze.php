@@ -40,7 +40,7 @@ class Braze
 
     $this->safariWebsitePushId = '';
 
-    $this->canvasIdWebPush = $this->is_sandbox ? '2a188686-2922-402c-83c0-6c98fb0ca2ef' : '';
+    $this->canvasIdWebPush = $this->is_sandbox ? '' : '';
 
     $this->enablePush = false;
 
