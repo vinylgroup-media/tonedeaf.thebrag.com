@@ -15,6 +15,8 @@ plugins/ssm-ga/*
 !plugins/tbm-gtm
 !plugins/tbm-floating-player
 
+uploads
+
 # ignore specific themes
 themes/twenty*/
 
