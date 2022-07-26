@@ -38,7 +38,7 @@ class Braze
 
     $this->api_url = 'https://rest.iad-05.braze.com';
 
-    $this->safariWebsitePushId = 'web.com.themusicnetwork';
+    $this->safariWebsitePushId = '';
 
     $this->canvasIdWebPush = $this->is_sandbox ? '2a188686-2922-402c-83c0-6c98fb0ca2ef' : '';
 
@@ -152,7 +152,7 @@ class Braze
           baseUrl: "sdk.iad-05.braze.com",
           inAppMessageZIndex: 12000,
           allowUserSuppliedJavascript: true,
-          safariWebsitePushId: '<?php echo $this->safariWebsitePushId; ?>',
+          <?php echo $this->safariWebsitePushId ? "safariWebsitePushId: '{$this->safariWebsitePushId}'," : ''; ?>
           <?php echo $this->is_sandbox || current_user_can('administrator') ? 'minimumIntervalBetweenTriggerActionsInSeconds: 2,' : ''; ?>
           <?php echo $this->is_sandbox || current_user_can('administrator') ? 'enableLogging: true,' : ''; ?>
         });
