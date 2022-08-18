@@ -40,7 +40,7 @@ class Braze
 
     $this->safariWebsitePushId = 'web.com.thebrag.tonedeaf';
 
-    $this->canvasIdWebPush = $this->is_sandbox ? '' : 'a6339670-e28d-4597-b2a9-e66123faf4e7';
+    $this->canvasIdWebPush = $this->is_sandbox ? '7232b6ff-087f-426d-a7ec-9450e57047a7' : 'a6339670-e28d-4597-b2a9-e66123faf4e7';
 
     $this->enablePush = true;
 
