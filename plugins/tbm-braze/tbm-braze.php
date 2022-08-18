@@ -42,7 +42,7 @@ class Braze
 
     $this->canvasIdWebPush = $this->is_sandbox ? '' : 'a6339670-e28d-4597-b2a9-e66123faf4e7';
 
-    $this->enablePush = false;
+    $this->enablePush = true;
 
     add_action('wp_footer', [$this, 'wp_footer']);
 
