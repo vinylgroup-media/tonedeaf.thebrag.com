@@ -38,9 +38,9 @@ class Braze
 
     $this->api_url = 'https://rest.iad-05.braze.com';
 
-    $this->safariWebsitePushId = '';
+    $this->safariWebsitePushId = 'web.com.thebrag.tonedeaf';
 
-    $this->canvasIdWebPush = $this->is_sandbox ? '' : '';
+    $this->canvasIdWebPush = $this->is_sandbox ? '' : 'a6339670-e28d-4597-b2a9-e66123faf4e7';
 
     $this->enablePush = false;
 
@@ -167,7 +167,7 @@ class Braze
         });
 
         <?php if ($this->enablePush) : ?>
-          braze.logCustomEvent("prime-for-push-tmn");
+          braze.logCustomEvent("prime-for-push-td");
 
           window.braze.subscribeToInAppMessage(function(inAppMessage) {
             var shouldDisplay = true;
@@ -177,7 +177,7 @@ class Braze
               var msgId = inAppMessage.extras["msg-id"];
 
               // If this is our push primer message
-              if (msgId == "push-primer-tmn") {
+              if (msgId == "push-primer-td") {
                 // We don't want to display the soft push prompt to users on browsers that don't support push, or if the user has already granted/blocked permission
                 if (
                   !window.braze.isPushSupported() ||
