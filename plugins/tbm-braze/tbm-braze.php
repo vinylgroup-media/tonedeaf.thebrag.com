@@ -49,7 +49,7 @@ class Braze
     add_action('wp_ajax_get_user_external_id', [$this, 'get_user_external_id']);
     add_action('wp_ajax_nopriv_get_user_external_id', [$this, 'get_user_external_id']);
 
-    // add_action('publish_post', [$this, 'publish_post'], 10, 3);
+    add_action('publish_post', [$this, 'publish_post'], 10, 3);
   }
 
   function publish_post($post_id, $post, $old_status)
