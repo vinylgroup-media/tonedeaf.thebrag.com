@@ -65,7 +65,7 @@ function tbm_theme_options()
     <h1>Theme Options - Main site</h1>
     <form method="post" class="form">
         <div class="row">
-            <!-- <div class="col-md-6">
+            <div class="col-md-6">
                 <div class="row">
                     <div class="col-12">
                         <h3>Video of the week</h3>
@@ -95,7 +95,7 @@ function tbm_theme_options()
                         </div>
                     </div>
                 </div>
-            </div> -->
+            </div>
 
             <!-- <div class="col-md-6">
                 <div class="row">
