@@ -2115,12 +2115,12 @@ function brands()
             'width' => 80,
             'ext' => 'png',
         ],
-        <!-- 'dbu' => [
+        /* 'dbu' => [
             'title' => 'Don\'t Bore Us',
             'link' => 'https://dontboreus.thebrag.com/',
             'logo_name' => 'Dont-Bore-Us',
             'ext' => 'svg',
-        ], -->
+        ], */
         /* 'tio' => [
             'title' => 'The Industry Observer',
             'link' => 'https://theindustryobserver.thebrag.com/',
