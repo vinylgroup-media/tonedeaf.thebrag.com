@@ -39,6 +39,12 @@ class FloatingPlayer
     $this->playerTitle = "Editor's Picks";
 
     add_action('wp_footer', [$this, 'wp_footer']);
+
+    $this->showAds = true;
+
+    if (function_exists('get_field') && (get_field('disable_ads') || get_field('disable_ads_in_content'))) :
+			$this->showAds = false;
+		endif;
   }
 
   public function wp_footer()
@@ -158,11 +164,13 @@ class FloatingPlayer
         dailymotion
           .createPlayer("floating-player", {
             playlist: "<?php echo $this->playlistId; ?>",
+            <?php if($this->showAds) { ?>
             params: {
               customConfig: {
                 customParams: '/22071836792/SSM_tonedeafbrag/preroll'
               }
             }
+            <?php } ?>
           })
           .then((player) => {
             $('#floating-player-wrap').show();
