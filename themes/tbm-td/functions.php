@@ -1733,7 +1733,7 @@ function inject_nielsen()
 {
     $assetId = $_SERVER['REQUEST_URI'];
 
-    $html = '<script type="text/JavaScript">  
+    $html = '<script type="text/JavaScript">
 !function(t,n){t[n]=t[n]||
 {
 nlsQ:function(e,o,c,r,s,i)
