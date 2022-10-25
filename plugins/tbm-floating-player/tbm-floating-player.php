@@ -42,7 +42,7 @@ class FloatingPlayer
 
     $this->showAds = true;
 
-    if (function_exists('get_field') && (get_field('disable_ads') || get_field('disable_ads_in_content'))) :
+    if (function_exists('get_field') && (get_field('paid_content', $post->id) || get_field('disable_ads_in_content'))) :
 			$this->showAds = false;
 		endif;
   }
