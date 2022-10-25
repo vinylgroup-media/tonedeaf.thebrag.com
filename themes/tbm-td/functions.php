@@ -1966,7 +1966,7 @@ function tbm_set_cookie($data)
 function render_ad_tag($tag, $slot_no = 1)
 {
     global $post;
-    if (function_exists('get_field') && get_field('paid_content', $post->ID)) {
+    if (function_exists('get_field') && get_field('paid_content', $post->ID))
         return;
     if (!file_exists(WP_PLUGIN_DIR . '/tbm-adm/tbm-adm.php'))
         return;
@@ -2437,49 +2437,3 @@ add_action('init', function () {
     add_rewrite_rule('^([^/]*)/list/([^/]*)/?', 'index.php?name=$matches[1]', 'top');
 }, 10, 0);
 
-/*
-* Add Post attachment (old TD theme had for few articles)
-*/
-add_filter('the_content', function ($content) {
-    global $post;
-    if (!in_array($post->ID, [476242, 465843, 345238]))
-        return $content;
-    $args = array(
-        'post_type' => 'attachment',
-        'post_status' => array('publish', 'draft', 'inherit'),
-        'numberposts' => 10000,
-        'offset' => 1,
-        'post_parent' => $post->ID,
-        'orderby' => 'menu_order',
-        'order' => 'asc',
-    );
-    $attachments2 = get_posts($args);
-
-    $content_attchments = '';
-    if ($attachments2) {
-        foreach ($attachments2 as $attachment) {
-            ob_start();
-            $caption = $attachment->post_excerpt;
-    ?>
-            <div class="mt-5">
-                <div>
-                    <p><?php echo wpautop($attachment->post_content); ?></p>
-                </div>
-                <div>
-                    <?php
-                    if (!empty($caption)) {
-                        // echo wpautop($caption);
-                    }
-                    ?>
-                </div>
-            </div>
-<?php
-            $content_attchments .= ob_get_contents();
-            ob_end_clean();
-        }
-    }
-
-    $content .= $content_attchments;
-
-    return $content;
-});
