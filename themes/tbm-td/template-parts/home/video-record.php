@@ -40,7 +40,7 @@
                                 if ($meta->getAttribute('property') == 'og:image') {
                                     $featured_video_img = $meta->getAttribute('content');
                                     $featured_video_img = str_ireplace('/img-socl/?url=', '', substr($featured_video_img, strpos($featured_video_img, '/img-socl/?url=')));
-                                    $featured_video_img = str_ireplace('&nologo=1', '', featured_video_img);
+                                    $featured_video_img = str_ireplace('&nologo=1', '', $featured_video_img);
                                     break;
                                 }
                             }
