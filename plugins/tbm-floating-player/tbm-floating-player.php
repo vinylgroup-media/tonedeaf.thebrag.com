@@ -19,6 +19,8 @@ class FloatingPlayer
 
   public function __construct()
   {
+    global $post;
+
     $this->playerId = 'x9m1x';
 
     $this->playlistId = 'x6mqi7';
