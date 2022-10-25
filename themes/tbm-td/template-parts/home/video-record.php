@@ -39,11 +39,11 @@
                             foreach ($tbm_featured_video_link_html_dom->getElementsByTagName('meta') as $meta) {
                                 if ($meta->getAttribute('property') == 'og:image') {
                                     $featured_video_img = $meta->getAttribute('content');
+                                    $featured_video_img = str_ireplace('/img-socl/?url=', '', substr($featured_video_img, strpos($featured_video_img, '/img-socl/?url=')));
+                                    $featured_video_img = str_ireplace('&nologo=1', '', featured_video_img);
                                     break;
                                 }
                             }
-                            $featured_video_img = str_ireplace('/img-socl/?url=', '', substr($featured_video_img, strpos($featured_video_img, '/img-socl/?url=')));
-                            $featured_video_img = str_ireplace('&nologo=1', '', featured_video_img);
                         ?>
                             <a class="p-r d-block overflow-hidden player-wrap" href="<?php echo $tbm_featured_video_link; ?>" target="_blank" rel="noreferrer">
                             <?php else : // $tbm_featured_video_link is not set, so display video   
