@@ -42,9 +42,9 @@ class FloatingPlayer
 
     $this->showAds = true;
 
-    // if (function_exists('get_field') && (get_field('paid_content', $post->id) || get_field('disable_ads_in_content'))) :
-		// 	$this->showAds = false;
-		// endif;
+    if (function_exists('get_field') && (get_field('paid_content', $post->id) || get_field('disable_ads_in_content'))) :
+			$this->showAds = false;
+		endif;
   }
 
   public function wp_footer()
