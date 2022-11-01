@@ -78,7 +78,7 @@
             </div>
 
             <?php
-            $rotw_response = wp_remote_get('https://dontboreus.thebrag.com/wp-json/tbm_dbu/v1/rotw?v=' . time());
+            $rotw_response = $votw_response = wp_remote_get('https://thebrag.com/wp-json/tbm/rotw');
             if (is_array($rotw_response) && !is_wp_error($rotw_response)) {
                 $rotw = json_decode($rotw_response['body']);
             ?>
@@ -87,12 +87,12 @@
                     <a href="<?php echo $rotw->link; ?>" target="_blank" class="p-r d-block overflow-hidden player-wrap rounded" style="background-image: url(<?php echo $rotw->image; ?>);" rel="noreferrer">
                         <?php echo esc_html(stripslashes($rotw->artist)); ?>
                         -
-                        <?php echo esc_html(stripslashes($rotw->name)); ?>
+                        <?php echo esc_html(stripslashes($rotw->title)); ?>
                     </a>
                     <h4 class="mt-0 mt-md-3 text-center">
                         <?php echo esc_html(stripslashes($rotw->artist)); ?>
                         -
-                        <em><?php echo esc_html(stripslashes($rotw->name)); ?></em>
+                        <em><?php echo esc_html(stripslashes($rotw->title)); ?></em>
                     </h4>
                 </div>
             <?php } ?>
