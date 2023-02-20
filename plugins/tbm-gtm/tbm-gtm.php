@@ -61,6 +61,14 @@ class GTM
           $TagsCD .= $tag->slug . ' ';
         endforeach; // For Each Tag
       endif; // If there are tags for the post
+
+      $genres = get_the_terms(get_the_ID(), 'genre');
+      $GenreCD = '';
+      if ($genres) :
+          foreach ($genres as $genre) :
+              $GenreCD .= $genre->slug . ' ';
+          endforeach; // For Each Genre
+      endif; // If there are genres for the post
 ?>
       <script>
         window.dataLayer = window.dataLayer || [];
@@ -68,7 +76,8 @@ class GTM
           'AuthorCD': '<?php echo $author; ?>',
           'CategoryCD': '<?php echo $CategoryCD; ?>',
           'TagsCD': '<?php echo $TagsCD; ?>',
-          'PubdateCD': '<?php echo get_the_time('M d, Y', get_the_ID()); ?>'
+          'PubdateCD': '<?php echo get_the_time('M d, Y', get_the_ID()); ?>',
+          'GenreCD': '<?php echo $GenreCD; ?>',
         });
       </script>
 

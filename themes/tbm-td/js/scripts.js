@@ -445,12 +445,14 @@ jQuery(document).ready(function ($) {
             .last()
             .find("time")
             .data("pubdate");
+          var genre = $(visible_news_story).last().find(".cats").data("genre");
           window.dataLayer = window.dataLayer || [];
           window.dataLayer.push({
             AuthorCD: author,
             CategoryCD: cats,
             TagsCD: tags,
             PubdateCD: pubdate,
+            genreCD: genre,
           });
 
           document.title = page_title;
