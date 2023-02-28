@@ -2363,6 +2363,20 @@ function inject_roymorgan()
     <?php
 }
 
+add_action('wp_footer', 'inject_ga4', 99, 2);
+function inject_ga4()
+{
+?>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L8V4HEDPRH"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-L8V4HEDPRH');
+    </script>
+    <?php
+}
+
 
 /*
  * Show admin bar only for admins and editors
