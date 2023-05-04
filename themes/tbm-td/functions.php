@@ -1937,7 +1937,8 @@ function tbm_rpc_post_types($post_types)
     // Add a key to the $post_types array for each post type and list the slugs of the taxonomies you wish to require
 
     // Simplest usage
-    $post_types['post'] = array('category', 'post_tag', 'genre');
+    // $post_types['post'] = array('category', 'post_tag', 'genre');
+    $post_types['post'] = array('category', 'post_tag');
 
     // Always return $post_types after your modifications
     return $post_types;
