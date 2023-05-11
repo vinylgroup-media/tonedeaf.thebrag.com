@@ -1797,11 +1797,11 @@ function tbm_send_smtp_email($phpmailer)
  */
 function tbm_ajax_load_next_post()
 {
-    if (is_page_template('single-template-featured.php')) :
+    global $post;
+
+    if ('single-template-featured.php' == get_page_template_slug($post->ID)) :
         wp_die();
     endif;
-
-    global $post;
 
     $count_articles = isset($_POST['count_articles']) ? absint($_POST['count_articles']) : 1;
 
