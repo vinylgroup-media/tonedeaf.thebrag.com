@@ -1797,11 +1797,15 @@ function tbm_send_smtp_email($phpmailer)
  */
 function tbm_ajax_load_next_post()
 {
+    if (is_page_template('single-template-featured.php')) :
+        wp_die();
+    endif;
+
     global $post;
 
     $count_articles = isset($_POST['count_articles']) ? absint($_POST['count_articles']) : 1;
 
-    if ((get_field('paid_content', $_POST['id']) || is_page_template('single-featured.php')) && 2 == $count_articles) :
+    if (get_field('paid_content', $_POST['id']) && 2 == $count_articles) :
         wp_die();
     endif;
 
