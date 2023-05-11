@@ -342,11 +342,7 @@ jQuery(document).ready(function ($) {
         );
       }
 
-      if ($("#articles-wrap").length && count_articles < 4) {
-        if($('.featured', "#articles-wrap")) {
-          return
-        }
-
+      if ($("#articles-wrap").length && $('.featured', "#articles-wrap").length === 0 && count_articles < 4) {
         if (!loading && scrollHandling.allow) {
           scrollHandling.allow = false;
           setTimeout(scrollHandling.reallow, scrollHandling.delay);
