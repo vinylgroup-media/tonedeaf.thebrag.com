@@ -1801,7 +1801,7 @@ function tbm_ajax_load_next_post()
 
     $count_articles = isset($_POST['count_articles']) ? absint($_POST['count_articles']) : 1;
 
-    if (get_field('paid_content', $_POST['id']) && 2 == $count_articles) :
+    if ((get_field('paid_content', $_POST['id']) || is_page_template('single-featured.php')) && 2 == $count_articles) :
         wp_die();
     endif;
 
