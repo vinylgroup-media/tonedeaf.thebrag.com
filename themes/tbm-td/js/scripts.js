@@ -448,6 +448,7 @@ jQuery(document).ready(function ($) {
           var genre = $(visible_news_story).last().find(".cats").data("genre");
           window.dataLayer = window.dataLayer || [];
           window.dataLayer.push({
+            event: 'articleView',
             AuthorCD: author,
             CategoryCD: cats,
             TagsCD: tags,
