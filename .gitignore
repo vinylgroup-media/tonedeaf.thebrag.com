@@ -1,5 +1,9 @@
 .DS_Store
 
+languages
+upgrade
+wflogs
+
 plugins/*
 !plugins/tbm-shout-writer-beer
 !plugins/tbm-adm
