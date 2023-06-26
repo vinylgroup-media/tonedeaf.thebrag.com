@@ -136,6 +136,7 @@ register_taxonomy(
         'labels' => array('name' => 'Genre', 'singular_name' => 'Genre'),
         'query_var' => true,
         'rewrite' => array('slug' => 'genre'),
+        'capabilities' => array('manage_terms' => 'edit_posts', 'edit_terms' => 'edit_posts', 'delete_terms' => 'edit_posts', 'assign_terms' => 'edit_posts', 'assign_terms' => 'edit_posts'), 'show_ui' => true,
         'public' => true
     )
 );
