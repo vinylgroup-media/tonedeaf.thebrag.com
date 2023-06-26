@@ -136,7 +136,6 @@ register_taxonomy(
         'labels' => array('name' => 'Genre', 'singular_name' => 'Genre'),
         'query_var' => true,
         'rewrite' => array('slug' => 'genre'),
-        'capabilities' => array('manage_terms' => 'manage_categories', 'edit_terms' => 'manage_categories', 'delete_terms' => 'manage_categories', 'assign_terms' => 'edit_posts', 'assign_terms' => 'edit_post'), 'show_ui' => true,
         'public' => true
     )
 );
@@ -1407,6 +1406,9 @@ add_action('init', 'ssm_referrer_check');
 function ssm_referrer_check()
 {
     $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : NULL;
+
+    if(!$referer) return;
+
     if (
         strpos($referer, 'redirect.') != false || strpos($referer, 'filter.') != false ||
         strpos($referer, 'catchthesun') != false || strpos($referer, 'myfitnesspal') != false
