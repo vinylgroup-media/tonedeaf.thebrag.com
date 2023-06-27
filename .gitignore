@@ -10,6 +10,7 @@ plugins/*
 !plugins/brag-observer
 !plugins/theme-options
 !plugins/tbm-media-helper
+!plugins/tbm-nz-content
 
 !plugins/ssm-ga
 plugins/ssm-ga/*
