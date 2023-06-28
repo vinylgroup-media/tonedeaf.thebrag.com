@@ -37,7 +37,7 @@ if ( ! class_exists( 'TBM_NZ_CONTENT' ) ) {
         public function articles_nz_json_func( $data ) {
             $return = array();
 
-            $posts_per_page = isset( $_GET['size'] ) ? (int) $_GET['size'] : 10;
+            $posts_per_page = isset( $_GET['size'] ) ? (int) $_GET['size'] : 11;
             $paged = isset( $_GET['page'] ) ? (int) $_GET['page'] : 1;
             $offset = isset( $_GET['offset'] ) ? (int) $_GET['offset'] : 0;
 
@@ -48,6 +48,7 @@ if ( ! class_exists( 'TBM_NZ_CONTENT' ) ) {
                 'has_password'   => FALSE,
                 'post_type' => ['pmc-nz', 'post'],
                 'paged' => $paged,
+                'posts_per_page' => $posts_per_page,
                 'meta_query' => [
                     [
                         'key'   => 'add_to_nz_content',
