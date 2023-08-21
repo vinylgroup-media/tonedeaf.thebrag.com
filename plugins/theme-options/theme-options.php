@@ -27,6 +27,61 @@ function tbm_theme_options_rest_api_init()
         'callback' => 'rest_get_latest',
         'permission_callback' => '__return_true',
     ));
+
+    register_rest_route('tbm', '/most-read', array(
+        'methods' => 'GET',
+        'callback' => 'rest_get_most_read',
+        'permission_callback' => '__return_true',
+    ));
+
+}
+
+function rest_get_most_read()
+{
+    $articles_arr = array();
+    $trending_story_args = [
+        'post_status' => 'publish',
+        'posts_per_page' => 1,
+    ];
+    if (get_option('most_viewed_yesterday')) {
+        $trending_story_args['p'] = get_option('most_viewed_yesterday');
+    }
+    $trending_story_query = new WP_Query($trending_story_args);
+    if ($trending_story_query->have_posts()) :
+        while ($trending_story_query->have_posts()) :
+            $trending_story_query->the_post();
+            $trending_story_ID = get_the_ID();
+            $exclude_posts[] = $trending_story_ID;
+            $args['exclude_posts'][] = $trending_story_ID;
+        endwhile;
+        wp_reset_query();
+    endif;
+
+    if (!is_null($trending_story_ID) && $trending_story_ID != '') :
+        $trending_story = get_post($trending_story_ID);
+        if ($trending_story) :
+            $categories = get_the_category($trending_story);
+
+            $trending_story_image_id = get_post_thumbnail_id($trending_story->ID);
+            $trending_story_src = wp_get_attachment_image_src($trending_story_image_id, 'large');
+            $trending_story_alt_text = get_post_meta(get_post_thumbnail_id($trending_story->ID), '_wp_attachment_image_alt', true);
+            if ($trending_story_alt_text == '') {
+                $trending_story_alt_text = trim(strip_tags(get_the_title()));
+            }
+
+            $articles_arr[] = [
+                'image' => $trending_story_src[0],
+                'title' => $trending_story->post_title,
+                'category' => $categories[0]->name,
+                'brand_logo' => 'https://images.thebrag.com/common/brands/The-Brag_combo-light.svg',
+                'brank_link' => 'https://thebrag.com',
+                'excerpt' =>  $trending_story->trending_story_alt_text,
+                'link' => get_the_permalink(),
+            ];            
+        endif; // If Trending Story
+    endif;
+
+    return $articles_arr;
 }
 
 function rest_get_latest()
