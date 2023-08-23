@@ -178,7 +178,7 @@ function rest_get_latest()
                 'image' => $image,
                 'title' => get_the_title(),
                 'category' => $category,
-                'brand_logo' => 'https://images.thebrag.com/common/brands/Tone-Deaf-light.svg',
+                'brand_logo' => 'https://images.thebrag.com/common/brands/tonedeaf.png',
                 'brand_link' => 'https://tonedeaf.thebrag.com',
                 'excerpt' => $excerpt,
                 'link' => get_the_permalink(),
