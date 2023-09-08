@@ -69,13 +69,15 @@ function rest_get_most_read()
                 $trending_story_alt_text = trim(strip_tags(get_the_title()));
             }
 
+            $excerpt = tbm_the_excerpt( $trending_story->trending_story_alt_text );
+
             $articles_arr[] = [
                 'image' => $trending_story_src[0],
                 'title' => $trending_story->post_title,
                 'category' => $categories[0]->name,
                 'brand_logo' => 'https://images.thebrag.com/common/brands/Tone-Deaf-light.svg',
                 'brand_link' => 'https://tonedeaf.thebrag.com',
-                'excerpt' =>  $trending_story->trending_story_alt_text,
+                'excerpt' =>  $excerpt,
                 'link' => get_the_permalink(),
             ];            
         endif; // If Trending Story
@@ -172,7 +174,7 @@ function rest_get_latest()
 
             $image = '' !== get_the_post_thumbnail() ? get_the_post_thumbnail_url() : '';
             $metadesc = get_post_meta(get_the_ID(), '_yoast_wpseo_metadesc', true);
-            $excerpt = trim($metadesc) != '' ? $metadesc : get_the_excerpt();
+            $excerpt = tbm_the_excerpt( $metadesc );
 
             $articles_arr['articles'][] = [
                 'image' => $image,
