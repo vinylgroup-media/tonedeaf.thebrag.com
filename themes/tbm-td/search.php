@@ -21,7 +21,14 @@
         $args = array(
             's' => $s,
             'paged' => $paged,
-            'post_type' => ['post', 'photo_gallery']
+            'post_type' => ['post', 'photo_gallery'],
+            'meta_query' => array(
+                array(
+                    'key' => 'not_brand_safe',
+                    'value' => 0,
+                    'compare' => 'LIKE',
+                )
+            )
         );
 
         // The Query
