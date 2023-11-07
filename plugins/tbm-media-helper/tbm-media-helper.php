@@ -34,7 +34,7 @@ class MediaHelper
         $this->social_img_height = 628;
         $this->logo_height = 150;
         $this->allowed_hosts = [
-            'images.thebrag.com',
+            'images-r2.thebrag.com',
             'au.rollingstone.com',
 
             'theindustryobserver.thebrag.com',
@@ -119,7 +119,7 @@ class MediaHelper
         $type = exif_imagetype($url);
 
         if ($type == (IMAGETYPE_PNG || IMAGETYPE_JPEG)) {
-            $logo_url = "https://images.thebrag.com/common/brands/{$this->logo_file_name}.png";
+            $logo_url = "https://images-r2.thebrag.com/common/brands/{$this->logo_file_name}.png";
 
             $x = $this->social_img_width;
             $y = $this->social_img_height;
