@@ -91,16 +91,11 @@ class MediaHelper
 
     public function wpseo_opengraph_image($url)
     {
-        if (!is_single())
+        if (!is_single()) {
             return $url;
-
-        $type = exif_imagetype($url);
-
-        if ($type != false && ($type == (IMAGETYPE_PNG || IMAGETYPE_JPEG))) {
-            return home_url("/img-socl/?url={$url}&nologo=1");
         }
 
-        return $url;
+        return "https://images.thebrag.com/cdn-cgi/image/fit=crop,width=1200,height=628/$url";
     }
 
     private function generate_image($url)

@@ -34,18 +34,10 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@tonedeaf">
     <meta name="twitter:title" content="<?php the_title(); ?>">
-    <meta name="twitter:image" content="<?php
+    <meta property="og:image" content="<?php $src = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'full');
                                         if (has_post_thumbnail()) {
-                                          $src = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'full');
-                                          $type = exif_imagetype($src[0]);
-
-                                          if ($type != false && ($type == (IMAGETYPE_PNG || IMAGETYPE_JPEG))) {
-                                            echo home_url("/img-socl/?url={$src[0]}&nologo=1");
-                                          } else {
-                                            echo $src[0];
-                                          }
-                                        }
-                                        ?>">
+                                          echo $src[0];
+                                        } ?>" />
 
     <link rel="preconnect" href="<?php echo $src[0]; ?>">
 
