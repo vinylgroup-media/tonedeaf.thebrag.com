@@ -36,7 +36,7 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
     <meta name="twitter:title" content="<?php the_title(); ?>">
     <meta property="og:image" content="<?php $src = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'full');
                                         if (has_post_thumbnail()) {
-                                          echo $src[0];
+                                          echo "https://images.thebrag.com/cdn-cgi/image/fit=crop,width=1200,height=628/$src[0]";
                                         } ?>" />
 
     <link rel="preconnect" href="<?php echo $src[0]; ?>">
