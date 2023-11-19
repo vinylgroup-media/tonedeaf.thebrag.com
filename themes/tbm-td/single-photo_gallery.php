@@ -1,8 +1,8 @@
 <?php get_header(); ?>
 
 <?php
-wp_enqueue_script('pswipe', get_template_directory_uri() . '/ps/photoswipe.min.js', array('jquery'), NULL, true);
-wp_enqueue_script('pswipe-d', get_template_directory_uri() . '/ps/photoswipe-ui-default.min.js', array('jquery'), NULL, true);
+wp_enqueue_script('pswipe', get_template_directory_uri() . '/ps/photoswipe.min.js', array('jquery'), '', true);
+wp_enqueue_script('pswipe-d', get_template_directory_uri() . '/ps/photoswipe-ui-default.min.js', array('jquery'), '', true);
 wp_enqueue_style('pswipe-css', get_template_directory_uri() . '/ps/photoswipe.css');
 wp_enqueue_style('pswipe-d-css', get_template_directory_uri() . '/ps/default-skin/default-skin.css');
 wp_enqueue_script('gallery', get_template_directory_uri() . '/js/gallery.js', array('jquery'), '1.3', true);
