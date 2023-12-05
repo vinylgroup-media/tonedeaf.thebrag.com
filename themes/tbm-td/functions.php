@@ -1783,14 +1783,24 @@ add_action('phpmailer_init', 'tbm_send_smtp_email');
 function tbm_send_smtp_email($phpmailer)
 {
     $phpmailer->isSMTP();
-    $phpmailer->Host       = 'smtp.gmail.com';
-    $phpmailer->SMTPAuth   = true;
-    $phpmailer->Port       = 587;
-    $phpmailer->Username   = 'noreply@thebrag.media';
-    $phpmailer->Password   = '<%QA5hXy1';
-    $phpmailer->SMTPSecure = 'tls';
-    $phpmailer->From       = 'noreply@thebrag.media';
-    $phpmailer->FromName   = 'Tone Deaf';
+    // $phpmailer->Host       = 'smtp.gmail.com';
+    // $phpmailer->SMTPAuth   = true;
+    // $phpmailer->Port       = 587;
+    // $phpmailer->Username   = 'noreply@thebrag.media';
+    // $phpmailer->Password   = '<%QA5hXy1';
+    // $phpmailer->SMTPSecure = 'tls';
+    // $phpmailer->From       = 'noreply@thebrag.media';
+    // $phpmailer->FromName   = 'Tone Deaf';
+
+		$phpmailer->isSMTP();
+		$phpmailer->Host       = 'smtp.sparkpostmail.com';
+		$phpmailer->SMTPAuth   = true;
+		$phpmailer->Port       = 587;
+		$phpmailer->Username   = 'SMTP_Injection';
+		$phpmailer->Password   = '01211dd8bc574e89c2553dfb004fddbd5dafed6b';
+		$phpmailer->SMTPSecure = 'tls';
+		$phpmailer->From       = 'noreply@mail.thebrag.media';
+		$phpmailer->FromName   = 'Tone Dea';
 
     $phpmailer->IsSMTP();
 }
