@@ -1782,7 +1782,7 @@ function tbm_mail_from_name($from_name)
 add_action('phpmailer_init', 'tbm_send_smtp_email');
 function tbm_send_smtp_email($phpmailer)
 {
-    $phpmailer->isSMTP();
+    // $phpmailer->isSMTP();
     // $phpmailer->Host       = 'smtp.gmail.com';
     // $phpmailer->SMTPAuth   = true;
     // $phpmailer->Port       = 587;
@@ -1800,7 +1800,7 @@ function tbm_send_smtp_email($phpmailer)
 		$phpmailer->Password   = '01211dd8bc574e89c2553dfb004fddbd5dafed6b';
 		$phpmailer->SMTPSecure = 'tls';
 		$phpmailer->From       = 'noreply@mail.thebrag.media';
-		$phpmailer->FromName   = 'Tone Dea';
+		$phpmailer->FromName   = 'Tone Deaf';
 
     $phpmailer->IsSMTP();
 }
