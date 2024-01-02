@@ -36,36 +36,49 @@ $the_post_id = get_the_ID();
 <div id="articles-wrap-gallery" class="container">
     <?php
     $photos = new Attachments('photo_gallery_attachments');
-    if (have_posts()) : while (have_posts()) : the_post(); ?>
+    if (have_posts()):
+        while (have_posts()):
+            the_post(); ?>
             <article class="single-article single-article-1 p-3 pb-1" id="<?php the_ID(); ?>">
 
                 <?php
                 $genres = get_the_terms($the_post_id, 'genre');
                 $GenreCD = '';
-                if ($genres) :
-                    foreach ($genres as $genre) :
+                if ($genres):
+                    foreach ($genres as $genre):
                         $GenreCD .= $genre->slug . ' ';
                     endforeach; // For Each Genre
                 endif; // If there are genres for the post
+                $CategoryCD = isset($CategoryCD) ? $CategoryCD : '';
+                $TagsCD = isset($TagsCD) ? $TagsCD : '';
                 ?>
-                <div class="cats mb-3 text-center" data-category="<?php echo $CategoryCD; ?>" data-tags="<?php echo $TagsCD; ?>" data-genre="<?php echo $GenreCD; ?>">
+                <div class="cats mb-3 text-center" data-category="<?php echo $CategoryCD; ?>" data-tags="<?php echo $TagsCD; ?>"
+                    data-genre="<?php echo $GenreCD; ?>">
                     <?php
-                    if ($genres) :
-                        foreach ($genres as $genre) :
-                    ?>
-                            <a class="text-uppercase cat mx-1" href="<?php echo get_term_link($genre->term_id); ?>" style="color: #79746b; font-size: 90%;"><?php echo $genre->name; ?></a>
-                        <?php
+                    if ($genres):
+                        foreach ($genres as $genre):
+                            ?>
+                            <a class="text-uppercase cat mx-1" href="<?php echo get_term_link($genre->term_id); ?>"
+                                style="color: #79746b; font-size: 90%;">
+                                <?php echo $genre->name; ?>
+                            </a>
+                            <?php
                         endforeach; // For Each Category
                     endif; // If there are categories for the post 
-
+            
                     if (isset($is_oped) && $is_oped) {
                         ?>
-                        <a class="text-uppercase cat mx-1" href="<?php echo get_category_link($oped_termid); ?>" style="color: #79746b; font-size: 90%;">Op-Ed/Comment</a>
-                    <?php
+                        <a class="text-uppercase cat mx-1" href="<?php echo get_category_link($oped_termid); ?>"
+                            style="color: #79746b; font-size: 90%;">Op-Ed/Comment</a>
+                        <?php
                     }
                     ?>
                 </div><!-- Cats -->
-                <h1 id="story_title<?php echo $the_post_id; ?>" class="story-title mb-3" data-href="<?php the_permalink(); ?>" data-title="<?php echo htmlentities($title); ?>" data-share-title="<?php echo urlencode($title); ?>" data-share-url="<?php echo urlencode(get_permalink()); ?>"><?php the_title(); ?></h1>
+                <h1 id="story_title<?php echo $the_post_id; ?>" class="story-title mb-3" data-href="<?php the_permalink(); ?>"
+                    data-title="<?php echo htmlentities($title); ?>" data-share-title="<?php echo urlencode($title); ?>"
+                    data-share-url="<?php echo urlencode(get_permalink()); ?>">
+                    <?php the_title(); ?>
+                </h1>
 
                 <p class="text-center excerpt">
                     <?php
@@ -92,9 +105,9 @@ $the_post_id = get_the_ID();
                         <?php $paged = get_query_var('page'); ?>
 
                         <?php
-                        if ($photos->exist()) :
+                        if ($photos->exist()):
                             //                $photo = isset( $_GET['photo'] ) ? $_GET['photo'] : 0;
-                        ?>
+                            ?>
                             <!-- Root element of PhotoSwipe. Must have class pswp. -->
                             <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
@@ -160,12 +173,16 @@ $the_post_id = get_the_ID();
                             </div>
                             <div class="d-flex gallery flex-wrap justify-content-start">
                                 <?php
-                                while ($photo = $photos->get()) :
+                                while ($photo = $photos->get()):
                                     $photo_meta = wp_get_attachment_metadata($photo->id);
                                     $link = get_permalink($photo->id);
-                                ?>
-                                    <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject" class="col-md-3 col-6">
-                                        <a href="<?php echo $link; ?>" itemprop="contentUrl" data-size="<?php echo $photo_meta['width']; ?>x<?php echo $photo_meta['height']; ?>" class="d-block m-1 l-photo" data-title="<?php echo stripslashes($photo->fields->caption); ?>">
+                                    ?>
+                                    <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject"
+                                        class="col-md-3 col-6">
+                                        <a href="<?php echo $link; ?>" itemprop="contentUrl"
+                                            data-size="<?php echo $photo_meta['width']; ?>x<?php echo $photo_meta['height']; ?>"
+                                            class="d-block m-1 l-photo"
+                                            data-title="<?php echo stripslashes($photo->fields->caption); ?>">
                                             <?php echo wp_get_attachment_image($photo->id, 'medium', false, ['data-title' => stripslashes($photo->fields->caption)]); ?>
                                         </a>
                                         <figcaption>
@@ -175,7 +192,7 @@ $the_post_id = get_the_ID();
                                 <?php endwhile; ?>
                             </div>
                             <?php
-                        else :
+                        else:
                             $title = get_the_title();
                             $date = get_field('Full Date', '');
                             // $venue = strip_tags(get_the_term_list( $post->ID, 'venue','', ', ', '' ));
@@ -196,13 +213,17 @@ $the_post_id = get_the_ID();
                             );
                             query_posts($attachments2);
 
-                            if (have_posts()) : while (have_posts()) : the_post();
-                            ?>
+                            if (have_posts()):
+                                while (have_posts()):
+                                    the_post();
+                                    ?>
                                     <div>
-                                        <div class="slide_img"><?php echo @wp_get_attachment_image(get_the_ID(), 'cover-story'); ?></div>
+                                        <div class="slide_img">
+                                            <?php echo @wp_get_attachment_image(get_the_ID(), 'cover-story'); ?>
+                                        </div>
                                         <div class="clear"></div>
                                     </div>
-                            <?php
+                                    <?php
                                 endwhile;
                             endif;
                             ?>
@@ -227,7 +248,7 @@ $the_post_id = get_the_ID();
                 </div><!-- /.row -->
             </article>
 
-    <?php
+            <?php
         endwhile;
     endif;
     ?>

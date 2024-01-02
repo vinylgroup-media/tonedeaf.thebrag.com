@@ -30,38 +30,38 @@ class TBMAds
   }
 
   /*
-  * Enqueue JS
-  */
+   * Enqueue JS
+   */
   public function action_wp_enqueue_scripts()
   {
     wp_enqueue_script('adm-fuse', 'https://cdn.fuseplatform.net/publift/tags/2/2376/fuse.js', [], '1');
   }
 
   /*
-  * WP Head
-  */
+   * WP Head
+   */
   public function action_wp_head()
   {
     // if (!is_home() && !is_front_page()) 
     {
-?>
+      ?>
       <script type="text/javascript">
         const fusetag = window.fusetag || (window.fusetag = {
           que: []
         });
 
-        fusetag.que.push(function() {
+        fusetag.que.push(function () {
           googletag.pubads().enableSingleRequest();
           googletag.enableServices();
         });
       </script>
-<?php
+      <?php
     }
   }
 
   /*
-  * Singleton
-  */
+   * Singleton
+   */
   public static function get_instance()
   {
     if (!isset(static::$_instance)) {
@@ -71,14 +71,14 @@ class TBMAds
   }
 
   /*
-  * Get Ad Tag
-  */
+   * Get Ad Tag
+   */
   public function get_ad($ad_location = '', $slot_no = 0, $post_id = null, $device = '', $ad_width = '')
   {
     if ('' == $ad_location)
       return;
 
-    if (is_page_template('page-templates/page-solstice-2021.php') || is_page_template('page-quiz.php')) :
+    if (is_page_template('page-templates/page-solstice-2021.php') || is_page_template('page-quiz.php')):
       return;
     endif;
 
@@ -148,7 +148,7 @@ class TBMAds
 
         $categories = get_the_category($post_id);
         if ($categories) {
-          foreach ($categories as $category_obj) :
+          foreach ($categories as $category_obj):
             $category = $category_obj->slug;
             break;
           endforeach;
@@ -161,11 +161,14 @@ class TBMAds
       }
 
       if (isset($section)) {
-        $fuse_id = $fuse_tags[$section][$ad_location];
+        if (isset($fuse_tags[$section][$ad_location])) {
+          $fuse_id = $fuse_tags[$section][$ad_location];
+        }
+
       } else {
         $fuse_id = $fuse_tags[$ad_location];
       }
-      $html .= '<!--' . $post_id . ' | '  . $section . ' | ' . $ad_location . ' | ' . $slot_no . '-->';
+      $html .= '<!--' . $post_id . ' | ' . $section . ' | ' . $ad_location . ' | ' . $slot_no . '-->';
       $html .= '<div data-fuse="' . $fuse_id . '" class="fuse-ad"></div>';
 
       if ($slot_no > 1) {
@@ -220,87 +223,87 @@ class TBMAds
         ]
       ],
       'article' => [
-        'skin' =>   '22378678033',
-        'leaderboard' =>   '22378619009',
+        'skin' => '22378678033',
+        'leaderboard' => '22378619009',
 
-        'mrec' =>   '22378619012',
-        'rail1' =>   '22378619012',
+        'mrec' => '22378619012',
+        'rail1' => '22378619012',
 
-        'vrec' =>   '22378678030',
-        'rail2' =>   '22378678030',
+        'vrec' => '22378678030',
+        'rail2' => '22378678030',
 
-        'incontent_1' =>   '22378564857',
-        'inbody1' =>   '22378564857',
+        'incontent_1' => '22378564857',
+        'inbody1' => '22378564857',
 
-        'incontent_2' =>   '22378619015',
-        'desktop_sticky' =>   '22378678339',
-        'mob_sticky' =>   '22378566870',
+        'incontent_2' => '22378619015',
+        'desktop_sticky' => '22378678339',
+        'mob_sticky' => '22378566870',
       ],
       'second_article' => [
-        'skin' =>   '22378566867',
-        'leaderboard' =>   '22378564860',
+        'skin' => '22378566867',
+        'leaderboard' => '22378564860',
 
-        'mrec' =>   '22378566873',
-        'rail1' =>   '22378566873',
+        'mrec' => '22378566873',
+        'rail1' => '22378566873',
 
-        'vrec' =>   '22378678342',
-        'rail2' =>   '22378678342',
+        'vrec' => '22378678342',
+        'rail2' => '22378678342',
 
-        'incontent_1' =>   '22378678345',
-        'inbody1' =>   '22378678345',
+        'incontent_1' => '22378678345',
+        'inbody1' => '22378678345',
 
-        'incontent_2' =>   '22378566876',
+        'incontent_2' => '22378566876',
       ],
       'category' => [
-        'skin' =>   '22378678021',
+        'skin' => '22378678021',
 
-        'leaderboard' =>   '22378619003',
+        'leaderboard' => '22378619003',
 
-        'mrec' =>   '22378678018',
-        'rail1' =>   '22378678018',
-        'vrec_1' =>   '22378678018',
+        'mrec' => '22378678018',
+        'rail1' => '22378678018',
+        'vrec_1' => '22378678018',
 
-        'vrec' =>   '22378619006',
-        'rail2' =>   '22378619006',
-        'vrec_2' =>   '22378619006',
+        'vrec' => '22378619006',
+        'rail2' => '22378619006',
+        'vrec_2' => '22378619006',
 
-        'desktop_sticky' =>   '22378678027',
-        'mob_sticky' =>   '22378678336',
+        'desktop_sticky' => '22378678027',
+        'mob_sticky' => '22378678336',
       ],
       'homepage' => [
-        'desktop_sticky' =>   '22378677994',
+        'desktop_sticky' => '22378677994',
 
-        'vrec_1' =>   '22378677997',
-        'rail1' =>   '22378677997',
+        'vrec_1' => '22378677997',
+        'rail1' => '22378677997',
 
-        'vrec_2' =>   '22378678003',
-        'rail2' =>   '22378678003',
+        'vrec_2' => '22378678003',
+        'rail2' => '22378678003',
 
-        'vrec_3' =>   '22378618985',
-        'vrec_4' =>   '22378618991',
-        'vrec_5' =>   '22378678006',
-        'vrec_6' =>   '22378618994',
-        'vrec_7' =>   '22378564851',
+        'vrec_3' => '22378618985',
+        'vrec_4' => '22378618991',
+        'vrec_5' => '22378678006',
+        'vrec_6' => '22378618994',
+        'vrec_7' => '22378564851',
 
-        'header' =>   '22378618988',
-        'leaderboard' =>   '22378618988',
+        'header' => '22378618988',
+        'leaderboard' => '22378618988',
 
-        'skin' =>   '22378678000',
+        'skin' => '22378678000',
 
-        'incontent_1' =>   '22378678009',
-        'inbody1' =>   '22378678009',
+        'incontent_1' => '22378678009',
+        'inbody1' => '22378678009',
 
-        'incontent_2' =>   '22378619000',
-        'inbody2' =>   '22378619000',
+        'incontent_2' => '22378619000',
+        'inbody2' => '22378619000',
 
-        'incontent_3' =>   '22378678015',
+        'incontent_3' => '22378678015',
 
-        'incontent_4' =>   '22378618997',
-        'incontent_5' =>   '22378678012',
+        'incontent_4' => '22378618997',
+        'incontent_5' => '22378678012',
 
-        'incontent_6' =>   '22378564854',
+        'incontent_6' => '22378564854',
 
-        'mob_sticky' =>   '22378678024',
+        'mob_sticky' => '22378678024',
       ]
     ];
   }
