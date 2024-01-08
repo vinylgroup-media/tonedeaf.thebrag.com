@@ -1831,8 +1831,9 @@ function tbm_send_smtp_email($phpmailer)
 function tbm_ajax_load_next_post()
 {
     global $post;
+    $postID = get_the_ID();
 
-    if ('single-template-featured.php' == get_page_template_slug($post->ID)):
+    if ('single-template-featured.php' == get_page_template_slug($postID)):
         wp_die();
     endif;
 
