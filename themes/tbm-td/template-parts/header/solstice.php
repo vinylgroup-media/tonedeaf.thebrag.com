@@ -330,7 +330,7 @@ $page_template = get_page_template_slug();
         <div class="network-socials-wrap" style="width: auto !important">
           <div class="network-socials">
             <div class="btn btn-media-top btn-toggle-slidedown" data-target="network">
-              <span class="brag-media-top"><img src="https://cdn.thebrag.com/tbm/The-Brag-Media-300px-light.png" width="130" height="13" alt="The Brag Media" title="The Brag Media" loading="lazy"></span>
+              <span class="brag-media-top"><img src="https://images-r2.thebrag.com/common/brands/202309/TBM_White.png" width="130" height="20" alt="The Brag Media" title="The Brag Media" loading="lazy"></span>
               <span class="arrow-down"><img src="<?php echo ICONS_URL; ?>icon_arrow-down-td.svg" width="10" height="20" alt="▼"></span>
             </div>
           </div><!-- .network-socials.hide-m -->

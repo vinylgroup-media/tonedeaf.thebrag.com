@@ -5,7 +5,7 @@
         </div>
         <div class="right px-3 text-right d-flex mt-3 mt-md-0 justify-content-end">
             <span class="mr-1 text-color-primary font-primary" style="font-size: .9rem; font-weight: 500">MUSIC BY</span>
-            <span><img src="https://cdn.thebrag.com/tbm/The-Brag-Media-300px-light.png" width="130" height="13" alt="The Brag Media" title="The Brag Media" loading="lazy"></span>
+            <span><img src="https://images-r2.thebrag.com/common/brands/202309/TBM_White.png" width="130" height="20" alt="The Brag Media" title="The Brag Media" loading="lazy"></span>
         </div>
     </div>
     <div class="footer-menu pt-5 border-top mt-5 px-2">
