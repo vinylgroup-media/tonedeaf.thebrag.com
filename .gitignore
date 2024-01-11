@@ -20,6 +20,8 @@ plugins/ssm-ga/*
 !plugins/tbm-gtm
 !plugins/tbm-floating-player
 
+!plugins/auth0/lib/WP_Auth0_Nonce_Handler.php
+
 uploads
 
 # ignore specific themes
