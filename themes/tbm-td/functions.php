@@ -4,8 +4,8 @@
 // define('CDN_URL', ICONS_URL);
 define('ICONS_URL', 'https://cdn.thebrag.com/icons/');
 define('CDN_URL', 'https://cdn.thebrag.com/td/');
-
 define('BRAG_API_KEY', '3ce4efdd-a39c-4141-80f7-08a828500831');
+define('IMAGES_R2_CDN_URL', 'https://images-r2.thebrag.com/');
 
 // Add default posts and comments RSS feed links to head.
 // add_theme_support('automatic-feed-links');
