@@ -364,6 +364,7 @@ jQuery(document).ready(function ($) {
                 if (res.data.page_title != "undefined") {
                   count_articles++;
                 }
+                dm.AjaxEvent("pageview");
 
                 tbm_load_next_post.current_post = res.data.loaded_post;
                 tbm_load_next_post.exclude_posts += "," + res.data.loaded_post;
