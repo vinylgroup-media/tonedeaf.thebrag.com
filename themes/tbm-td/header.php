@@ -133,26 +133,6 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
 </head>
 
 <body <?php body_class(); ?> id="body">
-  <!--    thebrag.com - TheBrag - ToneDeaf   -->
-  <script type="text/javascript">
-    /* <![CDATA[ */
-    (function() {
-      window.dm=window.dm||{AjaxData:[]};
-      window.dm.AjaxEvent=function(et,d,ssid,ad){
-        dm.AjaxData.push({et:et,d:d,ssid:ssid,ad:ad});
-        if(typeof window.DotMetricsObj != 'undefined') {DotMetricsObj.onAjaxDataUpdate();}
-      };
-      var d=document,
-      h=d.getElementsByTagName('head')[0],
-      s=d.createElement('script');
-      s.type='text/javascript';
-      s.async=true;
-      s.src='https://au-script.dotmetrics.net/door.js?id=15166';
-      h.appendChild(s);
-    }());
-    /* ]]> */
-  </script>
-
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TQC6WRH" height="0" width="0"
       style="display:none;visibility:hidden"></iframe></noscript>
