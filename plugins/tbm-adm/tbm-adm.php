@@ -34,7 +34,7 @@ class TBMAds
    */
   public function action_wp_enqueue_scripts()
   {
-    wp_enqueue_script('adm-fuse', 'https://cdn.fuseplatform.net/publift/tags/2/2376/fuse.js', [], '1');
+    wp_enqueue_script('adm-fuse', 'https://cdn.fuseplatform.net/publift/tags/2/2376/fuse.js', [], '2');
   }
 
   /*
