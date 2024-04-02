@@ -15,6 +15,7 @@ plugins/*
 !plugins/ssm-ga
 plugins/ssm-ga/*
 !plugins/ssm-ga/ssm-ga.php
+!plugins/ssm-ga/composer*
 
 !plugins/tbm-braze
 !plugins/tbm-gtm
