@@ -444,21 +444,18 @@ function ssm_ga_createSegment($min, $max, $name)
  * @param An Analytics Reporting API V4 response.
  */
 
- function updateDB($reports, $slug_filter = NULL, $post_type = 'post')
+function updateDB($reports, $slug_filter = NULL, $post_type = 'post')
 {
-
-    // foreach ($response->getRows() as $row) {
-    //     echo $row->getDimensionValues()[0]->getValue() . $row->getMetricValues()[0]->getValue() . '<br>';
-    // }
-
     global $wpdb;
-    // foreach ($response->getRows() as $row) {
+    // for ($reportIndex = 0; $reportIndex < count($reports); $reportIndex++) {
+        // $report = $reports[$reportIndex];
         // $header = $report->getColumnHeader();
         // $rows = $report->getData()->getRows();
 
         $pagePaths_pageViews = array();
 
         foreach ($reports->getRows() as $row) {
+            // $row = $rows[$rowIndex];
             $dimensions = $row->getDimensionValues()[0]->getValue();
             $metrics = $row->getMetricValues()[0]->getValue();
             $pagePath = ltrim(rtrim($dimensions, '/'), '/');
@@ -481,6 +478,8 @@ function ssm_ga_createSegment($min, $max, $name)
                     endif;
                 endif;
             endif;
+
+            //            print_r( $dimensions ); echo '<pre>'; echo( $metrics[0]->values[0] ); echo '</pre><br>';
         }
 
         arsort($pagePaths_pageViews);
@@ -491,7 +490,7 @@ function ssm_ga_createSegment($min, $max, $name)
                 continue;
             endif;
             $post = get_page_by_path($pagePath, OBJECT, $post_type);
-            if (!is_null($post) && $post_type == $post->post_type && 'publish' == $post->post_status) :
+            if (!is_null($post) && $post_type == $post->post_type && 'publish' == $post->post_status && !get_field('not_brand_safe', $post->ID)) :
                 $wpdb->insert(
                     $wpdb->prefix . 'tbm_trending',
                     array(
@@ -507,129 +506,46 @@ function ssm_ga_createSegment($min, $max, $name)
         endforeach;
 
         $array_keys_pagePaths_pageViews = array_keys($pagePaths_pageViews);
+        $top_article_slug = isset($array_keys_pagePaths_pageViews[0]) ? $array_keys_pagePaths_pageViews[0] : NULL;
 
-        foreach ($pagePaths_pageViews as $article_id => $pageViews) :
-            $top_article = get_post($article_id);
-            if (!is_null($top_article) && $top_article->post_status == 'publish') :
-                if (is_null($slug_filter) && !get_option('force_most_viewed')) :
-                    update_option('most_viewed_yesterday', $top_article->ID);
+        $top_article = get_page_by_path($top_article_slug, OBJECT, $post_type);
+
+        if (!$top_article || 'publish' != $top_article->post_status) {
+            $top_article_slug = isset($array_keys_pagePaths_pageViews[1]) ? $array_keys_pagePaths_pageViews[1] : NULL;
+            $top_article = get_page_by_path($top_article_slug, OBJECT, $post_type);
+        }
+
+        if (!$top_article || 'publish' != $top_article->post_status) {
+            $top_article_slug = isset($array_keys_pagePaths_pageViews[2]) ? $array_keys_pagePaths_pageViews[2] : NULL;
+            $top_article = get_page_by_path($top_article_slug, OBJECT, $post_type);
+        }
+
+
+        if ($top_article && 'publish' == $top_article->post_status) :
+            echo '<pre>';
+            print_r($pagePaths_pageViews);
+            echo '</pre>';
+
+
+            if (!is_null($top_article)) :
+                if (is_null($slug_filter)) :
+                    if (!get_option('force_most_viewed')) :
+                        update_option('most_viewed_yesterday', $top_article->ID);
+                        echo $top_article->ID . ' | ' . $top_article_slug . '<br><br>';
+                        exit;
+                    endif;
                 else :
-                // update_option( 'most_viewed_yesterday_' . $slug_filter, $top_article->ID );
+                    update_option('most_viewed_yesterday_' . $slug_filter, $top_article->ID);
+                    echo $top_article->ID . ' | ' . $top_article_slug . '<br><br>';
+                    exit;
                 endif;
-                break;
             endif;
-        endforeach;
-
-
+        endif; // If $top_article_slug is NOT null i.e. found first key in the pageviews array
 
         echo '<h1>Result:</h1><pre>';
         print_r($pagePaths_pageViews);
         echo '</pre>';
+
+    // }
     //    exit;
 }
-
-// function updateDB($reports, $slug_filter = NULL, $post_type = 'post')
-// {
-//     global $wpdb;
-//     for ($reportIndex = 0; $reportIndex < count($reports); $reportIndex++) {
-//         $report = $reports[$reportIndex];
-//         $header = $report->getColumnHeader();
-//         $rows = $report->getData()->getRows();
-
-//         $pagePaths_pageViews = array();
-
-//         for ($rowIndex = 0; $rowIndex < count($rows); $rowIndex++) {
-//             $row = $rows[$rowIndex];
-//             $dimensions = $row->getDimensions();
-//             $metrics = $row->getMetrics();
-//             $pagePath = ltrim(rtrim($dimensions[0], '/'), '/');
-//             $pageViews = $metrics[0]->values[0];
-
-//             $pagePath_e = explode('/', $pagePath);
-
-//             if (is_null($slug_filter)) :
-//                 if (!isset($pagePaths_pageViews[$pagePath_e[0]])) :
-//                     $pagePaths_pageViews[$pagePath_e[0]] = $pageViews;
-//                 else :
-//                     $pagePaths_pageViews[$pagePath_e[0]] += $pageViews;
-//                 endif;
-//             else :
-//                 if (isset($pagePath_e[1])) :
-//                     if (!isset($pagePaths_pageViews[$pagePath_e[1]])) :
-//                         $pagePaths_pageViews[$pagePath_e[1]] = $pageViews;
-//                     else :
-//                         $pagePaths_pageViews[$pagePath_e[1]] += $pageViews;
-//                     endif;
-//                 endif;
-//             endif;
-
-//             //            print_r( $dimensions ); echo '<pre>'; echo( $metrics[0]->values[0] ); echo '</pre><br>';
-//         }
-
-//         arsort($pagePaths_pageViews);
-
-//         foreach ($pagePaths_pageViews as $pagePath => $pageViews) :
-//             if (is_null($pagePath) || '' == $pagePath) :
-//                 unset($pagePaths_pageViews[$pagePath]);
-//                 continue;
-//             endif;
-//             $post = get_page_by_path($pagePath, OBJECT, $post_type);
-//             if (!is_null($post) && $post_type == $post->post_type && 'publish' == $post->post_status && !get_field('not_brand_safe', $post->ID)) :
-//                 $wpdb->insert(
-//                     $wpdb->prefix . 'tbm_trending',
-//                     array(
-//                         'post_id' => $post->ID,
-//                         'post_type' => $post->post_type,
-//                         'pageviews' => $pageViews,
-//                     ),
-//                     array(
-//                         '%d', '%s', '%d'
-//                     )
-//                 );
-//             endif;
-//         endforeach;
-
-//         $array_keys_pagePaths_pageViews = array_keys($pagePaths_pageViews);
-//         $top_article_slug = isset($array_keys_pagePaths_pageViews[0]) ? $array_keys_pagePaths_pageViews[0] : NULL;
-
-//         $top_article = get_page_by_path($top_article_slug, OBJECT, $post_type);
-
-//         if (!$top_article || 'publish' != $top_article->post_status) {
-//             $top_article_slug = isset($array_keys_pagePaths_pageViews[1]) ? $array_keys_pagePaths_pageViews[1] : NULL;
-//             $top_article = get_page_by_path($top_article_slug, OBJECT, $post_type);
-//         }
-
-//         if (!$top_article || 'publish' != $top_article->post_status) {
-//             $top_article_slug = isset($array_keys_pagePaths_pageViews[2]) ? $array_keys_pagePaths_pageViews[2] : NULL;
-//             $top_article = get_page_by_path($top_article_slug, OBJECT, $post_type);
-//         }
-
-
-//         if ($top_article && 'publish' == $top_article->post_status) :
-
-
-//             echo '<pre>';
-//             print_r($pagePaths_pageViews);
-//             echo '</pre>';
-
-
-//             if (!is_null($top_article)) :
-//                 if (is_null($slug_filter)) :
-//                     if (!get_option('force_most_viewed')) :
-//                         update_option('most_viewed_yesterday', $top_article->ID);
-//                         echo $top_article->ID . ' | ' . $top_article_slug . '<br><br>';
-//                         break;
-//                     endif;
-//                 else :
-//                     update_option('most_viewed_yesterday_' . $slug_filter, $top_article->ID);
-//                     echo $top_article->ID . ' | ' . $top_article_slug . '<br><br>';
-//                     break;
-//                 endif;
-//             endif;
-//         endif; // If $top_article_slug is NOT null i.e. found first key in the pageviews array
-
-
-
-//     }
-//     //    exit;
-// }
