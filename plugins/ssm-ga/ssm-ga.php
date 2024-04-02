@@ -466,40 +466,21 @@ function ssm_ga_createSegment($min, $max, $name)
 
             $pagePath_e = explode('/', $pagePath);
 
-
-            if (
-                !isset($pagePath_e[0]) ||
-                in_array($pagePath_e[0], array('', 'bluesfestvip', '100-greatest-movies-of-all-time')) ||
-                !isset($pagePath_e[2])
-            ) :
-                continue;
-            endif;
-
-            // echo '<pre>'; print_r( $pagePath_e ); echo '</pre>';
-
             if (is_null($slug_filter)) :
-                $pagePath_e2 = explode('-', $pagePath_e[2]);
-                $post_id = end($pagePath_e2);
-                if (is_numeric($post_id)) :
-                    $pagePaths_pageViews[$post_id] = $pageViews;
+                if (!isset($pagePaths_pageViews[$pagePath_e[0]])) :
+                    $pagePaths_pageViews[$pagePath_e[0]] = $pageViews;
                 else :
-                    if( empty( $pagePaths_pageViews[$post_id] ) ) :
-                        $pagePaths_pageViews[$post_id] = $pageViews;
-                    else :
-                        $pagePaths_pageViews[$post_id] += $pageViews;
-                    endif;
-                    //  $pagePaths_pageViews[$post_id] += $pageViews;
+                    $pagePaths_pageViews[$pagePath_e[0]] += $pageViews;
                 endif;
             else :
-            // if ( isset( $pagePath_e[1] ) ) :
-            //     if ( ! isset( $pagePaths_pageViews[ $pagePath_e[1] ] ) ) :
-            //         $pagePaths_pageViews[ $pagePath_e[1] ] = $pageViews;
-            //     else :
-            //         $pagePaths_pageViews[ $pagePath_e[1] ] += $pageViews;
-            //     endif;
-            // endif;
+                if (isset($pagePath_e[1])) :
+                    if (!isset($pagePaths_pageViews[$pagePath_e[1]])) :
+                        $pagePaths_pageViews[$pagePath_e[1]] = $pageViews;
+                    else :
+                        $pagePaths_pageViews[$pagePath_e[1]] += $pageViews;
+                    endif;
+                endif;
             endif;
-            // print_r( $dimensions ); echo '<pre>'; echo( $metrics[0]->values[0] ); echo '</pre><br>';
         }
 
         arsort($pagePaths_pageViews);
