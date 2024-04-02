@@ -542,10 +542,6 @@ function updateDB($reports, $slug_filter = NULL, $post_type = 'post')
             endif;
         endif; // If $top_article_slug is NOT null i.e. found first key in the pageviews array
 
-        echo '<h1>Result:</h1><pre>';
-        print_r($pagePaths_pageViews);
-        echo '</pre>';
-
     // }
     //    exit;
 }
