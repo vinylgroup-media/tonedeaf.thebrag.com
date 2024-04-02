@@ -258,7 +258,7 @@ function initializeAnalytics()
             'filter' => new Filter([
                 'field_name' => 'hostName',
                 'string_filter' => new StringFilter([
-                    'value' => 'au.rollingstone.com',
+                    'value' => 'tonedeaf.thebrag.com',
                 ]),
             ]),
         ]))
@@ -488,7 +488,7 @@ function ssm_ga_createSegment($min, $max, $name)
                     else :
                         $pagePaths_pageViews[$post_id] += $pageViews;
                     endif;
-                    // $pagePaths_pageViews[$post_id] += $pageViews;
+                    //  $pagePaths_pageViews[$post_id] += $pageViews;
                 endif;
             else :
             // if ( isset( $pagePath_e[1] ) ) :
