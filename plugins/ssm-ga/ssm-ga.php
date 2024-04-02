@@ -490,7 +490,7 @@ function ssm_ga_createSegment($min, $max, $name)
                 unset($pagePaths_pageViews[$pagePath]);
                 continue;
             endif;
-            $post = get_post($pagePath); // get_page_by_path( $pagePath, OBJECT, $post_type );
+            $post = get_page_by_path($pagePath, OBJECT, $post_type);
             if (!is_null($post) && $post_type == $post->post_type && 'publish' == $post->post_status) :
                 $wpdb->insert(
                     $wpdb->prefix . 'tbm_trending',
