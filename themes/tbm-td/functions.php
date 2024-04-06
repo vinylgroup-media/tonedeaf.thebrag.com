@@ -5,6 +5,7 @@ function add_expires_header( $headers, $wp ) {
     return $headers;
 }
 add_filter( 'wp_headers', 'add_expires_header', 10, 2 );
+add_filter( 'rest_pre_serve_request', 'add_expires_header', 10, 3 );
 
 // define('ICONS_URL', get_template_directory_uri() . '/images/');
 // define('CDN_URL', ICONS_URL);
