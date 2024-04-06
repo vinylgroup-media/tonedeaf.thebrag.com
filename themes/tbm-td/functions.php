@@ -1,5 +1,11 @@
 <?php
 
+function add_expires_header( $headers, $wp ) {
+    $headers['X-Accel-Expires'] = '120';
+    return $headers;
+}
+add_filter( 'wp_headers', 'add_expires_header', 10, 2 );
+
 // define('ICONS_URL', get_template_directory_uri() . '/images/');
 // define('CDN_URL', ICONS_URL);
 define('ICONS_URL', 'https://cdn.thebrag.com/icons/');
