@@ -47,7 +47,7 @@ $trending_story_ID = $trending_story->ID;
                             $author_byline = get_field('Author', $trending_story_ID);
                         endif; // If custom author is set
 
-                        $author_img_src = get_field('author_profile_picture', $rending_story->ID) ? wp_get_attachment_image_src(get_field('author_profile_picture', $trending_story->ID), 'thumbnail') : CDN_URL . 'default-avatar.png';
+                        $author_img_src = get_field('author_profile_picture', $trending_story->ID) ? wp_get_attachment_image_src(get_field('author_profile_picture', $trending_story->ID), 'thumbnail') : CDN_URL . 'default-avatar.png';
                     else : // If custom author has not been set
                         $author_byline = get_the_author_meta('first_name', $trending_story->post_author) . ' ' . get_the_author_meta('last_name', $trending_story->post_author);
                     endif; // If custom author is set
