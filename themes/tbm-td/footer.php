@@ -1,3 +1,4 @@
+</main>
 <?php get_template_part('template-parts/footer/footer'); ?>
 </div><!-- .content -->
 
@@ -10,7 +11,6 @@
   <?php render_ad_tag('skin'); ?>
 </div>
 
-</main>
 <noscript id="deferred-styles">
   <!-- <link href="https://fonts.googleapis.com/css?family=Poppins:200,500|Roboto:400,700&display=swap" rel="stylesheet"> -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@200;300;500&display=swap"
@@ -98,7 +98,7 @@
           "name": "<?php echo get_bloginfo('name'); ?>",
           "logo": {
             "@type": "ImageObject",
-            "url": "<?php echo CDN_URL; ?>Tone-Deaf-300px.png"
+            "url": "https://images-r2.thebrag.com/common/brands/202309/TBM_White.png"
           }
         },
         "description": "<?php echo get_bloginfo('description'); ?>"
