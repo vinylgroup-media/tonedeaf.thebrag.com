@@ -1,4 +1,4 @@
-<footer class="footer" style="border-radius: 0;">
+<footer class="footer" style="border-radius: 0; position: relative; z-index: 9999;">
     <div class="container">
         <div class="footer-menu pt-5 border-top mt-5 px-2">
             <div class="d-flex flex-column flex-md-row align-items-start">
