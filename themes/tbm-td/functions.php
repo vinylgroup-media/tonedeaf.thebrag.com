@@ -2160,7 +2160,8 @@ function brands()
         'the-brag' => [
             'title' => 'The Brag',
             'link' => 'https://thebrag.com/',
-            'logo_name' => 'The-Brag_combo',
+            'logo_name' => 'the-brag-dark-202404',
+            'width' => 100,
             'ext' => 'svg',
         ],
         'brag-jobs' => [
