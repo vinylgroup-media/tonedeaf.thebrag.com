@@ -129,6 +129,9 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
             }
         </style>
     <?php } ?>
+	<style>
+		div#celtra-skin-container-top {height: 0px !important;}
+	</style>
 </head>
 
 <body <?php body_class(); ?> id="body">
