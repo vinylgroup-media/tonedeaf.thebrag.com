@@ -520,7 +520,7 @@ class BragObserver
 
             if (!is_numeric($formData['list'])) {
               error_log('Observer List _' . $formData['list'] . '_is not numeric');
-              wp_mail('sachin.patel@thebrag.media', 'Observer Error', 'Observer List _' . $formData['list'] . '_is not numeric : ' . print_r($formData, true));
+              wp_mail('dev@thebrag.media', 'Observer Error', 'Observer List _' . $formData['list'] . '_is not numeric : ' . print_r($formData, true));
               wp_send_json_error(['error' => ['message' => 'Something went wrong']]);
               wp_die();
             }
