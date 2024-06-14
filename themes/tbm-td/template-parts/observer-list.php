@@ -10,9 +10,9 @@
 
   if (is_user_logged_in()) :
     $current_user = wp_get_current_user();
-    $brag_api_url = $brag_api_url_base . 'wp-json/brag_observer/v1/get_topics/?key=' . BRAG_API_KEY . '&email=' . $current_user->user_email . '&site=tonedeaf.thebrag.com';
+    $brag_api_url = $brag_api_url_base . 'wp-json/brag_observer_airship/v1/get_topics/?key=' . BRAG_API_KEY . '&email=' . $current_user->user_email . '&site=tonedeaf.thebrag.com';
   else :
-    $brag_api_url = $brag_api_url_base . 'wp-json/brag_observer/v1/get_topics/?key=' . BRAG_API_KEY . '&site=tonedeaf.thebrag.com';
+    $brag_api_url = $brag_api_url_base . 'wp-json/brag_observer_airship/v1/get_topics/?key=' . BRAG_API_KEY . '&site=tonedeaf.thebrag.com';
   endif;
 
   $response = wp_remote_get($brag_api_url);
@@ -20,7 +20,7 @@
   $resonseJson = json_decode($responseBody);
   $lists = $resonseJson->data; */
 
-  // Original source: https://thebrag.com/wp-json/brag_observer/v1/get_topics/?key=3ce4efdd-a39c-4141-80f7-08a828500831&site=tonedeaf.thebrag.com
+  // Original source: https://thebrag.com/wp-json/brag_observer_airship/v1/get_topics/?key=3ce4efdd-a39c-4141-80f7-08a828500831&site=tonedeaf.thebrag.com
   $responseJson = file_get_contents(__DIR__ . '/observer-lists.json');
   $resonse = json_decode($responseJson);
   $lists = $resonse->data;

@@ -32,9 +32,9 @@ class BragObserver
 
     $this->rest_api_key = '3ce4efdd-a39c-4141-80f7-08a828500831';
     if ($this->is_sandbox) {
-      $this->api_url = 'https://the-brag.com/wp-json/brag_observer/v1/';
+      $this->api_url = 'https://the-brag.com/wp-json/brag_observer_airship/v1/';
     } else {
-      $this->api_url = 'https://thebrag.com/wp-json/brag_observer/v1/';
+      $this->api_url = 'https://thebrag.com/wp-json/brag_observer_airship/v1/';
     }
 
     $this->artist_keywords = [
@@ -527,7 +527,7 @@ class BragObserver
 
             $brag_api_url_base = in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']) ? 'https://the-brag.com/' : 'https://thebrag.com/';
 
-            $brag_api_url = $brag_api_url_base . 'wp-json/brag_observer/v1/sub_unsub/';
+            $brag_api_url = $brag_api_url_base . 'wp-json/brag_observer_airship/v1/sub_unsub/';
 
             $response = wp_remote_post(
               $brag_api_url,
