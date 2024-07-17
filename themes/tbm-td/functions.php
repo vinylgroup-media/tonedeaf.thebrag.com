@@ -139,7 +139,30 @@ register_taxonomy('style', array(''), array('hierarchical' => true, 'label' => '
 
 register_taxonomy('venue', array('gallery'), array('hierarchical' => true, 'labels' => array('name' => 'Venues', 'singular_name' => 'Venue'), 'query_var' => true, 'rewrite' => array('slug' => 'venue'), 'capabilities' => array('manage_terms' => 'manage_categories', 'edit_terms' => 'manage_categories', 'delete_terms' => 'manage_categories', 'assign_terms' => 'edit_posts', 'assign_terms' => 'edit_gallerys', 'assign_terms' => 'manage_categories', 'assign_terms' => 'backstage_use'), 'show_ui' => true, 'public' => true));
 
-register_taxonomy('artist', array('post'), array('hierarchical' => false, 'label' => 'Artist', 'query_var' => true, 'rewrite' => array('slug' => 'about'), 'capabilities' => array('manage_terms' => 'manage_categories', 'edit_terms' => 'manage_categories', 'delete_terms' => 'manage_categories', 'assign_terms' => 'edit_posts', 'assign_terms' => 'manage_categories'), 'show_ui' => true, 'public' => true));
+register_meta( 'post', '_yoast_wpseo_focuskw', [ 'show_in_rest' => true, 'type'=> 'string', 'single'=>true ] );
+
+register_taxonomy(
+    'artist', 
+    array('post'), 
+    array(
+        'hierarchical' => false, 
+        'label' => 'Artist', 
+        'query_var' => true, 
+        'rewrite' => array(
+            'slug' => 'about'
+        ), 
+        'capabilities' => array(
+            'manage_terms' => 'manage_categories', 
+            'edit_terms' => 'manage_categories', 
+            'delete_terms' => 'manage_categories', 
+            'assign_terms' => 'edit_posts', 
+            'assign_terms' => 'manage_categories'
+        ), 
+        'show_ui' => true, 
+        'public' => true,
+        'show_in_rest' => true
+    )
+);
 
 
 register_taxonomy(
@@ -147,12 +170,22 @@ register_taxonomy(
     array('post'),
     array(
         'hierarchical' => true,
-        'labels' => array('name' => 'Genre', 'singular_name' => 'Genre'),
+        'labels' => array(
+            'name' => 'Genre',
+            'singular_name' => 'Genre'
+        ),
         'query_var' => true,
         'rewrite' => array('slug' => 'genre'),
-        'capabilities' => array('manage_terms' => 'edit_posts', 'edit_terms' => 'edit_posts', 'delete_terms' => 'edit_posts', 'assign_terms' => 'edit_posts', 'assign_terms' => 'edit_posts'),
+        'capabilities' => array(
+            'manage_terms' => 'edit_posts', 
+            'edit_terms' => 'edit_posts', 
+            'delete_terms' => 'edit_posts', 
+            'assign_terms' => 'edit_posts', 
+            'assign_terms' => 'edit_posts'
+        ),
         'show_ui' => true,
-        'public' => true
+        'public' => true,
+        'show_in_rest' => true
     )
 );
 
