@@ -1,13 +1,13 @@
 <?php
 
 function add_expires_header( $headers, $wp ) {
-    header('X-Accel-Expires: 3600');
+    $headers['X-Accel-Expires'] = '60';
     return $headers;
 }
 add_filter( 'wp_headers', 'add_expires_header', 10, 2 );
 
 function add_expires_header_json( $served, $result, $request ) {
-    header('X-Accel-Expires: 3600');
+    header('X-Accel-Expires: 60');
 }
 add_filter( 'rest_pre_serve_request', 'add_expires_header_json', 10, 3 );
 
