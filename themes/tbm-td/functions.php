@@ -11,10 +11,29 @@ function add_expires_header_json( $served, $result, $request ) {
 }
 add_filter( 'rest_pre_serve_request', 'add_expires_header_json', 10, 3 );
 
+/* Remove guttenburg blocks css */
+
+function db_dequeue_block_styles(): void {
+    wp_dequeue_style( 'wp-block-library' );
+	wp_dequeue_style( 'wp-block-library-theme' );
+} 
+add_action( 'wp_enqueue_scripts', 'db_dequeue_block_styles', 100 );
+
+/* Replace jQuery CDN */
+
+function load_jquery_from_google_cdn() {
+    if (!is_admin()) {
+        wp_deregister_script('jquery');
+        wp_register_script('jquery', 'https://code.jquery.com/jquery-3.7.1.min.js', [], '3.7.1');
+        wp_enqueue_script('jquery');
+    }
+}
+add_action('wp_enqueue_scripts', 'load_jquery_from_google_cdn');
+
 // define('ICONS_URL', get_template_directory_uri() . '/images/');
 // define('CDN_URL', ICONS_URL);
 define('ICONS_URL', 'https://cdn.thebrag.com/icons/');
-define('CDN_URL', 'https://cdn.thebrag.com/td/');
+define('CDN_URL', 'https://cdn-r2-2.thebrag.com/td/');
 define('BRAG_API_KEY', '3ce4efdd-a39c-4141-80f7-08a828500831');
 define('IMAGES_R2_CDN_URL', 'https://images-r2.thebrag.com/');
 
@@ -192,7 +211,7 @@ register_taxonomy(
 
 function load_js_css()
 {
-    wp_enqueue_script('scripts', CDN_URL . 'scripts.min.js', array('jquery'), '20240229.2', true);
+    wp_enqueue_script('scripts', CDN_URL . 'js/scripts.min.js', array('jquery'), '20240805.1', true);
     // wp_enqueue_script('scripts', get_template_directory_uri() . '/js/scripts.js', array('jquery'), time(), true);
 
 

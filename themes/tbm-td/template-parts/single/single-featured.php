@@ -51,12 +51,12 @@ if (!post_password_required($post)) :
         if ($author_img_src) :
             $author_image = '<img src="' . $author_img_src[0] . '" width="64" class="rounded-circle" style="margin: 0;">';
         else :
-            $author_image = '<img src="' . CDN_URL . 'default-avatar.png" width="64" height="64" class="rounded-circle" alt="' . $author_name . '" style="margin: 0;">';
+            $author_image = '<img src="' . CDN_URL . '/images/default-avatar.png" width="64" height="64" class="rounded-circle" alt="' . $author_name . '" style="margin: 0;">';
         endif; // If custom author image is set
     else : // If custom author has not been set
         $author_name = get_the_author_meta('display_name', $post->post_author);
         $author_byline = '<a href="' . get_author_posts_url($post->post_author) . '" class="text-dark">' . get_the_author_meta('display_name', $post->post_author) . '</a>';
-        $author_image = get_avatar($post->post_author, 64, CDN_URL . 'default-avatar.png', $author_name, array('class' => 'rounded-circle'));
+        $author_image = get_avatar($post->post_author, 64, CDN_URL . '/images/default-avatar.png', $author_name, array('class' => 'rounded-circle'));
 
     endif; // If custom author is set
 

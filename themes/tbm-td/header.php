@@ -336,7 +336,7 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
 
 
                 <div class="logo-wrap">
-                    <a href="<?php echo site_url(); ?>"><img src="<?php echo CDN_URL; ?>Tone-Deaf-light.svg" width="100" height="55" alt="Tone Deaf" title="Tone Deaf"></a>
+                    <a href="<?php echo site_url(); ?>"><img src="<?php echo IMAGES_R2_CDN_URL; ?>common/brands/Tone-Deaf-light.svg" width="100" height="55" alt="Tone Deaf" title="Tone Deaf"></a>
                 </div>
             </div>
 
@@ -424,7 +424,7 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
 
                 <div class="d-flex">
                     <div class="logo-wrap">
-                        <a href="<?php echo site_url(); ?>"><img src="<?php echo CDN_URL; ?>Tone-Deaf-light.svg" width="100" height="55" alt="Tone Deaf" title="Tone Deaf" loading="lazy"></a>
+                        <a href="<?php echo site_url(); ?>"><img src="<?php echo IMAGES_R2_CDN_URL; ?>common/brands/Tone-Deaf-light.svg" width="100" height="55" alt="Tone Deaf" title="Tone Deaf" loading="lazy"></a>
                     </div>
                 </div>
                 <div class="user-wrap d-flex flex-column justify-content-end pr-1 pr-md-2 w-sm-auto">
