@@ -615,6 +615,10 @@ function tbm_the_author_display_name()
     } else if (get_field('Author') && '' != trim(get_field('Author'))) {
         return get_field('Author');
     }
+    if(empty($post)) {
+        return '';
+    }
+
     $author_id = $post->post_author;
     return get_the_author_meta('first_name', $author_id) . ' ' . get_the_author_meta('last_name', $author_id);
 }
