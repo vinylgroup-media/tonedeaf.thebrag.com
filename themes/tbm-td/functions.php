@@ -1,7 +1,7 @@
 <?php
 
 function add_expires_header( $headers, $wp ) {
-    $headers['X-Accel-Expires'] = '120';
+    $headers['X-Accel-Expires'] = '1440';
     return $headers;
 }
 add_filter( 'wp_headers', 'add_expires_header', 10, 2 );
