@@ -1261,7 +1261,7 @@ add_action('pre_get_posts', 'feed_limit_ppp');
 
 function shortcode_do($atts, $content = null)
 {
-    if ('pullquote' == $atts['action']) {
+    if (isset($atts['action']) && 'pullquote' == $atts['action']) {
         return '<span class="pullquote">' . $content . '</span>';
     }
     return $content;
