@@ -12,517 +12,629 @@
 class BragObserver
 {
 
-  protected $plugin_title;
-  protected $plugin_name;
-  protected $plugin_slug;
+    protected string $plugin_title;
+    protected string $plugin_name;
+    protected string $plugin_slug;
 
-  protected $rest_api_key;
-  protected $api_url;
+    protected string $rest_api_key;
+    protected string $api_url;
 
-  protected $artist_keywords;
+    protected array $artist_keywords;
+    private bool $is_sandbox;
 
-  public function __construct()
-  {
+    public function __construct()
+    {
 
-    $this->plugin_title = 'The Brag Observer';
-    $this->plugin_name = 'brag_observer';
-    $this->plugin_slug = 'brag-observer';
+        $this->plugin_title = 'The Brag Observer';
+        $this->plugin_name = 'brag_observer';
+        $this->plugin_slug = 'brag-observer';
 
-    $this->is_sandbox = in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']);
+        $this->is_sandbox = in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']);
 
-    $this->rest_api_key = '3ce4efdd-a39c-4141-80f7-08a828500831';
-    if ($this->is_sandbox) {
-      $this->api_url = 'https://the-brag.com/wp-json/brag_observer_airship/v1/';
-    } else {
-      $this->api_url = 'https://thebrag.com/wp-json/brag_observer_airship/v1/';
-    }
-
-    $this->artist_keywords = [
-      'skegss',
-      'ruby fields',
-      'pierce',
-      'Foo Fighters',
-      'beatles',
-      'eminem',
-      'tekashi',
-      // 'prince',
-      'rage against the machine',
-      'joyner lucas',
-      'pist idiots',
-    ];
-
-    // Shortcodes
-    add_shortcode('observer_tastemaker_form', [$this, 'shortcode_observer_tastemaker_form']);
-    add_shortcode('observer_subscribe_genre', [$this, 'shortcode_subscribe_genre_form']);
-    add_shortcode('observer_lead_generator_form', [$this, 'shortcode_observer_lead_generator_form']);
-
-    // AJAX
-    add_action('wp_ajax_save_tastemaker_review', [$this, 'save_tastemaker_review']);
-    add_action('wp_ajax_nopriv_save_tastemaker_review', [$this, 'save_tastemaker_review']);
-
-    add_action('wp_ajax_save_lead_generator_response', [$this, 'save_lead_generator_response']);
-    add_action('wp_ajax_nopriv_save_lead_generator_response', [$this, 'save_lead_generator_response']);
-
-    // REST API Endpoints
-    add_action('rest_api_init', [$this, '_rest_api_init']);
-
-    // Settings menu
-    add_action('admin_menu', [$this, '_admin_menu']);
-
-    // Term metas for Genre
-    add_action('genre_add_form_fields', [$this, 'add_observer_topic_field'], 10, 2);
-    add_action('created_genre', [$this, 'save_genre_meta'], 10, 2);
-    add_action('genre_edit_form_fields', [$this, 'edit_genre_field'], 10, 2);
-    add_action('edited_genre', [$this, 'update_genre_meta'], 10, 2);
-    add_filter('manage_edit-genre_columns', [$this, 'add_genre_column']);
-    add_filter('manage_genre_custom_column', [$this, 'add_genre_column_content'], 10, 3);
-
-    // Post meta for Observer topic, takes priority over Genre (term) meta
-    add_action('add_meta_boxes', [$this, 'add_meta_boxes']);
-    add_action('save_post', [$this, 'save_post']);
-
-    // AJAX
-    add_action('wp_ajax_subscribe_observer', array($this, 'ajax_subscribe_observer'));
-    add_action('wp_ajax_nopriv_subscribe_observer', array($this, 'ajax_subscribe_observer'));
-
-    // Add post meta if shortcode is present in the content
-    add_action('save_post', [$this, '_save_post'], 10, 3);
-  }
-
-  /*
-  * Post meta box
-  */
-  public function add_meta_boxes()
-  {
-    $screens = ['post'];
-    foreach ($screens as $screen) {
-      add_meta_box(
-        'observer-topic',
-        'The Brag Observer topic',
-        [$this, 'add_observer_topic_field_post'],
-        $screen
-      );
-    }
-  }
-
-  public function save_post($post_id)
-  {
-    if (array_key_exists('observer-topic', $_POST)) {
-      update_post_meta(
-        $post_id,
-        'observer-topic',
-        $_POST['observer-topic']
-      );
-    }
-  }
-
-  /*
-  * Add a field to New Genre Taxonomy for term meta
-  */
-  public function add_observer_topic_field_post($post)
-  {
-    $topics = wp_list_pluck($this->get_observer_topics(), 'title', 'id');
-    asort($topics);
-
-    $value = 0;
-    if (isset($post) && isset($post->ID)) {
-      $value = get_post_meta($post->ID, 'observer-topic', true);
-    }
-
-?><div class="form-field term-group">
-      <label>Observer topic</label>
-      <select class="postform" id="observer-topic" name="observer-topic">
-        <option value="">None</option>
-        <?php foreach ($topics as $id => $title) : ?>
-          <option value="<?php echo $id; ?>" <?php selected($value, $id); ?>><?php echo $title; ?></option>
-        <?php endforeach; ?>
-      </select>
-    </div><?php
+        $this->rest_api_key = '3ce4efdd-a39c-4141-80f7-08a828500831';
+        if ($this->is_sandbox) {
+            $this->api_url = 'https://the-brag.com/wp-json/brag_observer_airship/v1/';
+        } else {
+            $this->api_url = 'https://thebrag.com/wp-json/brag_observer_airship/v1/';
         }
 
-        /*
-  * Add a field to New Genre Taxonomy for term meta
-  */
-        public function add_observer_topic_field($post)
-        {
-          $topics = wp_list_pluck($this->get_observer_topics(), 'title', 'id');
-          asort($topics);
+        $this->artist_keywords = [
+            'skegss',
+            'ruby fields',
+            'pierce',
+            'Foo Fighters',
+            'beatles',
+            'eminem',
+            'tekashi',
+            // 'prince',
+            'rage against the machine',
+            'joyner lucas',
+            'pist idiots',
+        ];
 
-          $value = 0;
-          if (isset($post) && isset($post->ID)) {
+        // Shortcodes
+        add_shortcode('observer_tastemaker_form', [$this, 'shortcode_observer_tastemaker_form']);
+        add_shortcode('observer_subscribe_genre', [$this, 'shortcode_subscribe_genre_form']);
+        add_shortcode('observer_lead_generator_form', [$this, 'shortcode_observer_lead_generator_form']);
+
+        // AJAX
+        add_action('wp_ajax_save_tastemaker_review', [$this, 'save_tastemaker_review']);
+        add_action('wp_ajax_nopriv_save_tastemaker_review', [$this, 'save_tastemaker_review']);
+
+        add_action('wp_ajax_save_lead_generator_response', [$this, 'save_lead_generator_response']);
+        add_action('wp_ajax_nopriv_save_lead_generator_response', [$this, 'save_lead_generator_response']);
+
+        // REST API Endpoints
+        add_action('rest_api_init', [$this, '_rest_api_init']);
+
+        // Settings menu
+        add_action('admin_menu', [$this, '_admin_menu']);
+
+        // Term metas for Genre
+        add_action('genre_add_form_fields', [$this, 'add_observer_topic_field'], 10, 2);
+        add_action('created_genre', [$this, 'save_genre_meta'], 10, 2);
+        add_action('genre_edit_form_fields', [$this, 'edit_genre_field'], 10, 2);
+        add_action('edited_genre', [$this, 'update_genre_meta'], 10, 2);
+        add_filter('manage_edit-genre_columns', [$this, 'add_genre_column']);
+        add_filter('manage_genre_custom_column', [$this, 'add_genre_column_content'], 10, 3);
+
+        // Post meta for Observer topic, takes priority over Genre (term) meta
+        add_action('add_meta_boxes', [$this, 'add_meta_boxes']);
+        add_action('save_post', [$this, 'save_post']);
+
+        // AJAX
+        add_action('wp_ajax_subscribe_observer', [$this, 'ajax_subscribe_observer']);
+        add_action('wp_ajax_nopriv_subscribe_observer', [$this, 'ajax_subscribe_observer']);
+
+        // Add post meta if shortcode is present in the content
+        add_action('save_post', [$this, '_save_post'], 10, 3);
+    }
+
+    /*
+    * Post meta box
+    */
+
+    private static function callAPI($method, $url)
+    {
+        $curl = curl_init();
+        switch ($method) {
+            case "POST":
+                curl_setopt($curl, CURLOPT_POST, 1);
+                if ('')
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, '');
+                break;
+            case "PUT":
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+                if ('')
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, '');
+                break;
+            default:
+                if ('')
+                    $url = sprintf("%s?%s", $url, http_build_query(''));
+        }
+        // OPTIONS:
+        curl_setopt($curl, CURLOPT_URL, $url);
+        if ('') {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, [
+                'Content-Type: application/json',
+            ]);
+        }
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+
+        if (in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        }
+        // EXECUTE:
+        $result = curl_exec($curl);
+
+        // error_log( $url );
+        // if ( 'POST' == $method ) {
+        // echo '<pre>'; var_dump( curl_error( $curl ) ); echo '</pre>';
+        // }
+        if (!$result) {
+            return [];
+        }
+        curl_close($curl);
+        return $result;
+    }
+
+    public function add_meta_boxes(): void
+    {
+        $screens = ['post'];
+        foreach ($screens as $screen) {
+            add_meta_box(
+                'observer-topic',
+                'The Brag Observer topic',
+                [$this, 'add_observer_topic_field_post'],
+                $screen
+            );
+        }
+    }
+
+    /*
+    * Add a field to New Genre Taxonomy for term meta
+    */
+
+    public function save_post($post_id): void
+    {
+        if (array_key_exists('observer-topic', $_POST)) {
+            update_post_meta(
+                $post_id,
+                'observer-topic',
+                $_POST['observer-topic']
+            );
+        }
+    }
+
+    /*
+* Add a field to New Genre Taxonomy for term meta
+*/
+
+    public function add_observer_topic_field_post($post): void
+    {
+        $topics = wp_list_pluck($this->get_observer_topics(), 'title', 'id');
+        asort($topics);
+
+        $value = 0;
+        if (isset($post->ID)) {
             $value = get_post_meta($post->ID, 'observer-topic', true);
-          }
-
-          ?><div class="form-field term-group">
-      <label>Observer topic</label>
-      <table>
-        <tr>
-          <?php $count = 1;
-          foreach ($topics as $id => $title) : ?>
-            <td>
-              <label>
-                <input type="checkbox" name="observer-topic[]" value="<?php echo $id; ?>">
-                <?php echo str_replace('Observer', '', $title); ?>
-              </label>
-            </td>
-            <?php echo $count % 3 === 0 ? '</tr><trd>' : ''; ?>
-          <?php $count++;
-          endforeach; ?>
-        </tr>
-      </table>
-    </div><?php
         }
 
-        /*
-  * Save term meta for New Genre Taxonomy
-  */
-        public function save_genre_meta($term_id, $tt_id)
-        {
-          if (isset($_POST['observer-topic']) && '' !== $_POST['observer-topic']) {
-            $topic = sanitize_title($_POST['observer-topic']);
-            add_term_meta($term_id, 'observer-topic', $topic, true);
-          }
-        }
-
-        /*
-  * Add a field to Edit Genre Taxonomy for term meta
-  */
-        public function edit_genre_field($term, $taxonomy)
-        {
-          $topics = wp_list_pluck($this->get_observer_topics(), 'title', 'id');
-          asort($topics);
-
-          // get current topic
-          $genre_primary_topic = get_term_meta($term->term_id, 'primary-observer-topic', true);
-          $genre_topics = get_term_meta($term->term_id, 'observer-topic');
-
-          ?><tr class="form-field term-group-wrap">
-      <th scope="row">
-        <label for="observer-topic">Observer topic</label>
-      </th>
-      <td>
-        <div>
-          Primary topic
-          <select class="postform" id="primary-observer-topic" name="primary-observer-topic">
+        ?>
+        <div class="form-field term-group">
+        <label>Observer topic</label>
+        <select class="postform" id="observer-topic" name="observer-topic">
             <option value="">None</option>
             <?php foreach ($topics as $id => $title) : ?>
-              <option value="<?php echo $id; ?>" <?php selected($genre_primary_topic, $id); ?>><?php echo $title; ?></option>
+                <option value="<?php echo $id; ?>" <?php selected($value, $id); ?>><?php echo $title; ?></option>
             <?php endforeach; ?>
-          </select>
-          <table>
-            <tr>
-              <?php $count = 1;
-              foreach ($topics as $id => $title) : ?>
-                <td style="padding: 5px;">
-                  <label>
-                    <input type="checkbox" name="observer-topic[]" value="<?php echo $id; ?>" <?php echo in_array($id, $genre_topics) ? ' checked' : ''; ?>>
-                    <?php echo str_replace('Observer', '', $title); ?>
-                  </label>
-                </td>
-                <?php echo $count % 3 === 0 ? '</tr><trd>' : ''; ?>
-              <?php $count++;
-              endforeach; ?>
-            </tr>
-          </table>
-        </div>
-      </td>
-    </tr><?php
-        }
+        </select>
+        </div><?php
+    }
 
+    /*
+* Save term meta for New Genre Taxonomy
+*/
+
+    public function get_observer_topics($topic = NULL)
+    {
         /*
-  * Save term meta for Existing Genre Taxonomy
-  */
-        public function update_genre_meta($term_id, $tt_id)
-        {
-          if (isset($_POST['primary-observer-topic']) && '' !== $_POST['primary-observer-topic']) {
-            update_term_meta($term_id, 'primary-observer-topic', $_POST['primary-observer-topic']);
-          }
-          if (isset($_POST['observer-topic']) && '' !== $_POST['observer-topic']) {
-            if (is_array($_POST['observer-topic'])) {
-              delete_term_meta($term_id, 'observer-topic');
-              foreach ($_POST['observer-topic'] as $post_topic) {
-                $topic = sanitize_title($post_topic);
-                add_term_meta($term_id, 'observer-topic', $topic);
-              }
+        $api_url = $this->api_url . 'get_topics?key=' . $this->rest_api_key;
+        if (!is_null($topic)) {
+          $api_url .= '&id=' . $topic;
+        }
+        $api_url .= '&site=tonedeaf.thebrag.com';
+        $response = wp_remote_get($api_url, ['sslverify' => !$this->is_sandbox]);
+
+        $responseBody = wp_remote_retrieve_body($response);
+        if ($responseBody) {
+          $responseJson = json_decode($responseBody);
+          $topics = isset($responseJson->success) && $responseJson->success ? $responseJson->data : [];
+        } else {
+          $topics = '';
+        }
+        */
+
+        $responseJson = file_get_contents(get_stylesheet_directory() . '/template-parts/observer-lists.json');
+        $response = json_decode($responseJson);
+        $topics = $response->data;
+
+        if (!is_null($topic)) {
+            foreach ($topics as $t) {
+                if ($topic == $t->id) {
+                    return [$t];
+                }
             }
-          } else {
+        }
+        return $topics;
+    }
+
+    /*
+    * Add a field to Edit Genre Taxonomy for term meta
+    */
+
+    public function add_observer_topic_field($post): void
+    {
+        $topics = wp_list_pluck($this->get_observer_topics(), 'title', 'id');
+        asort($topics);
+
+        $value = 0;
+        if (isset($post->ID)) {
+            $value = get_post_meta($post->ID, 'observer-topic', true);
+        }
+
+        ?>
+        <div class="form-field term-group">
+        <label>Observer topic</label>
+        <table>
+            <tr>
+                <?php $count = 1;
+                foreach ($topics as $id => $title) : ?>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="observer-topic[]" value="<?php echo $id; ?>">
+                            <?php echo str_replace('Observer', '', $title); ?>
+                        </label>
+                    </td>
+                    <?php echo $count % 3 === 0 ? '</tr><trd>' : ''; ?>
+                    <?php $count++;
+                endforeach; ?>
+            </tr>
+        </table>
+        </div><?php
+    }
+
+    /*
+    * Save term meta for Existing Genre Taxonomy
+    */
+
+    public function save_genre_meta($term_id, $tt_id): void
+    {
+        if (isset($_POST['observer-topic']) && '' !== $_POST['observer-topic']) {
+            $topic = sanitize_title($_POST['observer-topic']);
+            add_term_meta($term_id, 'observer-topic', $topic, true);
+        }
+    }
+
+    /*
+    * Add column to Genre Taxonomy
+    */
+
+    public function edit_genre_field($term): void
+    {
+        $topics = wp_list_pluck($this->get_observer_topics(), 'title', 'id');
+        asort($topics);
+
+        // get current topic
+        $genre_primary_topic = get_term_meta($term->term_id, 'primary-observer-topic', true);
+        $genre_topics = get_term_meta($term->term_id, 'observer-topic');
+
+        ?>
+        <tr class="form-field term-group-wrap">
+        <th scope="row">
+            <label for="observer-topic">Observer topic</label>
+        </th>
+        <td>
+            <div>
+                Primary topic
+                <label for="primary-observer-topic"></label>
+                <select class="postform" id="primary-observer-topic" name="primary-observer-topic">
+                    <option value="">None</option>
+                    <?php foreach ($topics as $id => $title) : ?>
+                        <option value="<?php echo $id; ?>" <?php selected($genre_primary_topic, $id); ?>><?php echo $title; ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <table>
+                    <tr>
+                        <?php $count = 1;
+                        foreach ($topics as $id => $title) : ?>
+                            <td style="padding: 5px;">
+                                <label>
+                                    <input type="checkbox" name="observer-topic[]"
+                                           value="<?php echo $id; ?>" <?php echo in_array($id, $genre_topics) ? ' checked' : ''; ?>>
+                                    <?php echo str_replace('Observer', '', $title); ?>
+                                </label>
+                            </td>
+                            <?php echo $count % 3 === 0 ? '</tr><trd>' : ''; ?>
+                            <?php $count++;
+                        endforeach; ?>
+                    </tr>
+                </table>
+            </div>
+        </td>
+        </tr><?php
+    }
+
+    public function update_genre_meta($term_id): void
+    {
+        if (isset($_POST['primary-observer-topic']) && '' !== $_POST['primary-observer-topic']) {
+            update_term_meta($term_id, 'primary-observer-topic', $_POST['primary-observer-topic']);
+        }
+        if (isset($_POST['observer-topic']) && '' !== $_POST['observer-topic']) {
+            if (is_array($_POST['observer-topic'])) {
+                delete_term_meta($term_id, 'observer-topic');
+                foreach ($_POST['observer-topic'] as $post_topic) {
+                    $topic = sanitize_title($post_topic);
+                    add_term_meta($term_id, 'observer-topic', $topic);
+                }
+            }
+        } else {
             delete_term_meta($term_id, 'observer-topic');
-          }
         }
+    }
 
-        /*
-  * Add column to Genre Taxonomy
-  */
-        public function add_genre_column($columns)
-        {
-          $columns['observer_topic'] = 'Observer topic';
-          return $columns;
-        }
+    /*
+    * Admin menu
+    */
 
-        function add_genre_column_content($content, $column_name, $term_id)
-        {
-          if ($column_name !== 'observer_topic') {
+    public function add_genre_column($columns)
+    {
+        $columns['observer_topic'] = 'Observer topic';
+        return $columns;
+    }
+
+    /*
+    * Shortcode: Tastemaker
+    */
+
+    function add_genre_column_content($content, $column_name, $term_id)
+    {
+        if ($column_name !== 'observer_topic') {
             return $content;
-          }
+        }
 
-          $topics = wp_list_pluck($this->get_observer_topics(), 'title', 'id');
-          asort($topics);
+        $topics = wp_list_pluck($this->get_observer_topics(), 'title', 'id');
+        asort($topics);
 
-          $term_id = absint($term_id);
+        $term_id = absint($term_id);
 
-          $genre_primary_topic = get_term_meta($term_id, 'primary-observer-topic', true);
-          $genre_topics = get_term_meta($term_id, 'observer-topic');
+        $genre_primary_topic = get_term_meta($term_id, 'primary-observer-topic', true);
+        $genre_topics = get_term_meta($term_id, 'observer-topic');
 
-          if (!empty($genre_topics)) {
+        if (!empty($genre_topics)) {
             $content .= '<ul>';
             foreach ($genre_topics as $topic) {
-              $content .= '<li>';
-              $content .= $topic == $genre_primary_topic ? '<strong><u>' . esc_attr($topics[$topic]) . '</u></strong>' : esc_attr($topics[$topic]);
-              $content .= '</li>';
+                $content .= '<li>';
+                $content .= $topic == $genre_primary_topic ? '<strong><u>' . esc_attr($topics[$topic]) . '</u></strong>' : esc_attr($topics[$topic]);
+                $content .= '</li>';
             }
             $content .= '</ul>';
-          }
-          return $content;
         }
+        return $content;
+    } // shortcode_observer_tastemaker_form()
 
-        /*
-  * Admin menu
-  */
-        public function _admin_menu()
-        {
-          // add_options_page( $this->plugin_title, $this->plugin_title, 'administrator', $this->plugin_slug, [ $this, '_settings_page' ] );
-        }
+    /*
+    * Shortcode: Lead Generator
+    */
 
-        /*
-  * Shortcode: Tastemaker
-  */
-        public function shortcode_observer_tastemaker_form($atts)
-        {
+    public function _admin_menu()
+    {
+        // add_options_page( $this->plugin_title, $this->plugin_title, 'administrator', $this->plugin_slug, [ $this, '_settings_page' ] );
+    } // shortcode_observer_lead_generator_form()
 
-          $tastemaker_atts = shortcode_atts(array(
+
+    /*
+    * Shortcode: Subscribe to Genre
+    */
+
+    public function shortcode_observer_tastemaker_form($atts)
+    {
+
+        $tastemaker_atts = shortcode_atts([
             'id' => NULL,
             'background' => '#e9ecef',
             'border' => '#fff',
             'width' => NULL
-          ), $atts);
+        ], $atts);
 
-          if (is_null($tastemaker_atts['id']))
-            return;
+        if (is_null($tastemaker_atts['id']))
+            return '';
 
-          $id = absint($tastemaker_atts['id']);
+        $id = absint($tastemaker_atts['id']);
 
-          wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . '/js/scripts.min.js', array('jquery'), '20211014', true);
-          $args = array(
-            'url'   => admin_url('admin-ajax.php'),
+        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . '/js/scripts.min.js', ['jquery'], '20211014', true);
+        $args = [
+            'url' => admin_url('admin-ajax.php'),
             // 'ajax_nonce' => wp_create_nonce( $this->plugin_slug . '-nonce' ),
-          );
-          wp_localize_script($this->plugin_name, $this->plugin_name, $args);
+        ];
+        wp_localize_script($this->plugin_name, $this->plugin_name, $args);
 
-          // $api_url = $this->api_url . 'get_tastemaker_form?key=' . $this->rest_api_key . '&id=' . $id;
-          $api_url = $this->api_url . 'get_tastemaker_form?key=' . $this->rest_api_key . '&' . http_build_query($tastemaker_atts);
+        // $api_url = $this->api_url . 'get_tastemaker_form?key=' . $this->rest_api_key . '&id=' . $id;
+        $api_url = $this->api_url . 'get_tastemaker_form?key=' . $this->rest_api_key . '&' . http_build_query($tastemaker_atts);
 
-          $response = wp_remote_get($api_url, ['sslverify' => !$this->is_sandbox]);
+        $response = wp_remote_get($api_url, ['sslverify' => !$this->is_sandbox]);
 
-          $responseBody = wp_remote_retrieve_body($response);
-          if ($responseBody) {
-            $resonseJson = json_decode($responseBody);
-            $form_html = isset($resonseJson->success) && $resonseJson->success ? $resonseJson->data : '';
-          } else {
+        $responseBody = wp_remote_retrieve_body($response);
+        if ($responseBody) {
+            $responseJson = json_decode($responseBody);
+            $form_html = isset($responseJson->success) && $responseJson->success ? $responseJson->data : '';
+        } else {
             $form_html = '';
-          }
+        }
 
-          return $form_html;
-        } // shortcode_observer_tastemaker_form()
+        return $form_html;
+    } // shortcode_subscribe_genre_form()
 
-        /*
-  * Shortcode: Lead Generator
-  */
-        public function shortcode_observer_lead_generator_form($atts)
-        {
+    public function shortcode_observer_lead_generator_form($atts)
+    {
 
-          $lead_generator_atts = shortcode_atts(array(
+        $lead_generator_atts = shortcode_atts([
             'id' => NULL,
             'background' => '#e9ecef',
             'border' => '#fff',
             'width' => NULL,
             'lc' => isset($_GET['lc']) ? sanitize_text_field($_GET['lc']) : NULL,
             'cta' => 'Sign me up',
-          ), $atts);
+        ], $atts);
 
-          if (is_null($lead_generator_atts['id']))
-            return;
+        if (is_null($lead_generator_atts['id'])) {
+            return '';
+        }
 
-          $lead_generator_atts['id'] = (int)filter_var($lead_generator_atts['id'], FILTER_SANITIZE_NUMBER_INT);
+        $lead_generator_atts['id'] = (int)filter_var($lead_generator_atts['id'], FILTER_SANITIZE_NUMBER_INT);
 
-          wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . '/js/scripts.min.js', array('jquery'), '20211014', true);
-          $args = array(
-            'url'   => admin_url('admin-ajax.php'),
+        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . '/js/scripts.min.js', ['jquery'], '20211014', true);
+        $args = [
+            'url' => admin_url('admin-ajax.php'),
             // 'ajax_nonce' => wp_create_nonce( $this->plugin_slug . '-nonce' ),
-          );
-          wp_localize_script($this->plugin_name, $this->plugin_name, $args);
+        ];
+        wp_localize_script($this->plugin_name, $this->plugin_name, $args);
 
-          $api_url = $this->api_url . 'get_lead_generator_form?key=' . $this->rest_api_key . '&' . http_build_query($lead_generator_atts);
+        $api_url = $this->api_url . 'get_lead_generator_form?key=' . $this->rest_api_key . '&' . http_build_query($lead_generator_atts);
 
-          $response = wp_remote_get($api_url, ['sslverify' => !$this->is_sandbox]);
+        $response = wp_remote_get($api_url, ['sslverify' => !$this->is_sandbox]);
 
-          $responseBody = wp_remote_retrieve_body($response);
-          if ($responseBody) {
-            $resonseJson = json_decode($responseBody);
-            $form_html = isset($resonseJson->success) && $resonseJson->success ? $resonseJson->data : '';
-          } else {
+        $responseBody = wp_remote_retrieve_body($response);
+        if ($responseBody) {
+            $responseJson = json_decode($responseBody);
+            $form_html = isset($responseJson->success) && $responseJson->success ? $responseJson->data : '';
+        } else {
             $form_html = '';
-          }
+        }
 
-          return $form_html;
-        } // shortcode_observer_lead_generator_form()
+        return $form_html;
+    } // ajax_subscribe_observer() }}
 
+    /*
+    * Save Tastemaker Review - Frontend
+    */
 
+    public function shortcode_subscribe_genre_form($atts)
+    {
 
-        /*
-  * Shortcode: Subscribe to Genre
-  */
-        public function shortcode_subscribe_genre_form($atts)
-        {
-
-          $genre_atts = shortcode_atts(array(
+        $genre_atts = shortcode_atts([
             'id' => NULL,
-          ), $atts);
+        ], $atts);
 
-          if (is_null($genre_atts['id']))
-            return;
+        if (is_null($genre_atts['id']))
+            return '';
 
-          $post_id = $genre_atts['id'];
-          $topic_id = get_post_meta(absint($post_id), 'observer-topic', true);
+        $post_id = $genre_atts['id'];
+        $topic_id = get_post_meta(absint($post_id), 'observer-topic', true);
 
-          if (!$topic_id) {
+        if (!$topic_id) {
             $topics = $this->get_observer_topics();
             if ($topics) {
-              foreach ($topics as $topic) {
-                $keywords = explode(',', $topic->keywords);
+                foreach ($topics as $topic) {
+                    $keywords = explode(',', $topic->keywords);
 
-                if (!is_array($keywords) || empty($keywords)) {
-                  continue;
-                }
+                    if (!is_array($keywords) || empty($keywords)) {
+                        continue;
+                    }
 
-                foreach ($keywords as $keyword) {
-                  if ('' == trim($keyword) || !in_array(strtolower($keyword), $this->artist_keywords)) {
-                    continue;
-                  }
-                  if (strpos(strtolower(get_the_content()), $keyword) !== false) {
-                    $topic_id = $topic->id;
-                    break;
-                  }
+                    foreach ($keywords as $keyword) {
+                        if ('' == trim($keyword) || !in_array(strtolower($keyword), $this->artist_keywords)) {
+                            continue;
+                        }
+                        if (str_contains(strtolower(get_the_content()), $keyword)) {
+                            $topic_id = $topic->id;
+                            break;
+                        }
+                    }
                 }
-              }
             }
-          }
-          // var_dump($topic_id); exit;
+        }
+        // var_dump($topic_id); exit;
 
-          /* if (!isset($topic_id)) {
-          } */
+        /* if (!isset($topic_id)) {
+        } */
 
-          if (!$topic_id || '' == trim($topic_id)) {
+        if (!$topic_id || '' == trim($topic_id)) {
             $genres = get_the_terms($post_id, 'genre');
             if (!$genres) {
-              return;
+                return '';
             }
 
             $primary_genre = null;
 
             foreach ($genres as $genre) {
-              if (get_post_meta($post_id, '_yoast_wpseo_primary_genre', true) == $genre->term_id) {
-                $primary_genre = $genre;
-                break;
-              }
+                if (get_post_meta($post_id, '_yoast_wpseo_primary_genre', true) == $genre->term_id) {
+                    $primary_genre = $genre;
+                    break;
+                }
             }
 
             if (is_null($primary_genre)) {
-              $primary_genre = $genres[0];
+                $primary_genre = $genres[0];
             }
 
             // print_r($primary_genre); exit;
 
             $topic_id = get_term_meta($primary_genre->term_id, 'primary-observer-topic', true);
             if (!$topic_id) {
-              $topic_id = get_term_meta($primary_genre->term_id, 'observer-topic', true);
+                $topic_id = get_term_meta($primary_genre->term_id, 'observer-topic', true);
             }
-          }
+        }
 
-          ob_start();
-          ?>
-    <?php
-          if ($topic_id) {
+        ob_start();
+        ?>
+        <?php
+        if ($topic_id) {
             $topics = $this->get_observer_topics($topic_id);
             $topic = $topics[0];
 
             if (!$topic) {
-              return;
+                return '';
             }
 
             $topic->title = trim(str_ireplace('Observer', '', $topic->title));
-    ?>
-      <div class="observer-sub-form justify-content-center my-3 p-0 d-flex align-items-stretch bg-dark text-white">
-        <div class="img-wrap" style="background-image: url(<?php echo $topic->image_url; ?>);">
-          <!-- <img src="<?php //echo $topic->image_url; 
-                          ?>" width="200" height="200" style="visibility: hidden;"> -->
-        </div>
-        <div class="p-3 d-flex justify-content-center align-items-center">
-          <div>
-            <div class="mb-2">
-              <h2 class="h5 mb-0 observer-title">Love <?php echo $topic->title; ?>?</h2>
-            </div>
-            <p class="mb-2">
-              Get the latest <?php echo $topic->title; ?> news, features, updates and giveaways straight to your inbox
-              <a href="<?php echo $topic->link; ?>" class="l-learn-more text-dark" target="_blank" rel="noopener">Learn more</a>
-            </p>
-            <?php if (!is_user_logged_in()) : ?>
-              <button class="button btn btn-primary btn-join" style="color: #fff !important">JOIN</button>
-            <?php endif; ?>
-            <form action="#" method="post" id="observer-subscribe-form<?php echo $post_id; ?>" name="observer-subscribe-form" class="observer-subscribe-form <?php echo !is_user_logged_in() ? 'd-none bg-white' : ''; ?>">
-              <div class="d-flex justify-content-start">
-                <input type="hidden" name="list" value="<?php echo $topic_id; ?>">
-                <?php if (!is_user_logged_in()) : ?>
-                  <input type="email" name="email" class="form-control observer-sub-email" placeholder="Your email" value="">
-                <?php endif; ?>
-                <div class="d-flex submit-wrap rounded">
-                  <input type="submit" value="Join" name="subscribe" class="button btn btn-primary rounded" style="color: #fff !important">
+            ?>
+            <div class="observer-sub-form justify-content-center my-3 p-0 d-flex align-items-stretch bg-dark text-white">
+                <div class="img-wrap" style="background-image: url(<?php echo $topic->image_url; ?>);">
+                    <!-- <img src="<?php //echo $topic->image_url;
+                    ?>" width="200" height="200" style="visibility: hidden;"> -->
                 </div>
-              </div>
-            </form>
-            <div class="alert alert-info d-none js-msg-subscribe mt-2"></div>
-            <div class="alert alert-danger d-none js-errors-subscribe mt-2"></div>
-          </div>
-        </div>
-      </div>
-<?php
-          }
-          $html = ob_get_contents();
-          ob_end_clean();
+                <div class="p-3 d-flex justify-content-center align-items-center">
+                    <div>
+                        <div class="mb-2">
+                            <h2 class="h5 mb-0 observer-title">Love <?php echo $topic->title; ?>?</h2>
+                        </div>
+                        <p class="mb-2">
+                            Get the latest <?php echo $topic->title; ?> news, features, updates and giveaways straight
+                            to your inbox
+                            <a href="<?php echo $topic->link; ?>" class="l-learn-more text-dark" target="_blank"
+                               rel="noopener">Learn more</a>
+                        </p>
+                        <?php if (!is_user_logged_in()) : ?>
+                            <button class="button btn btn-primary btn-join" style="color: #fff !important">JOIN</button>
+                        <?php endif; ?>
+                        <form action="#" method="post" id="observer-subscribe-form<?php echo $post_id; ?>"
+                              name="observer-subscribe-form"
+                              class="observer-subscribe-form <?php echo !is_user_logged_in() ? 'd-none bg-white' : ''; ?>">
+                            <div class="d-flex justify-content-start">
+                                <input type="hidden" name="list" value="<?php echo $topic_id; ?>">
+                                <?php if (!is_user_logged_in()) : ?>
+                                    <label>
+                                        <input type="email" name="email" class="form-control observer-sub-email"
+                                               placeholder="Your email" value="">
+                                    </label>
+                                <?php endif; ?>
+                                <div class="d-flex submit-wrap rounded">
+                                    <input type="submit" value="Join" name="subscribe"
+                                           class="button btn btn-primary rounded" style="color: #fff !important">
+                                </div>
+                            </div>
+                        </form>
+                        <div class="alert alert-info d-none js-msg-subscribe mt-2"></div>
+                        <div class="alert alert-danger d-none js-errors-subscribe mt-2"></div>
+                    </div>
+                </div>
+            </div>
+            <?php
+        }
+        $html = ob_get_contents();
+        ob_end_clean();
 
-          return $html;
-        } // shortcode_subscribe_genre_form()
+        return $html;
+    } // save_tastemaker_review()
 
-        public function ajax_subscribe_observer()
-        {
+    /*
+* Save Lead Generator Response - Frontend
+*/
 
-          if (defined('DOING_AJAX') && DOING_AJAX) :
+public function ajax_subscribe_observer(): void
+{
+
+        if (defined('DOING_AJAX') && DOING_AJAX) :
 
             if (isset($_POST['formData'])) {
-              parse_str($_POST['formData'], $formData);
+                parse_str($_POST['formData'], $formData);
             } else {
-              $formData = $_POST;
+                $formData = $_POST;
             }
 
             if (is_user_logged_in()) :
-              $current_user = wp_get_current_user();
-              $formData['email'] = $current_user->user_email;
+                $current_user = wp_get_current_user();
+                $formData['email'] = $current_user->user_email;
             endif;
 
             if (!is_numeric($formData['list'])) {
-              error_log('Observer List _' . $formData['list'] . '_is not numeric');
-              wp_mail('dev@thebrag.media', 'Observer Error', 'Observer List _' . $formData['list'] . '_is not numeric : ' . print_r($formData, true));
-              wp_send_json_error(['error' => ['message' => 'Something went wrong']]);
-              wp_die();
+                error_log('Observer List _' . $formData['list'] . '_is not numeric');
+                wp_mail('dev@thebrag.media', 'Observer Error', 'Observer List _' . $formData['list'] . '_is not numeric : ' . print_r($formData, true));
+                wp_send_json_error(['error' => ['message' => 'Something went wrong']]);
+                wp_die();
             }
 
             $brag_api_url_base = in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']) ? 'https://the-brag.com/' : 'https://thebrag.com/';
@@ -530,36 +642,35 @@ class BragObserver
             $brag_api_url = $brag_api_url_base . 'wp-json/brag_observer_airship/v1/sub_unsub/';
 
             $response = wp_remote_post(
-              $brag_api_url,
-              [
-                'method'      => 'POST',
-                'body'        => array(
-                  'email' => $formData['email'],
-                  'list' => $formData['list'],
-                  'source' => $formData['source'],
-                  'status' => isset($formData['status']) && in_array($formData['status'], ['subscribed', 'unsubscribed']) ? $formData['status'] : 'subscribed',
-                ),
-                'sslverify' => !in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']),
-              ]
+                $brag_api_url,
+                [
+                    'method' => 'POST',
+                    'body' => [
+                        'email' => $formData['email'],
+                        'list' => $formData['list'],
+                        'source' => $formData['source'],
+                        'status' => isset($formData['status']) && in_array($formData['status'], ['subscribed', 'unsubscribed']) ? $formData['status'] : 'subscribed',
+                    ],
+                    'sslverify' => !in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']),
+                ]
             );
             $responseBody = wp_remote_retrieve_body($response);
-            $resonseJson = json_decode($responseBody);
-            if (isset($resonseJson->success) && $resonseJson->success == 1) {
-              return wp_send_json_success($resonseJson->data);
-              wp_die();
+            $responseJson = json_decode($responseBody);
+            if (isset($responseJson->success) && $responseJson->success == 1) {
+                wp_send_json_success($responseJson->data);
             }
-            wp_send_json_error(['error' => ['message' => $resonseJson->data->error->message]]);
-            wp_die();
-          endif;
-        } // ajax_subscribe_observer() }}
+            wp_send_json_error(['error' => ['message' => $responseJson->data->error->message]]);
+        endif;
+    } // save_lead_generator_response()
 
-        /*
-  * Save Tastemaker Review - Frontend
-  */
-        public function save_tastemaker_review()
-        {
+    /*
+* REST: Endpoints
+*/
 
-          if (defined('DOING_AJAX') && DOING_AJAX) :
+public function save_tastemaker_review(): void
+{
+
+        if (defined('DOING_AJAX') && DOING_AJAX) :
 
             parse_str($_POST['formData'], $formData);
 
@@ -567,392 +678,312 @@ class BragObserver
 
             $errors = [];
 
-            $tastemaker_id = isset($formData['id']) ? $formData['id'] : null;
+            $tastemaker_id = $formData['id'] ?? null;
             if (is_null($tastemaker_id)) {
-              $errors[] = 'Invalid submission.';
+                $errors[] = 'Invalid submission.';
             }
 
             $formData['rating'] = isset($formData['rating']) ? absint($formData['rating']) : 0;
             if (!isset($formData['rating']) || !in_array($formData['rating'], [1, 2, 3, 4, 5])) {
-              $errors[] = 'Please select valid star rating.';
+                $errors[] = 'Please select valid star rating.';
             }
 
             $formData['email'] = trim($formData['email']);
             if (!isset($formData['email']) || !is_email($formData['email'])) {
-              $errors[] = 'Please enter valid email address.';
+                $errors[] = 'Please enter valid email address.';
             }
 
             if (count($errors) > 0) {
-              wp_send_json_error($errors);
+                wp_send_json_error($errors);
             }
 
             $formData['key'] = $this->rest_api_key;
 
             $api_url = $this->api_url . 'create_tastemaker_review';
             $response = wp_remote_post(
-              $api_url,
-              [
-                'method' => 'POST',
-                'timeout' => 45,
-                'body' => $formData,
-                'sslverify' => !$this->is_sandbox
-              ]
+                $api_url,
+                [
+                    'method' => 'POST',
+                    'timeout' => 45,
+                    'body' => $formData,
+                    'sslverify' => !$this->is_sandbox
+                ]
             );
             $responseBody = wp_remote_retrieve_body($response);
-            $resonseJson = json_decode($responseBody);
-            if ($resonseJson->success) {
-              wp_send_json_success($resonseJson->data);
+            $responseJson = json_decode($responseBody);
+            if ($responseJson->success) {
+                wp_send_json_success($responseJson->data);
             } else {
-              wp_send_json_error($resonseJson->data);
+                wp_send_json_error($responseJson->data);
             }
-          // return $resonseJson->data;
-          endif;
-        } // save_tastemaker_review()
+        endif;
+    }
 
-        /*
-  * Save Lead Generator Response - Frontend
-  */
-        public function save_lead_generator_response()
-        {
+    /*
+    * REST: get articles
+    */
 
-          if (defined('DOING_AJAX') && DOING_AJAX) :
+    public function save_lead_generator_response(): void
+    {
+
+        if (defined('DOING_AJAX') && DOING_AJAX) :
 
             parse_str($_POST['formData'], $formData);
 
             $errors = [];
 
-            $tastemaker_id = isset($formData['id']) ? $formData['id'] : null;
+            $tastemaker_id = $formData['id'] ?? null;
             if (is_null($tastemaker_id)) {
-              $errors[] = 'Invalid submission.';
+                $errors[] = 'Invalid submission.';
             }
 
             $formData['email'] = trim($formData['email']);
             if (!isset($formData['email']) || !is_email($formData['email'])) {
-              $errors[] = 'Please enter valid email address.';
+                $errors[] = 'Please enter valid email address.';
             }
 
             if (count($errors) > 0) {
-              wp_send_json_error($errors);
+                wp_send_json_error($errors);
             }
 
             $formData['key'] = $this->rest_api_key;
 
             $api_url = $this->api_url . 'create_lead_generator_response';
             $response = wp_remote_post(
-              $api_url,
-              [
-                'method' => 'POST',
-                'timeout' => 45,
-                'body' => $formData,
-                'sslverify' => !$this->is_sandbox
-              ]
+                $api_url,
+                [
+                    'method' => 'POST',
+                    'timeout' => 45,
+                    'body' => $formData,
+                    'sslverify' => !$this->is_sandbox
+                ]
             );
             $responseBody = wp_remote_retrieve_body($response);
-            $resonseJson = json_decode($responseBody);
-            if ($resonseJson->success) {
-              wp_send_json_success($resonseJson->data);
+            $responseJson = json_decode($responseBody);
+            if ($responseJson->success) {
+                wp_send_json_success($responseJson->data);
             } else {
-              wp_send_json_error($resonseJson->data);
+                wp_send_json_error($responseJson->data);
             }
-          endif;
-        } // save_lead_generator_response()
+        endif;
+    }
 
-        /*
-  * REST: Endpoints
-  */
-        public function _rest_api_init()
-        {
-          register_rest_route('api/v1', '/observer/articles', array(
+    /*
+    * Get Observer topics
+    */
+
+    public function _rest_api_init(): void
+    {
+        register_rest_route('api/v1', '/observer/articles', [
             'methods' => 'GET',
             'callback' => [$this, 'get_articles_for_topic'],
-          ));
+        ]);
 
-          register_rest_route('api/v1', '/observer/competitions', array(
+        register_rest_route('api/v1', '/observer/competitions', [
             'methods' => 'GET',
             'callback' => [$this, 'get_competition_articles'],
-          ));
+        ]);
+    }
+
+    /*
+    * Call Remote API
+    */
+
+    /**
+     * @throws Exception
+     */
+    function get_articles_for_topic(): array
+    {
+        $topic = $_GET['topic'] ?? null;
+
+        if (is_null($topic)) {
+            return [];
         }
 
-        /*
-  * REST: get articles
-  */
-        function get_articles_for_topic($data)
-        {
-          $topic = isset($_GET['topic']) ? $_GET['topic'] : null;
+        $topics = array_map('trim', explode(',', $topic));
+        $keywords = implode('+', $topics);
 
-          if (is_null($topic))
-            return;
+        $posts_per_page = isset($_GET['size']) ? (int)$_GET['size'] : 10;
 
-          $topics = array_map('trim', explode(',', $topic));
-          $keywords = implode('+', $topics);
+        $timezone = new DateTimeZone('Australia/Sydney');
 
-          $posts_per_page = isset($_GET['size']) ? (int) $_GET['size'] : 10;
-
-          $timezone = new DateTimeZone('Australia/Sydney');
-
-          if (isset($_GET['after'])) :
+        if (isset($_GET['after'])) :
             $after_dt = new DateTime(date_i18n('Y-m-d H:i:s', strtotime(trim($_GET['after']))));
             $after_dt->setTimezone($timezone);
             $after = $after_dt->format('Y-m-d H:i:s');
-          else :
+        else :
             $after = NULL;
-          endif;
+        endif;
 
-          if (isset($_GET['before'])) :
+        if (isset($_GET['before'])) :
             $before_dt = new DateTime(date_i18n('Y-m-d H:i:s', strtotime(trim($_GET['before']))));
             $before_dt->setTimezone($timezone);
             $before = $before_dt->format('Y-m-d H:i:s');
-          else :
+        else :
             $before = NULL;
-          endif;
+        endif;
 
-          if (is_null($after) || is_null($before))
-            return;
+        if (is_null($after) || is_null($before)) {
+            return [];
+        }
 
-          $return = array();
+        $return = [];
 
-          $args = [
-            'date_query' => array(
-              'after' => $after,
-              'before' => $before,
-            ),
+        $args = [
+            'date_query' => [
+                'after' => $after,
+                'before' => $before,
+            ],
             'fields' => 'ids',
-            'post_type' => array('post', 'country'),
+            'post_type' => ['post', 'country'],
             'post_status' => 'publish',
             'posts_per_page' => $posts_per_page,
-          ];
+        ];
 
-          $posts_keyword = new WP_Query(
+        $posts_keyword = new WP_Query(
             $args +
-              [
+            [
                 's' => $keywords,
                 'exact' => isset($_GET['exact']), // true,
                 'sentence' => isset($_GET['sentence']), // true,
-              ]
-          );
+            ]
+        );
 
-          // Genre + Artist + Category
-          $posts_genre = new WP_Query(
+        // Genre + Artist + Category
+        $posts_genre = new WP_Query(
             $args +
-              [
+            [
                 'tax_query' => [
-                  'relation' => 'OR',
-                  [
-                    'taxonomy' => 'genre',
-                    'field' => 'slug',
-                    'terms' => $topics,
-                  ],
-                  [
-                    'taxonomy' => 'artist',
-                    'field' => 'slug',
-                    'terms' => $topics,
-                  ],
-                  [
-                    'taxonomy' => 'category',
-                    'field' => 'slug',
-                    'terms' => $topics,
-                  ],
+                    'relation' => 'OR',
+                    [
+                        'taxonomy' => 'genre',
+                        'field' => 'slug',
+                        'terms' => $topics,
+                    ],
+                    [
+                        'taxonomy' => 'artist',
+                        'field' => 'slug',
+                        'terms' => $topics,
+                    ],
+                    [
+                        'taxonomy' => 'category',
+                        'field' => 'slug',
+                        'terms' => $topics,
+                    ],
                 ],
-              ]
-          );
+            ]
+        );
 
-          // Tags
-          $posts_tags = new WP_Query(
+        // Tags
+        $posts_tags = new WP_Query(
             $args +
-              [
+            [
                 'tag' => $keywords
-              ]
-          );
+            ]
+        );
 
-          $combined_ids = array_merge(
+        $combined_ids = array_merge(
             $posts_keyword->posts,
             $posts_genre->posts,
             $posts_tags->posts
-          );
-          $combined_ids = array_unique($combined_ids);
+        );
+        $combined_ids = array_unique($combined_ids);
 
-          if (count($combined_ids) < 1)
-            return;
+        if (count($combined_ids) < 1)
+            return [];
 
-          $posts = new WP_Query(['post__in' => $combined_ids]);
+        $posts = new WP_Query(['post__in' => $combined_ids]);
 
-          global $post;
-          if ($posts->have_posts()) {
+        global $post;
+        if ($posts->have_posts()) {
             while ($posts->have_posts()) {
-              $posts->the_post();
-              $url = get_the_permalink();
-              $author = get_field('Author') ? get_field('Author') : get_the_author();
+                $posts->the_post();
+                $url = get_the_permalink();
 
-              $src = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'medium_large');
+                $src = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'medium_large');
 
-              $return[] = array(
-                'title' => get_the_title(),
-                'link' => $url,
-                'publish_date' => mysql2date('c', get_post_time('c', true), false),
-                'description' => get_post_meta(get_the_ID(), '_yoast_wpseo_metadesc', true) ?: get_the_excerpt(),
-                'image' => $src[0],
-              );
+                $return[] = [
+                    'title' => get_the_title(),
+                    'link' => $url,
+                    'publish_date' => mysql2date('c', get_post_time('c', true), false),
+                    'description' => get_post_meta(get_the_ID(), '_yoast_wpseo_metadesc', true) ?: get_the_excerpt(),
+                    'image' => $src[0],
+                ];
             }
-          }
-          return $return;
         }
+        return $return;
+    }
 
-        /*
-  * Get Observer topics
-  */
-        public function get_observer_topics($topic = NULL)
-        {
-          /*
-          $api_url = $this->api_url . 'get_topics?key=' . $this->rest_api_key;
-          if (!is_null($topic)) {
-            $api_url .= '&id=' . $topic;
-          }
-          $api_url .= '&site=tonedeaf.thebrag.com';
-          $response = wp_remote_get($api_url, ['sslverify' => !$this->is_sandbox]);
+    /*
+    * Save post meta if shortcode is present
+    */
 
-          $responseBody = wp_remote_retrieve_body($response);
-          if ($responseBody) {
-            $resonseJson = json_decode($responseBody);
-            $topics = isset($resonseJson->success) && $resonseJson->success ? $resonseJson->data : [];
-          } else {
-            $topics = '';
-          }
-          */
+    public function _save_post($post_id, $post): void
+    {
 
-          $responseJson = file_get_contents(get_stylesheet_directory() . '/template-parts/observer-lists.json');
-          $resonse = json_decode($responseJson);
-          $topics = $resonse->data;
-
-          if (!is_null($topic)) {
-            foreach ($topics as $t) {
-              if ($topic == $t->id) {
-                return [$t];
-              }
-            }
-          }
-          return $topics;
-        }
-
-        /*
-  * Call Remote API
-  */
-        private static function callAPI($method, $url, $data = '', $content_type = '')
-        {
-          $curl = curl_init();
-          switch ($method) {
-            case "POST":
-              curl_setopt($curl, CURLOPT_POST, 1);
-              if ($data)
-                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-              break;
-            case "PUT":
-              curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
-              if ($data)
-                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-              break;
-            default:
-              if ($data)
-                $url = sprintf("%s?%s", $url, http_build_query($data));
-          }
-          // OPTIONS:
-          curl_setopt($curl, CURLOPT_URL, $url);
-          if ($content_type !== false) {
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-              'Content-Type: application/json',
-            ));
-          }
-          curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-          curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-
-          if (in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
-          }
-          // EXECUTE:
-          $result = curl_exec($curl);
-
-          // error_log( $url );
-          // if ( 'POST' == $method ) {
-          // echo '<pre>'; var_dump( curl_error( $curl ) ); echo '</pre>';
-          // }
-          if (!$result)
-            return;
-          curl_close($curl);
-          return $result;
-        }
-
-        /*
-  * Save post meta if shortcode is present
-  */
-        public function _save_post($post_id, $post, $update)
-        {
-
-          if (strpos($post->post_content, '[observer_lead_generator_form') !== FALSE) {
-            preg_match('/(.*?)\[observer_lead_generator_form id=\"(\d+)\"(.*?)\]/', $post->post_content, $matches);
+        if (str_contains($post->post_content, '[observer_lead_generator_form')) {
+            preg_match('/(.*?)\[observer_lead_generator_form id="(\d+)"(.*?)]/', $post->post_content, $matches);
             if ($matches && $matches[2]) {
-              update_post_meta($post_id, 'has_lead_generator', $matches[2]);
+                update_post_meta($post_id, 'has_lead_generator', $matches[2]);
             } else {
-              delete_post_meta($post_id, 'has_lead_generator');
+                delete_post_meta($post_id, 'has_lead_generator');
             }
-          } else {
+        } else {
             delete_post_meta($post_id, 'has_lead_generator');
-          }
         }
+    }
 
-        /*
-  * REST: Competition Articles
-  */
-        function get_competition_articles($data)
-        {
+    /*
+    * REST: Competition Articles
+    */
+    function get_competition_articles(): array
+    {
 
-          $timezone = new DateTimeZone('Australia/Sydney');
+        $return = [];
+        $today = date('Ymd');
 
-          $return = array();
-          $today = date('Ymd');
-
-          $args = [
-            'post_type' => array('any'),
+        $args = [
+            'post_type' => ['any'],
             'orderby' => 'date',
-            'order'   => 'ASC',
-            'has_password'   => FALSE,
+            'order' => 'ASC',
+            'has_password' => false,
             'post_status' => 'publish',
             'posts_per_page' => '-1',
             'meta_query' => [
-              'relation' => 'AND',
-              'lg_shortcode' => [
-                'key' => 'has_lead_generator',
-                'compare' => 'EXISTS',
-              ],
-              'lg_close_date' => [
-                'key' => 'competition_end_date',
-                'value' => $today,
-                'compare' => '>=',
-                'type' => 'DATE',
-              ]
+                'relation' => 'AND',
+                'lg_shortcode' => [
+                    'key' => 'has_lead_generator',
+                    'compare' => 'EXISTS',
+                ],
+                'lg_close_date' => [
+                    'key' => 'competition_end_date',
+                    'value' => $today,
+                    'compare' => '>=',
+                    'type' => 'DATE',
+                ]
             ]
-          ];
-          $posts = new WP_Query($args);
+        ];
+        $posts = new WP_Query($args);
 
-          global $post;
-          if ($posts->have_posts()) {
+        global $post;
+        if ($posts->have_posts()) {
             while ($posts->have_posts()) {
-              $posts->the_post();
-              $url = get_the_permalink();
-              $author = get_field('Author') ? get_field('Author') : get_the_author();
+                $posts->the_post();
+                $url = get_the_permalink();
 
-              $src = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'thumbnail');
+                $src = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID));
 
-              $return[] = array(
-                'title' => get_the_title(),
-                'link' => $url,
-                'competition_end_date' => mysql2date('Y-m-d', get_post_meta($post->ID, 'competition_end_date', true), false),
-                'lead_generator' => get_post_meta($post->ID, 'has_lead_generator', true),
-                'image' => $src[0],
-              );
+                $return[] = [
+                    'title' => get_the_title(),
+                    'link' => $url,
+                    'competition_end_date' => mysql2date('Y-m-d', get_post_meta($post->ID, 'competition_end_date', true), false),
+                    'lead_generator' => get_post_meta($post->ID, 'has_lead_generator', true),
+                    'image' => $src[0],
+                ];
             }
-          }
-          return $return;
         }
-      }
+        return $return;
+    }
+}
 
-      new BragObserver();
+new BragObserver();

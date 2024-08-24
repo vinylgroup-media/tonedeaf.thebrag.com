@@ -1,41 +1,49 @@
 <?php
 
-function add_expires_header( $headers, $wp ) {
+use JetBrains\PhpStorm\NoReturn;
+
+function add_expires_header($headers, $wp)
+{
     $headers['X-Accel-Expires'] = '1440';
     return $headers;
 }
-add_filter( 'wp_headers', 'add_expires_header', 10, 2 );
 
-function add_expires_header_json( $served, $result, $request ) {
+add_filter('wp_headers', 'add_expires_header', 10, 2);
+
+function add_expires_header_json($served, $result, $request)
+{
     header('X-Accel-Expires: 120');
 }
-add_filter( 'rest_pre_serve_request', 'add_expires_header_json', 10, 3 );
 
-/* Remove guttenburg blocks css */
+add_filter('rest_pre_serve_request', 'add_expires_header_json', 10, 3);
 
-function db_dequeue_block_styles(): void {
-    wp_dequeue_style( 'wp-block-library' );
-	wp_dequeue_style( 'wp-block-library-theme' );
-} 
-add_action( 'wp_enqueue_scripts', 'db_dequeue_block_styles', 100 );
+/* Remove Gutenberg blocks css */
+
+function db_dequeue_block_styles(): void
+{
+    wp_dequeue_style('wp-block-library');
+    wp_dequeue_style('wp-block-library-theme');
+}
+
+add_action('wp_enqueue_scripts', 'db_dequeue_block_styles', 100);
 
 /* Replace jQuery CDN */
 
-function load_jquery_from_google_cdn() {
+function load_jquery_from_google_cdn(): void
+{
     if (!is_admin()) {
         wp_deregister_script('jquery');
         wp_register_script('jquery', 'https://code.jquery.com/jquery-3.7.1.min.js', [], '3.7.1');
         wp_enqueue_script('jquery');
     }
 }
+
 add_action('wp_enqueue_scripts', 'load_jquery_from_google_cdn');
 
-// define('ICONS_URL', get_template_directory_uri() . '/images/');
-// define('CDN_URL', ICONS_URL);
-define('ICONS_URL', 'https://cdn.thebrag.com/icons/');
-define('CDN_URL', 'https://cdn-r2-2.thebrag.com/td/');
-define('BRAG_API_KEY', '3ce4efdd-a39c-4141-80f7-08a828500831');
-define('IMAGES_R2_CDN_URL', 'https://images-r2.thebrag.com/');
+const ICONS_URL = 'https://cdn.thebrag.com/icons/';
+const CDN_URL = 'https://cdn-r2-2.thebrag.com/td/';
+const BRAG_API_KEY = '3ce4efdd-a39c-4141-80f7-08a828500831';
+const IMAGES_R2_CDN_URL = 'https://images-r2.thebrag.com/';
 
 // Add default posts and comments RSS feed links to head.
 // add_theme_support('automatic-feed-links');
@@ -63,29 +71,29 @@ add_theme_support('post-thumbnails');
  * To-do
  */
 register_nav_menus(
-    array(
+    [
         'top' => __('Top Menu', 'tonedeaf'),
-    )
+    ]
 );
 
 /*
  * Switch default core markup for search form, comment form, and comments
  * to output valid HTML5.
  */
-add_theme_support('html5', array(
-    'comment-form',
-    'comment-list',
-    'gallery',
-    'caption',
-    'search-form',
-)
+add_theme_support('html5', [
+        'comment-form',
+        'comment-list',
+        'gallery',
+        'caption',
+        'search-form',
+    ]
 );
 
 /*
  * This theme styles the visual editor to resemble the theme style,
  * specifically font, colors, and column width.
  */
-add_editor_style(array('assets/css/editor-style.css', thebrag_fonts_url()));
+add_editor_style(['assets/css/editor-style.css', thebrag_fonts_url()]);
 
 /*
  * Added functions
@@ -94,16 +102,17 @@ add_editor_style(array('assets/css/editor-style.css', thebrag_fonts_url()));
 /**
  * Register custom fonts.
  */
-function thebrag_fonts_url()
+function thebrag_fonts_url(): string
 {
-    $fonts_url = ''; {
-        $font_families = array();
+    $fonts_url = '';
+    {
+        $font_families = [];
 
         $font_families[] = 'Droid Sans:400,700';
 
-        $query_args = array(
+        $query_args = [
             'family' => urlencode(implode('|', $font_families)),
-        );
+        ];
 
         $fonts_url = add_query_arg($query_args, 'https://fonts.googleapis.com/css');
     }
@@ -117,33 +126,35 @@ function thebrag_fonts_url()
  *
  * @since Twenty Seventeen 1.0
  */
-function thebrag_javascript_detection()
+function thebrag_javascript_detection(): void
 {
     echo "<script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>\n";
 }
+
 add_action('wp_head', 'thebrag_javascript_detection', 0);
 
 /**
  * Add a pingback url auto-discovery header for singularly identifiable articles.
  */
-function thebrag_pingback_header()
+function thebrag_pingback_header(): void
 {
     if (is_singular() && pings_open()) {
         printf('<link rel="pingback" href="%s">' . "\n", get_bloginfo('pingback_url'));
     }
 }
+
 add_action('wp_head', 'thebrag_pingback_header');
 
 /**
  * If more than one page exists, return TRUE.
  */
-function show_posts_nav()
+function show_posts_nav(): bool
 {
     global $wp_query;
     return ($wp_query->max_num_pages > 1);
 }
 
-function string_limit_words($string, $word_limit)
+function string_limit_words($string, $word_limit): string
 {
     $words = explode(' ', $string, ($word_limit + 1));
     if (count($words) > $word_limit) {
@@ -154,87 +165,88 @@ function string_limit_words($string, $word_limit)
 }
 
 // Article Category
-register_taxonomy('style', array(''), array('hierarchical' => true, 'label' => 'Article Style', 'query_var' => true, 'rewrite' => array('slug' => 'style'), 'capabilities' => array('manage_terms' => 'manage_categories', 'edit_terms' => 'manage_categories', 'delete_terms' => 'manage_categories', 'assign_terms' => 'edit_posts', 'assign_terms' => 'edit_gallerys', 'assign_terms' => 'manage_categories'), 'show_ui' => true, 'public' => true));
+register_taxonomy('style', [''], ['hierarchical' => true, 'label' => 'Article Style', 'query_var' => true, 'rewrite' => ['slug' => 'style'], 'capabilities' => ['manage_terms' => 'manage_categories', 'edit_terms' => 'manage_categories', 'delete_terms' => 'manage_categories', 'assign_terms' => 'edit_posts', 'assign_terms' => 'edit_gallerys', 'assign_terms' => 'manage_categories'], 'show_ui' => true, 'public' => true]);
 
-register_taxonomy('venue', array('gallery'), array('hierarchical' => true, 'labels' => array('name' => 'Venues', 'singular_name' => 'Venue'), 'query_var' => true, 'rewrite' => array('slug' => 'venue'), 'capabilities' => array('manage_terms' => 'manage_categories', 'edit_terms' => 'manage_categories', 'delete_terms' => 'manage_categories', 'assign_terms' => 'edit_posts', 'assign_terms' => 'edit_gallerys', 'assign_terms' => 'manage_categories', 'assign_terms' => 'backstage_use'), 'show_ui' => true, 'public' => true));
+register_taxonomy('venue', ['gallery'], ['hierarchical' => true, 'labels' => ['name' => 'Venues', 'singular_name' => 'Venue'], 'query_var' => true, 'rewrite' => ['slug' => 'venue'], 'capabilities' => ['manage_terms' => 'manage_categories', 'edit_terms' => 'manage_categories', 'delete_terms' => 'manage_categories', 'assign_terms' => 'edit_posts', 'assign_terms' => 'edit_gallerys', 'assign_terms' => 'manage_categories', 'assign_terms' => 'backstage_use'], 'show_ui' => true, 'public' => true]);
 
-register_meta( 'post', '_yoast_wpseo_focuskw', [ 'show_in_rest' => true, 'type'=> 'string', 'single'=>true ] );
+register_meta('post', '_yoast_wpseo_focuskw', ['show_in_rest' => true, 'type' => 'string', 'single' => true]);
 
 register_taxonomy(
-    'artist', 
-    array('post'), 
-    array(
-        'hierarchical' => false, 
-        'label' => 'Artist', 
-        'query_var' => true, 
-        'rewrite' => array(
+    'artist',
+    ['post'],
+    [
+        'hierarchical' => false,
+        'label' => 'Artist',
+        'query_var' => true,
+        'rewrite' => [
             'slug' => 'about'
-        ), 
-        'capabilities' => array(
-            'manage_terms' => 'manage_categories', 
-            'edit_terms' => 'manage_categories', 
-            'delete_terms' => 'manage_categories', 
-            'assign_terms' => 'edit_posts', 
+        ],
+        'capabilities' => [
+            'manage_terms' => 'manage_categories',
+            'edit_terms' => 'manage_categories',
+            'delete_terms' => 'manage_categories',
+            'assign_terms' => 'edit_posts',
             'assign_terms' => 'manage_categories'
-        ), 
-        'show_ui' => true, 
+        ],
+        'show_ui' => true,
         'public' => true,
         'show_in_rest' => true
-    )
+    ]
 );
 
 
 register_taxonomy(
     'genre',
-    array('post'),
-    array(
+    ['post'],
+    [
         'hierarchical' => true,
-        'labels' => array(
+        'labels' => [
             'name' => 'Genre',
             'singular_name' => 'Genre'
-        ),
+        ],
         'query_var' => true,
-        'rewrite' => array('slug' => 'genre'),
-        'capabilities' => array(
-            'manage_terms' => 'edit_posts', 
-            'edit_terms' => 'edit_posts', 
-            'delete_terms' => 'edit_posts', 
-            'assign_terms' => 'edit_posts', 
+        'rewrite' => ['slug' => 'genre'],
+        'capabilities' => [
+            'manage_terms' => 'edit_posts',
+            'edit_terms' => 'edit_posts',
+            'delete_terms' => 'edit_posts',
+            'assign_terms' => 'edit_posts',
             'assign_terms' => 'edit_posts'
-        ),
+        ],
         'show_ui' => true,
         'public' => true,
         'show_in_rest' => true
-    )
+    ]
 );
 
 
-function load_js_css()
+function load_js_css(): void
 {
-    wp_enqueue_script('scripts', CDN_URL . 'js/scripts.min.js', array('jquery'), '20240805.1', true);
+    wp_enqueue_script('scripts', CDN_URL . 'js/scripts.min.js', ['jquery'], '20240805.1', true);
     // wp_enqueue_script('scripts', get_template_directory_uri() . '/js/scripts.js', array('jquery'), time(), true);
 
 
     if (is_single()) {
         global $post;
-        $args = array(
+        $args = [
             'url' => admin_url('admin-ajax.php'),
             'exclude_posts' => isset($post) ? $post->ID : NULL,
             'current_post' => isset($post) ? $post->ID : NULL
-        );
+        ];
         wp_localize_script('scripts', 'tbm_load_next_post', $args);
     }
 
-    $args = array(
+    $args = [
         'ajax_url' => admin_url('admin-ajax.php')
-    );
+    ];
     wp_localize_script('scripts', 'global', $args);
 
     // wp_enqueue_script('lazysizes', get_template_directory_uri() . '/js/lazysizes.min.js', array(), '20181128', true);
 }
+
 add_action('wp_enqueue_scripts', 'load_js_css');
 
-function get_post_excerpt_by_id($post_id)
+function get_post_excerpt_by_id($post_id): string
 {
     global $post;
     $post = get_post($post_id);
@@ -251,7 +263,7 @@ $themename = 'ToneDeaf';
 $shortname = 'td';
 
 $categories = get_categories('hide_empty=0&orderby=name');
-$wp_cats = array();
+$wp_cats = [];
 foreach ($categories as $category_list) {
     $wp_cats[$category_list->cat_ID] = $category_list->cat_name;
 }
@@ -263,15 +275,15 @@ foreach ($categories as $category_list) {
  */
 add_action('wp_ajax_nopriv_get_listing_news', 'ajax_listings_news');
 add_action('wp_ajax_get_listing_news', 'ajax_listings_news');
-function ajax_listings_news()
+#[NoReturn] function ajax_listings_news()
 {
     $post_type = isset($_POST['type']) ? $_POST['type'] : 'post';
-    $args = array(
+    $args = [
         'post_type' => $post_type,
         'post_status' => 'publish',
         's' => $_POST['name'],
         'posts_per_page' => 10,
-    );
+    ];
 
     //    $args['date_query'] = array(
     //        'after' => date_i18n( 'Y-m-d', strtotime( '- 30 days' ) )
@@ -279,7 +291,7 @@ function ajax_listings_news()
 
     $query = get_posts($args);
     foreach ($query as $key => $post_data) {
-        $return[] = array($post_data->ID, $post_data->post_title);
+        $return[] = [$post_data->ID, $post_data->post_title];
     }
     echo json_encode($return);
     wp_reset_postdata();
@@ -288,14 +300,14 @@ function ajax_listings_news()
 
 //echo '<pre>' .print_r( $theme_options, true ) . '</pre>';
 
-function td_theme_add_init()
+function td_theme_add_init(): void
 {
     $file_dir = get_template_directory_uri(); //get_bloginfo('template_directory');
 
     wp_enqueue_style('admin', $file_dir . '/css/admin.css', false, '2.3', 'all');
 
-    wp_enqueue_script('td-jquery-autocomplete', $file_dir . '/js/jquery.auto-complete.js', array('jquery'), '1.0', true);
-    wp_enqueue_script('td-options-ajax-search', $file_dir . '/js/scripts-admin.js', array('jquery'), '1.1', true);
+    wp_enqueue_script('td-jquery-autocomplete', $file_dir . '/js/jquery.auto-complete.js', ['jquery'], '1.0', true);
+    wp_enqueue_script('td-options-ajax-search', $file_dir . '/js/scripts-admin.js', ['jquery'], '1.1', true);
 }
 
 add_action('admin_init', 'td_theme_add_init');
@@ -311,6 +323,7 @@ function td_author_contactmethods($contactmethods)
     $contactmethods['instagram'] = 'Instagram'; // Instagram
     return $contactmethods;
 }
+
 add_filter('user_contactmethods', 'td_author_contactmethods', 10, 1);
 
 add_action('init', 'fbInstantArticleRSS');
@@ -318,10 +331,12 @@ function fbInstantArticleRSS()
 {
     add_feed('instant_articles', 'fbInstantArticle');
 }
+
 function fbInstantArticle()
 {
     get_template_part('rss', 'instant_articles');
 }
+
 function iframe_wrapper_for_fb_instant($content)
 {
     // match any iframes
@@ -338,6 +353,7 @@ function iframe_wrapper_for_fb_instant($content)
 
     return $content;
 }
+
 //add_filter('the_content', 'iframe_wrapper_for_fb_instant');
 
 function td_remove_p_tags_around_iframes($content)
@@ -351,6 +367,7 @@ function td_remove_p_tags_around_iframes($content)
     $wraped_content = str_replace('width="100%"', 'width="400"', $wraped_content);
     return $wraped_content;
 }
+
 add_filter('the_content', 'td_remove_p_tags_around_iframes');
 
 function td_remove_p_tags_around_script($content)
@@ -363,6 +380,7 @@ function td_remove_p_tags_around_script($content)
     );
     return $wraped_content;
 }
+
 add_filter('the_content', 'td_remove_p_tags_around_script');
 
 function td_filter_ptags_on_images($content)
@@ -372,6 +390,7 @@ function td_filter_ptags_on_images($content)
     }
     return $content;
 }
+
 add_filter('the_content', 'td_filter_ptags_on_images');
 
 function td_image_resize($attachment_id, $width, $height, $crop = true)
@@ -404,7 +423,7 @@ add_action('init', 'register_cpt_photo_gallery');
 function register_cpt_photo_gallery()
 {
 
-    $labels = array(
+    $labels = [
         'name' => _x('Photo Galleries', 'photo_gallery'),
         'singular_name' => _x('Photo Gallery', 'photo_gallery'),
         'add_new' => _x('Add New', 'photo_gallery'),
@@ -417,14 +436,14 @@ function register_cpt_photo_gallery()
         'not_found_in_trash' => _x('No photo galleries found in Trash', 'photo_gallery'),
         'parent_item_colon' => _x('Parent Photo Gallery:', 'photo_gallery'),
         'menu_name' => _x('Photo Galleries', 'photo_gallery'),
-    );
+    ];
 
-    $args = array(
+    $args = [
         'labels' => $labels,
         'hierarchical' => false,
         'description' => 'Photos from gigs around Australia',
-        'supports' => array('title', 'editor', 'thumbnail', 'author'),
-        'taxonomies' => array('artist', 'venue', 'genre'),
+        'supports' => ['title', 'editor', 'thumbnail', 'author'],
+        'taxonomies' => ['artist', 'venue', 'genre'],
         'public' => true,
         //        'capability_type'     => 'page',
         'show_ui' => true,
@@ -438,9 +457,9 @@ function register_cpt_photo_gallery()
         'has_archive' => true,
         'query_var' => true,
         'can_export' => true,
-        'rewrite' => array('slug' => 'photo', ),
-        'capability_type' => array('page', 'photo_gallery'),
-        'capabilities' => array(
+        'rewrite' => ['slug' => 'photo',],
+        'capability_type' => ['page', 'photo_gallery'],
+        'capabilities' => [
             'publish_posts' => 'photo_gallery',
             'edit_posts' => 'photo_gallery',
             'edit_others_posts' => 'photo_gallery',
@@ -449,8 +468,8 @@ function register_cpt_photo_gallery()
             'delete_post' => 'photo_gallery',
             'read_post' => 'photo_gallery',
             'publish_post' => 'photo_gallery',
-        ),
-    );
+        ],
+    ];
 
     register_post_type('photo_gallery', $args);
 
@@ -576,8 +595,8 @@ function register_cpt_photo_gallery()
         foreach ($photographer_meta as $key => $value) { // Cycle through the $events_meta array!
             if ($post->post_type == 'revision')
                 return; // Don't store custom data twice
-            $value = implode(',', (array) $value); // If $value is an array, make it a CSV (unlikely)
-            if (get_post_meta($post->ID, $key, FALSE)) { // If the custom field already has a value
+            $value = implode(',', (array)$value); // If $value is an array, make it a CSV (unlikely)
+            if (get_post_meta($post->ID, $key, false)) { // If the custom field already has a value
                 update_post_meta($post->ID, $key, $value);
             } else { // If the custom field doesn't have a value
                 add_post_meta($post->ID, $key, $value);
@@ -586,6 +605,7 @@ function register_cpt_photo_gallery()
                 delete_post_meta($post->ID, $key); // Delete if blank
         }
     }
+
     add_action('save_post', 'wpt_save_photographer_meta', 1, 2); // save the custom fields
 
     add_action("manage_posts_custom_column", "photo_gallery_custom_columns");
@@ -593,17 +613,18 @@ function register_cpt_photo_gallery()
 
     function photo_gallery_edit_columns($columns)
     {
-        $columns = array(
+        $columns = [
             "cb" => "<input type=\"checkbox\" />",
             "title" => "Title",
             "photodate" => "Date",
             "photovenue" => "Venue",
             "photoartists" => "Artists",
             "genre" => "Genre"
-        );
+        ];
 
         return $columns;
     }
+
     function photo_gallery_custom_columns($column)
     {
         global $post;
@@ -612,7 +633,6 @@ function register_cpt_photo_gallery()
             case "photodate":
                 $custom = get_post_custom();
                 echo isset($custom["Full Date"]) ? date('M j, Y', strtotime($custom["Full Date"][0])) : the_time('M j, Y');
-                ;
                 break;
             case "photovenue":
                 $custom = get_post_custom();
@@ -627,23 +647,23 @@ function register_cpt_photo_gallery()
 
 function photo_gallery_attachments($attachments)
 {
-    $fields = array(
-        array(
+    $fields = [
+        [
             'name' => 'title',                         // unique field name
             'type' => 'text',                          // registered field type
             'label' => __('Title', 'photos'),    // label to display
             'default' => 'title',                         // default value upon selection
-        ),
-        array(
+        ],
+        [
             'name' => 'caption',                       // unique field name
             'type' => 'text',                      // registered field type
             'label' => __('Caption', 'photos'),  // label to display
             'default' => 'caption',                       // default value upon selection
-        ),
-    );
-    $args = array(
+        ],
+    ];
+    $args = [
         'label' => 'Photos', // title of the meta box (string)
-        'post_type' => array('photo_gallery'), // all post types to utilize (string|array)
+        'post_type' => ['photo_gallery'], // all post types to utilize (string|array)
         'position' => 'normal', // meta box position (string) (normal, side or advanced)
         'priority' => 'high', // meta box priority (string) (high, default, low, core)
         'filetype' => null,  // no filetype limit // allowed file type(s) (array) (image|video|text|audio|application)
@@ -654,7 +674,7 @@ function photo_gallery_attachments($attachments)
         'router' => 'browse', // which tab should be the default in the modal (string) (browse|upload)
         'post_parent' => false, // whether Attachments should set 'Uploaded to' (if not already set)
         'fields' => $fields, // fields array
-    );
+    ];
 
     $attachments->register('photo_gallery_attachments', $args); // unique instance name
 }
@@ -689,7 +709,7 @@ function add_my_rss_node()
     global $post;
     if (has_post_thumbnail($post->ID)):
         $thumbnail = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'medium');
-        echo ("<image>{$thumbnail[0]}</image>");
+        echo("<image>{$thumbnail[0]}</image>");
     endif;
 }
 
@@ -711,7 +731,7 @@ function add_author_field_node()
 function defer_parsing_of_js($url)
 {
     if (!is_admin()) { //  && function_exists('is_amp_endpoint') && !is_amp_endpoint()) {
-        if (FALSE === strpos($url, '.js'))
+        if (false === strpos($url, '.js'))
             return $url;
         if (strpos($url, 'jquery.js') || strpos($url, 'jquery.min.js') || strpos($url, 'fuseplatform') || strpos($url, 'amp'))
             return $url;
@@ -721,6 +741,7 @@ function defer_parsing_of_js($url)
     }
     return $url;
 }
+
 add_action('init', function () {
     add_filter('clean_url', 'defer_parsing_of_js', 11, 1);
 });
@@ -854,6 +875,7 @@ function ssm_amp_additional_css_styles($amp_template)
     }
     <?php
 }
+
 add_filter('amp_content_max_width', 'ssm_amp_change_content_width');
 function ssm_amp_change_content_width($content_max_width)
 {
@@ -881,19 +903,19 @@ function ssm_amp_modify_json_metadata($metadata, $post)
     } else if (get_field('Author')) {
         $metadata['author']['name'] = get_field('Author');
     }
-    $metadata['publisher']['logo'] = array(
+    $metadata['publisher']['logo'] = [
         '@type' => 'ImageObject',
         'url' => get_template_directory_uri() . '/images/Tone-Deaf-300px.png',
         'height' => 60,
         'width' => 225,
-    );
+    ];
     if (!isset($metadata['image'])) {
-        $metadata['image'] = array(
+        $metadata['image'] = [
             '@type' => 'ImageObject',
             'url' => get_template_directory_uri() . '/images/Tone-Deaf-300px.png',
             'height' => '80',
             'width' => '300',
-        );
+        ];
     }
     return $metadata;
 }
@@ -949,7 +971,7 @@ function ssm_social_sharing_buttons_func($style, $show_text = true)
     $content .= '</div>';
     echo $content;
 }
-;
+
 add_action('ssm_social_sharing_buttons', 'ssm_social_sharing_buttons_func', 10, 2);
 
 // Remove dashicons in frontend for unauthenticated users
@@ -1006,18 +1028,19 @@ function show_all_styles()
 /**
  * Enable unfiltered_html capability for Editors.
  *
- * @param  array  $caps    The user's capabilities.
- * @param  string $cap     Capability name.
- * @param  int    $user_id The user ID.
+ * @param array $caps The user's capabilities.
+ * @param string $cap Capability name.
+ * @param int $user_id The user ID.
  * @return array  $caps    The user's capabilities, with 'unfiltered_html' potentially added.
  */
 function km_add_unfiltered_html_capability_to_editors($caps, $cap, $user_id)
 {
     if ('unfiltered_html' === $cap && user_can($user_id, 'editor')) {
-        $caps = array('unfiltered_html');
+        $caps = ['unfiltered_html'];
     }
     return $caps;
 }
+
 add_filter('map_meta_cap', 'km_add_unfiltered_html_capability_to_editors', 1, 3);
 
 /*
@@ -1026,13 +1049,13 @@ add_filter('map_meta_cap', 'km_add_unfiltered_html_capability_to_editors', 1, 3)
 add_filter('wp_handle_upload_prefilter', 'ssm_limit_image_size');
 function ssm_limit_image_size($file)
 {
-    $errors = array();
+    $errors = [];
     if (strpos($file['type'], 'image') !== false) {
         $filename = $file['name'];
         if (
-            strpos(str_replace(array('-', '_', ' '), '', strtolower($filename)), 'screenshot') !== false
+            strpos(str_replace(['-', '_', ' '], '', strtolower($filename)), 'screenshot') !== false
             ||
-            strpos(str_replace(array('-', '_', ' '), '', strtolower($filename)), 'untitled') !== false
+            strpos(str_replace(['-', '_', ' '], '', strtolower($filename)), 'untitled') !== false
         ) {
             array_push($errors, '(+) Please rename the file before uploading.');
         }
@@ -1041,10 +1064,10 @@ function ssm_limit_image_size($file)
         $file_size = $file['size'] / 1024;
 
         $image = getimagesize($file['tmp_name']);
-        $maximum = array(
+        $maximum = [
             'width' => '2000',
             'height' => '2000'
-        );
+        ];
         $image_width = $image[0];
         $image_height = $image[1];
 
@@ -1144,6 +1167,7 @@ function ssm_rss_flipboard()
 {
     add_feed('flipboard', 'ssm_rss_flipboard_func');
 }
+
 function ssm_rss_flipboard_func()
 {
     get_template_part('rss', 'flipboard');
@@ -1154,6 +1178,7 @@ function ssm_rss_external()
 {
     add_feed('external', 'ssm_rss_external_func');
 }
+
 function ssm_rss_external_func()
 {
     get_template_part('rss', 'external');
@@ -1165,24 +1190,25 @@ function ssm_number_of_posts_func($data)
     $date_e = explode('|', urldecode($data['month_year']));
     $date = $date_e[0] . '-' . $date_e[1] . '-01';
     $posts = new WP_Query(
-        array(
-            'date_query' => array(
+        [
+            'date_query' => [
                 'after' => date_i18n('Y-m-01', strtotime($date)),
                 'before' => date_i18n('Y-m-t', strtotime($date)),
-            ),
-            'post_type' => array('post', 'freeshit', 'issue', 'podcast', 'snaps'),
+            ],
+            'post_type' => ['post', 'freeshit', 'issue', 'podcast', 'snaps'],
             'post_status' => 'publish',
             'posts_per_page' => -1
-        )
+        ]
     );
     return $posts->post_count;
 }
+
 add_action('rest_api_init', function () {
-    register_rest_route('ssm_posts/v1', '/month-year/(?P<month_year>\d+(\%7C)\d+)', array(
-        'methods' => 'GET',
-        'callback' => 'ssm_number_of_posts_func',
-        'permission_callback' => '__return_true',
-    )
+    register_rest_route('ssm_posts/v1', '/month-year/(?P<month_year>\d+(\%7C)\d+)', [
+            'methods' => 'GET',
+            'callback' => 'ssm_number_of_posts_func',
+            'permission_callback' => '__return_true',
+        ]
     );
 });
 
@@ -1193,6 +1219,7 @@ function ssm_autoblank($content)
     $content = preg_replace("/<a(.*?)>/", "<a$1 target=\"_blank\">", $content);
     return $content;
 }
+
 // add_filter('the_content', 'ssm_autoblank');
 
 function tbm_add_rel_to_links($content)
@@ -1223,12 +1250,13 @@ function get_fuse_tag($tag, $page = '')
 // Optional parameter to limit number of items in RSS2 feed
 function feed_limit_ppp($query)
 {
-    if ($query->is_feed('rss2') && isset($_GET['size']) && '' != (int) $_GET['size']) {
+    if ($query->is_feed('rss2') && isset($_GET['size']) && '' != (int)$_GET['size']) {
         add_filter('option_posts_per_rss', function () {
-            return (int) $_GET['size'];
+            return (int)$_GET['size'];
         });
     }
 }
+
 add_action('pre_get_posts', 'feed_limit_ppp');
 
 function shortcode_do($atts, $content = null)
@@ -1238,6 +1266,7 @@ function shortcode_do($atts, $content = null)
     }
     return $content;
 }
+
 add_shortcode('do', 'shortcode_do');
 
 add_filter('the_time', 'dynamictime');
@@ -1263,6 +1292,7 @@ function ssm_chat_bot_rss()
     add_feed('chat_bot2', 'ssm_chat_bot_articles');
     add_feed('chat_bot3', 'ssm_chat_bot_articles');
 }
+
 function ssm_chat_bot_articles()
 {
     get_template_part('rss', 'chat_bot');
@@ -1310,11 +1340,11 @@ function ssm_amp_post_template_add($amp_template)
  */
 function modify_snaps_capability()
 {
-    $roles = array(
+    $roles = [
         get_role('photographer'),
         get_role('administrator'),
         get_role('editor'),
-    );
+    ];
 
     foreach ($roles as $role) {
         $role->add_cap('photo_gallery');
@@ -1325,6 +1355,7 @@ function modify_snaps_capability()
     $role->add_cap('edit_others_posts', false);
     $role->add_cap('read_posts', false);
 }
+
 add_action('admin_init', 'modify_snaps_capability');
 
 
@@ -1339,23 +1370,23 @@ function ssm_save_quiz_rekorderlig_result()
     global $wpdb;
     $wpdb->insert(
         $wpdb->prefix . 'rekorderlig_quiz_1_results',
-        array(
+        [
             'ip_address' => $_SERVER['REMOTE_ADDR'],
             'result' => $_POST['result'],
             'result_key' => $_POST['result_key'],
             'created_at' => current_time('mysql', 0)
-        )
+        ]
     );
     $id = $wpdb->insert_id;
     $url_suffix = md5($id . 'ssm-quiz-rekorderlig-1');
     $wpdb->update(
         $wpdb->prefix . 'rekorderlig_quiz_1_results',
-        array(
+        [
             'url_suffix' => $url_suffix
-        ),
-        array(
+        ],
+        [
             'id' => $id
-        )
+        ]
     );
     $page_url = $_POST['page_url'];
     $page_title = $_POST['page_title'];
@@ -1368,12 +1399,13 @@ function ssm_save_quiz_rekorderlig_result()
 
     $facebookURL = 'https://www.facebook.com/sharer/sharer.php?u=' . $page_url;
     $twitterURL = 'https://twitter.com/intent/tweet?text=' . $page_title . '&amp;url=' . $page_url;
-    $data = array(
+    $data = [
         'fb_share_url' => $facebookURL,
         'twitter_share_url' => $twitterURL,
-    );
+    ];
     wp_send_json_success($data);
 }
+
 /* Quiz 1 - End */
 
 /* Quiz 2 - Start */
@@ -1384,23 +1416,23 @@ function ssm_save_quiz_rekorderlig_result2()
     global $wpdb;
     $wpdb->insert(
         $wpdb->prefix . 'rekorderlig_quiz_2_results',
-        array(
+        [
             'ip_address' => $_SERVER['REMOTE_ADDR'],
             'result' => $_POST['result'],
             'result_key' => $_POST['result_key'],
             'created_at' => current_time('mysql', 0)
-        )
+        ]
     );
     $id = $wpdb->insert_id;
     $url_suffix = md5($id . 'ssm-quiz-rekorderlig-1');
     $wpdb->update(
         $wpdb->prefix . 'rekorderlig_quiz_2_results',
-        array(
+        [
             'url_suffix' => $url_suffix
-        ),
-        array(
+        ],
+        [
             'id' => $id
-        )
+        ]
     );
     $page_url = $_POST['page_url'];
     $page_title = $_POST['page_title'];
@@ -1413,12 +1445,13 @@ function ssm_save_quiz_rekorderlig_result2()
 
     $facebookURL = 'https://www.facebook.com/sharer/sharer.php?u=' . $page_url;
     $twitterURL = 'https://twitter.com/intent/tweet?text=' . $page_title . '&amp;url=' . $page_url;
-    $data = array(
+    $data = [
         'fb_share_url' => $facebookURL,
         'twitter_share_url' => $twitterURL,
-    );
+    ];
     wp_send_json_success($data);
 }
+
 /* Quiz 2 - End */
 
 add_filter('wpseo_opengraph_url', 'change_opengraph_url');
@@ -1476,6 +1509,7 @@ function change_opengraph_image_url($url)
     endif;
     return $url;
 }
+
 /*
  * Rekorderlig - Quiz End
  */
@@ -1510,7 +1544,7 @@ function ssm_amp_add_custom_analytics($analytics)
     global $amp_post_id;
     $post = get_post($amp_post_id);
     if (!is_array($analytics)) {
-        $analytics = array();
+        $analytics = [];
     }
 
     if (get_field('author')) {
@@ -1533,57 +1567,57 @@ function ssm_amp_add_custom_analytics($analytics)
         endforeach; // For Each Category
     endif; // If there are categories for the post
 
-    $analytics['ssm-googleanalytics'] = array(
+    $analytics['ssm-googleanalytics'] = [
         'type' => 'googleanalytics',
-        'attributes' => array(
+        'attributes' => [
             // 'data-credentials' => 'include',
-        ),
-        'config_data' => array(
-            'vars' => array(
+        ],
+        'config_data' => [
+            'vars' => [
                 'account' => "UA-101631840-1"
-            ),
-            'triggers' => array(
-                'trackPageview' => array(
+            ],
+            'triggers' => [
+                'trackPageview' => [
                     'on' => 'visible',
                     'request' => 'pageview',
-                    'extraUrlParams' => array(
+                    'extraUrlParams' => [
                         'cd3' => str_replace('&', 'and', $author),
                         'cd4' => $CategoryCD,
-                    )
-                ),
-            ),
-        ),
-    );
+                    ]
+                ],
+            ],
+        ],
+    ];
 
-    $analytics['td-googleanalytics'] = array(
+    $analytics['td-googleanalytics'] = [
         'type' => 'googleanalytics',
-        'attributes' => array(
+        'attributes' => [
             // 'data-credentials' => 'include',
-        ),
-        'config_data' => array(
-            'vars' => array(
+        ],
+        'config_data' => [
+            'vars' => [
                 'account' => "UA-306739-6"
-            ),
-            'triggers' => array(
-                'trackPageview' => array(
+            ],
+            'triggers' => [
+                'trackPageview' => [
                     'on' => 'visible',
                     'request' => 'pageview',
-                    'extraUrlParams' => array(
+                    'extraUrlParams' => [
                         'cd3' => str_replace('&', 'and', $author),
                         'cd4' => $CategoryCD,
-                    )
-                ),
-            ),
-        ),
-    );
+                    ]
+                ],
+            ],
+        ],
+    ];
 
-    $analytics['nielsen'] = array(
+    $analytics['nielsen'] = [
         'type' => 'nielsen',
-        'attributes' => array(
+        'attributes' => [
             // 'data-credentials' => 'include',
-        ),
-        'config_data' => array(
-            'vars' => array(
+        ],
+        'config_data' => [
+            'vars' => [
                 "apid" => "DD902D41-39DF-457F-985D-9B4E4CDF3726",
                 "apv" => "1.0",
                 "apn" => "The Brag Network",
@@ -1591,9 +1625,9 @@ function ssm_amp_add_custom_analytics($analytics)
                 "segA" => "",
                 "segB" => "",
                 "segC" => "The Brag Network - Google AMP"
-            ),
-        ),
-    );
+            ],
+        ],
+    ];
 
     return $analytics;
 }
@@ -1607,7 +1641,7 @@ function ssm_inject_fb_pixel()
     ?>
     <!-- Facebook Pixel Code -->
     <script>
-        ! function (f, b, e, v, n, t, s) {
+        !function (f, b, e, v, n, t, s) {
             if (f.fbq) return;
             n = f.fbq = function () {
                 n.callMethod ?
@@ -1630,7 +1664,7 @@ function ssm_inject_fb_pixel()
         fbq.disablePushState = true;
     </script>
     <noscript><img height="1" width="1" style="display:none"
-            src="https://www.facebook.com/tr?id=243859349395737&ev=PageView&noscript=1" /></noscript>
+                   src="https://www.facebook.com/tr?id=243859349395737&ev=PageView&noscript=1"/></noscript>
     <!-- End Facebook Pixel Code -->
     <?php
 }
@@ -1645,6 +1679,7 @@ function ssm_youtube_lazy_load($content)
     $lazy_content = preg_replace($pattern, $replacement, $content);
     return $lazy_content;
 }
+
 add_filter('the_content', 'ssm_youtube_lazy_load');
 
 add_filter('xmlrpc_enabled', '__return_false');
@@ -1656,10 +1691,10 @@ wp_embed_register_handler('instagram', '#https?://(www.)?instagr(\.am|am\.com)/p
 function ssm_embed_handler_instagram($matches, $attr, $url, $rawattr)
 {
     if (!empty($rawattr['width']) && !empty($rawattr['height'])) {
-        $width = (int) $rawattr['width'];
-        $height = (int) $rawattr['height'];
+        $width = (int)$rawattr['width'];
+        $height = (int)$rawattr['height'];
     } else {
-        list($width, $height) = wp_expand_dimensions(575, 1200, $attr['width'], $attr['height']);
+        [$width, $height] = wp_expand_dimensions(575, 1200, $attr['width'], $attr['height']);
     }
     return apply_filters('embed_instagram', "<iframe src='https://instagram.com/p/" . esc_attr($matches[3]) . "/embed/captioned' width='{$width}' height='{$height}' frameborder='0' scrolling='no' allowtransparency='true' style='border: 1px solid rgb(219, 219, 219); border-radius: 3px;'></iframe>");
 }
@@ -1670,6 +1705,7 @@ function promoterFeedRSS()
 {
     add_feed('promoter', 'promoterFeed');
 }
+
 function promoterFeed()
 {
     get_template_part('rss', 'promoter_feed');
@@ -1682,6 +1718,7 @@ function add_additional_class_on_li($classes, $item, $args)
     }
     return $classes;
 }
+
 add_filter('nav_menu_css_class', 'add_additional_class_on_li', 1, 3);
 
 function add_menu_link_class($atts, $item, $args)
@@ -1691,6 +1728,7 @@ function add_menu_link_class($atts, $item, $args)
     }
     return $atts;
 }
+
 add_filter('nav_menu_link_attributes', 'add_menu_link_class', 1, 3);
 
 /*
@@ -1700,7 +1738,7 @@ add_action('init', 'register_cpt_country');
 
 function register_cpt_country()
 {
-    $labels = array(
+    $labels = [
         'name' => _x('Country', 'country'),
         'singular_name' => _x('Country', 'country'),
         'add_new' => _x('Add New', 'country'),
@@ -1713,14 +1751,14 @@ function register_cpt_country()
         'not_found_in_trash' => _x('No country articles found in Trash', 'country'),
         'parent_item_colon' => _x('Parent Country Articles:', 'country'),
         'menu_name' => _x('Country Articles', 'country'),
-    );
+    ];
 
-    $args = array(
+    $args = [
         'labels' => $labels,
         'hierarchical' => false,
         'description' => 'Country Articles',
-        'supports' => array('title', 'editor', 'thumbnail', 'author', 'excerpt'),
-        'taxonomies' => array('category', 'post_tag'),
+        'supports' => ['title', 'editor', 'thumbnail', 'author', 'excerpt'],
+        'taxonomies' => ['category', 'post_tag'],
         'public' => true,
         'show_ui' => true,
         'show_in_menu' => true,
@@ -1731,9 +1769,9 @@ function register_cpt_country()
         'has_archive' => true,
         'query_var' => true,
         'can_export' => true,
-        'rewrite' => array('slug' => 'country', ),
-        'capability_type' => array('page', 'country'),
-        'capabilities' => array(
+        'rewrite' => ['slug' => 'country',],
+        'capability_type' => ['page', 'country'],
+        'capabilities' => [
             'publish_posts' => 'country',
             'edit_posts' => 'country',
             'edit_others_posts' => 'country',
@@ -1742,27 +1780,28 @@ function register_cpt_country()
             'delete_post' => 'country',
             'read_post' => 'country',
             'publish_post' => 'country',
-        ),
-    );
+        ],
+    ];
 
     register_post_type('country', $args);
 }
+
 /*
  * User Role for Country
  */
-add_role('country', 'Country Contributor', array(
-    'read' => true,
-    'edit_posts' => true,
-    'delete_posts' => true,
-)
+add_role('country', 'Country Contributor', [
+        'read' => true,
+        'edit_posts' => true,
+        'delete_posts' => true,
+    ]
 );
 function modify_country_capability()
 {
-    $roles = array(
+    $roles = [
         get_role('country'),
         get_role('administrator'),
         get_role('editor'),
-    );
+    ];
 
     foreach ($roles as $role) {
         $role->add_cap('country');
@@ -1773,6 +1812,7 @@ function modify_country_capability()
     //    $role->add_cap('edit_posts', false);
     //    $role->add_cap('read_posts', false);
 }
+
 add_action('admin_init', 'modify_country_capability');
 
 
@@ -1790,7 +1830,7 @@ function ssm_inject_ads($content)
         return $content;
     }
 
-    $count_articles = isset($_POST['count_articles']) ? (int) $_POST['count_articles'] : 1;
+    $count_articles = isset($_POST['count_articles']) ? (int)$_POST['count_articles'] : 1;
 
     $closing_p = '</p>';
     $after_para = 2;
@@ -1803,6 +1843,7 @@ function ssm_inject_ads($content)
 
     return $content;
 }
+
 add_filter('the_content', 'ssm_inject_ads');
 
 function convert_seconds_to_redable($seconds)
@@ -1852,16 +1893,19 @@ function tbm_mail_content_type()
 {
     return "text/html";
 }
+
 add_filter('wp_mail_from', 'tbm_mail_from_address');
 function tbm_mail_from_address($email)
 {
     return 'noreply@thebrag.media';
 }
+
 add_filter('wp_mail_from_name', 'tbm_mail_from_name');
 function tbm_mail_from_name($from_name)
 {
     return "Tone Deaf";
 }
+
 add_action('phpmailer_init', 'tbm_send_smtp_email');
 function tbm_send_smtp_email($phpmailer)
 {
@@ -1968,6 +2012,7 @@ function tbm_ajax_load_next_post()
     endif;
     wp_die();
 }
+
 add_action('wp_ajax_tbm_ajax_load_next_post', 'tbm_ajax_load_next_post');
 add_action('wp_ajax_nopriv_tbm_ajax_load_next_post', 'tbm_ajax_load_next_post');
 
@@ -1976,11 +2021,12 @@ add_action('wp_ajax_nopriv_tbm_ajax_load_next_post', 'tbm_ajax_load_next_post');
  */
 function tbm_admin_enqueue($hook)
 {
-    if (!in_array($hook, array('post.php', 'post-new.php'))) {
+    if (!in_array($hook, ['post.php', 'post-new.php'])) {
         return;
     }
-    wp_enqueue_script('admin-validate-post', get_template_directory_uri() . '/js/admin-validate-post.js', array('jquery'), '20190819-2', true);
+    wp_enqueue_script('admin-validate-post', get_template_directory_uri() . '/js/admin-validate-post.js', ['jquery'], '20190819-2', true);
 }
+
 add_action('admin_enqueue_scripts', 'tbm_admin_enqueue');
 
 /*
@@ -2002,13 +2048,14 @@ function tbm_custom_columns($columns)
     $columns['artist'] = 'Artist';
     return $columns;
 }
+
 function tbm_edit_columns($column, $post_id)
 {
     switch ($column) {
         case "genre":
             $genres = get_the_terms($post_id, 'genre');
             if ($genres) {
-                $output = array();
+                $output = [];
                 foreach ($genres as $genre) {
                     $output[] = '<a href="' . get_term_link($genre->slug, 'genre') . '">' . $genre->name . '</a>';
                 }
@@ -2018,7 +2065,7 @@ function tbm_edit_columns($column, $post_id)
         case "artist":
             $artists = get_the_terms($post_id, 'artist');
             if ($artists) {
-                $output = array();
+                $output = [];
                 foreach ($artists as $artist) {
                     if (!is_wp_error(get_term_link($artist->slug, 'artist'))) {
                         $output[] = '<a href="' . get_term_link($artist->slug, 'artist') . '">' . $artist->name . '</a>';
@@ -2039,11 +2086,12 @@ function tbm_rpc_post_types($post_types)
 
     // Simplest usage
     // $post_types['post'] = array('category', 'post_tag', 'genre');
-    $post_types['post'] = array('category', 'post_tag');
+    $post_types['post'] = ['category', 'post_tag'];
 
     // Always return $post_types after your modifications
     return $post_types;
 }
+
 add_filter('rpc_post_types', 'tbm_rpc_post_types');
 
 /*
@@ -2061,7 +2109,7 @@ function ajax_tbm_set_cookie()
 function tbm_set_cookie($data)
 {
     if (!empty($data) && isset($data['key']) && isset($data['value']) && isset($data['duration'])):
-        setcookie($data['key'], $data['value'], time() + (int) $data['duration'], '/', $_SERVER['HTTP_HOST']);
+        setcookie($data['key'], $data['value'], time() + (int)$data['duration'], '/', $_SERVER['HTTP_HOST']);
     endif;
 }
 
@@ -2194,6 +2242,7 @@ function tbm_post_thumbnails_in_feeds($content)
     }
     return $content;
 }
+
 add_filter('the_excerpt_rss', 'tbm_post_thumbnails_in_feeds');
 add_filter('the_content_feed', 'tbm_post_thumbnails_in_feeds');
 
@@ -2475,7 +2524,11 @@ function inject_ga4()
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-L8V4HEDPRH"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
         gtag('js', new Date());
         gtag('config', 'G-L8V4HEDPRH');
     </script>
@@ -2574,9 +2627,9 @@ function tbm_disable_emojis()
 function tbm_disable_emojis_tinymce($plugins)
 {
     if (is_array($plugins)) {
-        return array_diff($plugins, array('wpemoji'));
+        return array_diff($plugins, ['wpemoji']);
     } else {
-        return array();
+        return [];
     }
 }
 
