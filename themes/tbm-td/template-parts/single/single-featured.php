@@ -58,6 +58,11 @@ if (!post_password_required($post)) :
         $author_byline = '<a href="' . get_author_posts_url($post->post_author) . '" class="text-dark">' . get_the_author_meta('display_name', $post->post_author) . '</a>';
         $author_image = get_avatar($post->post_author, 64, CDN_URL . '/images/default-avatar.png', $author_name, array('class' => 'rounded-circle'));
 
+        if($post->post_author == 4815) {
+            $author_name = 'STAFF';
+            $author_byline = '';
+        }
+
     endif; // If custom author is set
 
     if ($count_articles > 1) :
