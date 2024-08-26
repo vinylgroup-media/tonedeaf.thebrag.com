@@ -60,7 +60,7 @@ if (!post_password_required($post)) :
 
         if($post->post_author == 4815) {
             $author_name = 'STAFF';
-            $author_byline = '';
+            $author_byline = 'STAFF';
         }
 
     endif; // If custom author is set
