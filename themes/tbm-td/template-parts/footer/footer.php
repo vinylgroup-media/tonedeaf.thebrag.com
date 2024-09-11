@@ -6,9 +6,7 @@
                     <nav>
                         <ul>
                             <li><a href="https://thebrag.media/" target="_blank" rel="noreferrer">Advertise</a></li>
-                            <li><a target="_blank" rel="noopener" href="https://thebrag.com/media/submit-a-tip/">Submit Tip</a></li>
-                            <li><a target="_blank" rel="noopener" href="https://thebrag.com/media/how-to-submit-an-op-ed-essay/">Submit Op-Ed</a></li>
-                            <li><a target="_blank" rel="noopener" href="https://thebrag.com/media/submit/">Submit Video</a></li>
+                            <li><a target="_blank" rel="noopener" href="mailto:tips@thebrag.media">Submit Tip</a></li>
                         </ul>
                     </nav>
                 </div>
