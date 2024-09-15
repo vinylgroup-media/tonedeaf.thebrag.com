@@ -95,7 +95,7 @@
                 "name": "<?php echo get_bloginfo('name'); ?>",
                 "logo": {
                     "@type": "ImageObject",
-                    "url": "https://images-r2.thebrag.com/common/brands/202309/TBM_White.png"
+                    "url": "https://images-r2-2.thebrag.com/common/brands/202309/TBM_White.png"
                 }
             },
             "description": "<?php echo get_bloginfo('description'); ?>"

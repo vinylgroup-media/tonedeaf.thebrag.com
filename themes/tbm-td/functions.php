@@ -40,10 +40,10 @@ function load_jquery_from_google_cdn(): void
 
 add_action('wp_enqueue_scripts', 'load_jquery_from_google_cdn');
 
-const ICONS_URL = 'https://cdn.thebrag.com/icons/';
+const ICONS_URL = 'https://images-r2-2.thebrag.com/common/icons/';
 const CDN_URL = 'https://cdn-r2-2.thebrag.com/td/';
 const BRAG_API_KEY = '3ce4efdd-a39c-4141-80f7-08a828500831';
-const IMAGES_R2_CDN_URL = 'https://images-r2.thebrag.com/';
+const IMAGES_R2_CDN_URL = 'https://images-r2-2.thebrag.com/';
 
 // Add default posts and comments RSS feed links to head.
 // add_theme_support('automatic-feed-links');
@@ -774,7 +774,7 @@ function ssm_amp_additional_css_styles($amp_template)
     }
     .amp-wp-header a {
     background-image: url( '
-    <?php echo CDN_URL; ?>Tone-Deaf-100px.png' );
+    <?php echo IMAGES_R2_CDN_URL; ?>td/3/Tone-Deaf-100px.png' );
     background-repeat: no-repeat;
     background-size: contain;
     display: block;

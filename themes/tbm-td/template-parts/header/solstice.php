@@ -6,7 +6,7 @@ $page_template = get_page_template_slug();
 
 <head>
   <meta charset="<?php bloginfo('charset'); ?>">
-  <link rel="shortcut icon" href="<?php echo CDN_URL; ?>favicon.png?v=<?php echo time(); ?>" />
+  <link rel="shortcut icon" href="<?php echo IMAGES_R2_CDN_URL; ?>td/3/favicon.png?v=<?php echo time(); ?>" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="profile" href="http://gmpg.org/xfn/11">
@@ -330,7 +330,7 @@ $page_template = get_page_template_slug();
         <div class="network-socials-wrap" style="width: auto !important">
           <div class="network-socials">
             <div class="btn btn-media-top btn-toggle-slidedown" data-target="network">
-              <span class="brag-media-top"><img src="https://cdn.thebrag.com/tbm/The-Brag-Media-300px-light.png" width="130" height="13" alt="The Brag Media" title="The Brag Media" loading="lazy"></span>
+              <span class="brag-media-top"><img src="https://images-r2-2.thebrag.com/tbm/1/The-Brag-Media-300px-light.png" width="130" height="13" alt="The Brag Media" title="The Brag Media" loading="lazy"></span>
               <span class="arrow-down"><img src="<?php echo ICONS_URL; ?>icon_arrow-down-td.svg" width="10" height="20" alt="▼"></span>
             </div>
           </div><!-- .network-socials.hide-m -->

@@ -12,7 +12,7 @@
                 if ('' !== get_the_post_thumbnail()) :
                     the_post_thumbnail('thumbnail');
                 else :
-                    echo '<img src="' . CDN_URL . 'placeholder.png">';
+                    echo '<img src="' . IMAGES_R2_CDN_URL . 'td/3/placeholder.png">';
                 endif;
                 ?>
             </div>
