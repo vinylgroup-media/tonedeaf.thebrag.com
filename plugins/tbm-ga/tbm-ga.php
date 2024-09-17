@@ -224,8 +224,8 @@ function initializeAnalytics(): RunReportResponse
         ->setDimensions([new Dimension(['name' => 'pagePath'])])
         ->setMetrics([new Metric(['name' => 'screenPageViews'])])
         ->setDateRanges([new DateRange([
-                'start_date' => '2daysAgo',
-                'end_date' => 'yesterday',
+                'start_date' => '7daysAgo',
+                'end_date' => 'today',
             ])
         ])
         ->setMetricFilter(new FilterExpression([
