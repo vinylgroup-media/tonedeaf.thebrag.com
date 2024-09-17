@@ -12,10 +12,10 @@ plugins/*
 !plugins/tbm-media-helper
 !plugins/tbm-nz-content
 
-!plugins/ssm-ga
-plugins/ssm-ga/*
-!plugins/ssm-ga/ssm-ga.php
-!plugins/ssm-ga/composer*
+!plugins/tbm-ga
+plugins/tbm-ga/*
+!plugins/tbm-ga/tbm-ga.php
+!plugins/tbm-ga/composer*
 
 !plugins/tbm-braze
 !plugins/tbm-gtm

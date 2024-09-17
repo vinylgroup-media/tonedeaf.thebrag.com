@@ -1,10 +1,10 @@
 <?php
 /*
-   Plugin Name: SSM Google Analytics
+   Plugin Name: TBM Google Analytics
    Plugin URI:
    description:
    Version: 1.0
-   Author: Sachin Patel
+   Author: Toby Smith
    Author URI:
 */
 
