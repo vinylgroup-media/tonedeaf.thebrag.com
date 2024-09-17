@@ -26,8 +26,8 @@ use Google\ApiCore\ApiException;
 use JetBrains\PhpStorm\NoReturn;
 
 # Activation
-register_activation_hook(__FILE__, 'activate_ssm_ga');
-function activate_ssm_ga(): void
+register_activation_hook(__FILE__, 'activate_tbm_ga');
+function activate_tbm_ga(): void
 {
     if (!wp_next_scheduled('cron_tbm_ga_update_pageviews', [NULL, NULL])) {
         wp_schedule_event(time(), 'hourly', 'cron_tbm_ga_update_pageviews', [NULL, NULL]);
@@ -35,8 +35,8 @@ function activate_ssm_ga(): void
 }
 
 # DeActivation
-register_deactivation_hook(__FILE__, 'deactivate_ssm_ga');
-function deactivate_ssm_ga(): void
+register_deactivation_hook(__FILE__, 'deactivate_tbm_ga');
+function deactivate_tbm_ga(): void
 {
     $crons = _get_cron_array();
     if (empty($crons)) {
@@ -56,23 +56,23 @@ function deactivate_ssm_ga(): void
 
 # Add actions
 add_action('rest_api_init', function () {
-    register_rest_route('ssm_ga/v1', '/articles', [
+    register_rest_route('tbm_ga/v1', '/articles', [
         'methods' => 'GET',
-        'callback' => 'ssm_ga_func',
+        'callback' => 'tbm_ga_articles',
     ]);
 
-    register_rest_route('ssm_ga/v1', '/article_author', [
+    register_rest_route('tbm_ga/v1', '/article_author', [
         'methods' => 'GET',
-        'callback' => 'ssm_ga_article_author_func',
+        'callback' => 'tbm_ga_article_author',
     ]);
 
-    register_rest_route('ssm_ga/v1', '/articles_count', [
+    register_rest_route('tbm_ga/v1', '/articles_count', [
         'methods' => 'GET',
-        'callback' => 'ssm_ga_articles_count',
+        'callback' => 'tbm_ga_articles_count',
     ]);
 });
 
-function ssm_ga_func(): array
+function tbm_ga_articles(): array
 {
     $return = [];
 
@@ -80,8 +80,9 @@ function ssm_ga_func(): array
     $to = isset($_GET['to']) ? date_i18n('c', strtotime(trim($_GET['to']))) : NULL;
 
     $query_author = isset($_GET['author']) ? trim($_GET['author']) : NULL;
-    if (is_null($from) || is_null($to))
+    if (is_null($from) || is_null($to)) {
         return $return;
+    }
 
     $args = [
         'date_query' => [
@@ -131,7 +132,7 @@ function ssm_ga_func(): array
     return $return;
 }
 
-function ssm_ga_article_author_func($data): array
+function tbm_ga_article_author($data): array
 {
     $return = [];
 
@@ -151,7 +152,7 @@ function ssm_ga_article_author_func($data): array
     return $return;
 }
 
-function ssm_ga_articles_count($data): int|array
+function tbm_ga_articles_count($data): int|array
 {
     $return = [];
     $from = isset($_GET['from']) ? date_i18n('Y-m-d', strtotime('-1 day', strtotime(trim($_GET['from'])))) : NULL;
@@ -189,8 +190,8 @@ function admin_menu_tbm_ga_update_pageviews(): void
     add_management_page('Update Pageviews from GA', 'Update Pageviews from GA', 'administrator', 'tbm_ga_update_pageviews', 'tbm_ga_update_pageviews');
 }
 
-
 add_action('cron_tbm_ga_update_pageviews', 'tbm_ga_update_pageviews');
+
 /**
  * @throws ApiException
  */
