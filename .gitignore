@@ -11,6 +11,7 @@ plugins/*
 !plugins/theme-options
 !plugins/tbm-media-helper
 !plugins/tbm-nz-content
+!plugins/tbm-cache
 
 !plugins/tbm-ga
 plugins/tbm-ga/*
