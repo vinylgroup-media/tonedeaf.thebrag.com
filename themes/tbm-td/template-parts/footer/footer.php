@@ -5,7 +5,7 @@
                 <div class="left px-2 px-md-3">
                     <nav>
                         <ul>
-                            <li><a href="https://thebrag.media/" target="_blank" rel="noreferrer">Advertise</a></li>
+                            <li><a href="https://vinyl.media/" target="_blank" rel="noreferrer">Advertise</a></li>
                             <li><a target="_blank" rel="noopener" href="mailto:tips@thebrag.media">Submit Tip</a></li>
                         </ul>
                     </nav>
