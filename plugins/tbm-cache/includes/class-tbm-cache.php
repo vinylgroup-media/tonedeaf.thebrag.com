@@ -28,6 +28,10 @@ class TBM_Cache {
     }
 
     public function _delete_cached($post_id, $post): void {
+        if($post->post_status !== 'publish') {
+            return;
+        }
+
         $type = $post->post_type == 'post' ? 'posts' : $post->post_type;
         $type = $type == 'page' ? 'pages' : $type;
 
