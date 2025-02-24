@@ -6,7 +6,7 @@
                     <nav>
                         <ul>
                             <li><a href="https://vinyl.media/" target="_blank" rel="noreferrer">Advertise</a></li>
-                            <li><a target="_blank" rel="noopener" href="mailto:tips@thebrag.media">Submit Tip</a></li>
+                            <li><a target="_blank" rel="noopener" href="mailto:contact@vinyl.media">Submit Tip</a></li>
                         </ul>
                     </nav>
                 </div>
