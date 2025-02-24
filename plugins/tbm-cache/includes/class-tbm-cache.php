@@ -28,7 +28,16 @@ class TBM_Cache {
     }
 
     public function _delete_cached($post_id, $post): void {
+        if($post->post_status !== 'publish') {
+            return;
+        }
+
         $type = $post->post_type == 'post' ? 'posts' : $post->post_type;
+        $type = $type == 'page' ? 'pages' : $type;
+
+        if('revision' === $type) {
+            return;
+        }
 
        wp_remote_get('http://45.79.238.137:6001/purge/' . $this->get_domain() . '/' . $post_id . '/' . $type);
        wp_remote_get('http://172.105.183.4:6001/purge/' . $this->get_domain() . '/' . $post_id . '/' . $type );
