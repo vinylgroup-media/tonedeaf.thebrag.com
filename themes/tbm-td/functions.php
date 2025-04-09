@@ -2664,3 +2664,8 @@ function tbm_the_excerpt($excerpt)
 
     return $excerpt . '.';
 }
+
+function add_linkby_widget_script() {
+  echo '<script src="https://pubfeed.linkby.com/widget.js" async></script>';
+}
+add_action('wp_head', 'add_linkby_widget_script');

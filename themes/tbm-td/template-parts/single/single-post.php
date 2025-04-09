@@ -285,7 +285,7 @@ if (!post_password_required($post)) :
                             </div>
                         </div><!-- Author details, author socials -->
                     <?php endif; ?>
-
+                    <div class="linkby-widget" data-type="listicle"></div>
                 </div><!-- /.post-content -->
 
                 <div class="mt-2" style="width: 300px; margin: auto;">

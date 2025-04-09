@@ -339,6 +339,7 @@ if (!post_password_required($post)) :
             endif; // If there are spotlight articles
             ?>
         </div>
+        <div class="linkby-widget" data-type="listicle"></div>
     </article><!-- .container .single_story -->
 <?php elseif ($count_articles == 1) :
     echo '<style>.load-more{display:none;}</style>';
