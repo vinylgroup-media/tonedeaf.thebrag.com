@@ -607,7 +607,8 @@ class BragObserver
         $html = ob_get_contents();
         ob_end_clean();
 
-        return $html;
+        //return $html;
+        return '';
     } // save_tastemaker_review()
 
     /*
