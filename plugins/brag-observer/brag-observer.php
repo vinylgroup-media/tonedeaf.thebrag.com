@@ -580,15 +580,13 @@ class BragObserver
                         <?php endif; ?>
                         <form action="#" method="post" id="observer-subscribe-form<?php echo $post_id; ?>"
                               name="observer-subscribe-form"
-                              class="observer-subscribe-form <?php echo !is_user_logged_in() ? 'd-none bg-white' : ''; ?>">
+                              class="observer-subscribe-form">
                             <div class="d-flex justify-content-start">
                                 <input type="hidden" name="list" value="<?php echo $topic_id; ?>">
-                                <?php if (!is_user_logged_in()) : ?>
-                                    <label>
-                                        <input type="email" name="email" class="form-control observer-sub-email"
-                                               placeholder="Your email" value="">
-                                    </label>
-                                <?php endif; ?>
+                                <label>
+                                    <input type="email" name="email" class="form-control observer-sub-email"
+                                           placeholder="Your email" value="">
+                                </label>
                                 <div class="d-flex submit-wrap rounded">
                                     <input type="submit" value="Join" name="subscribe"
                                            class="button btn btn-primary rounded" style="color: #fff !important">
