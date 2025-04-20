@@ -559,7 +559,7 @@ class BragObserver
                 return '';
             }
 
-            $topic->title = trim(str_ireplace('Observer', '', $topic->title));
+            $topic->title = trim(str_ireplace('Vinyl', '', $topic->title));
             ?>
             <div class="observer-sub-form justify-content-center my-3 p-0 d-flex align-items-stretch bg-dark text-white">
                 <div class="img-wrap" style="background-image: url(<?php echo $topic->image_url; ?>);">
@@ -573,9 +573,7 @@ class BragObserver
                         </div>
                         <p class="mb-2">
                             Get the latest <?php echo $topic->title; ?> news, features, updates and giveaways straight
-                            to your inbox
-                            <a href="<?php echo $topic->link; ?>" class="l-learn-more text-dark" target="_blank"
-                               rel="noopener">Learn more</a>
+                            to your inbox.
                         </p>
                         <?php if (!is_user_logged_in()) : ?>
                             <button class="button btn btn-primary btn-join" style="color: #fff !important">JOIN</button>
@@ -607,7 +605,7 @@ class BragObserver
         $html = ob_get_contents();
         ob_end_clean();
 
-        //return $html;
+        return $html;
         return '';
     } // save_tastemaker_review()
 
