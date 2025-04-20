@@ -569,7 +569,7 @@ class BragObserver
                 <div class="p-3 d-flex justify-content-center align-items-center">
                     <div>
                         <div class="mb-2">
-                            <h2 class="h5 mb-0 observer-title">Love <?php echo $topic->title; ?>?</h2>
+                            <h2 class="h5 mb-0 observer-title">Love Music?</h2>
                         </div>
                         <p class="mb-2">
                             Get the latest <?php echo $topic->title; ?> news, features, updates and giveaways straight
