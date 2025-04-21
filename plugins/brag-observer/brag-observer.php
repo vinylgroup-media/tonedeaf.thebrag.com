@@ -572,7 +572,7 @@ class BragObserver
                             <h2 class="h5 mb-0 observer-title">Love Music?</h2>
                         </div>
                         <p class="mb-2">
-                            Get the latest <?php echo $topic->title; ?> news, features, updates and giveaways straight
+                            Get the latest news, features, updates and giveaways straight
                             to your inbox.
                         </p>
                         <form action="#" method="post" id="observer-subscribe-form<?php echo $post_id; ?>"
