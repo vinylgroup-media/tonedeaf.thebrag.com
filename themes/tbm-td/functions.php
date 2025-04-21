@@ -1882,7 +1882,7 @@ var nSdkInstance = NOLBUNDLE.nlsQ("P59D1CA7E-CA1C-4718-8E85-F8807D018FED","nSdkI
 var dcrStaticMetadata = {type:"static",dataSrc:"cms",assetid:"' . $assetId . '", section:"Tone Deaf",segA:"",segB:""}
 nSdkInstance.ggPM("staticstart",dcrStaticMetadata);
 </script>';
-    echo $html;
+    //echo $html;
 }
 
 /*

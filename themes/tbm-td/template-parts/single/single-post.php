@@ -5,6 +5,7 @@ extract($args);
 * Get Spotlight articles
 */
 global $wpdb;
+
 $spotlight_article_ids = $wpdb->get_results(
     "SELECT post_id FROM ( 
         SELECT post_id FROM `{$wpdb->prefix}tbm_trending`
@@ -336,7 +337,7 @@ if (!post_password_required($post)) :
                     </div>
                     <div>
                         <?php
-                        if ($spotlight_articles->have_posts()) :
+                        if (isset($spotlight_articles) && $spotlight_articles->have_posts()) :
                             get_template_part('template-parts/single/spotlight', null, ['pos' => 'sidebar', 'spotlight_articles' => $spotlight_articles]);
                         endif; // If there are spotlight articles
                         ?>
@@ -354,7 +355,7 @@ if (!post_password_required($post)) :
 
         <div>
             <?php
-            if ($spotlight_articles->have_posts()) :
+            if (isset($spotlight_articles) && $spotlight_articles->have_posts()) :
                 get_template_part('template-parts/single/spotlight', null, ['pos' => 'below_article', 'spotlight_articles' => $spotlight_articles]);
             endif; // If there are spotlight articles
             ?>
