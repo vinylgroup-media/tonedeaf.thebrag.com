@@ -166,111 +166,41 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
     $my_sub_lists = [];
     $exclude_genres = [];
 
-    if (is_user_logged_in()) :
-        $current_user = wp_get_current_user();
-
-        $brag_api_url_base = 'https://thebrag.com/';
-
-        $brag_api_url = $brag_api_url_base . 'wp-json/brag_observer_airship/v1/get_my_subs/?key=' . BRAG_API_KEY . '&email=' . $current_user->user_email . '&site=tonedeaf.thebrag.com';
-
-        $response = wp_remote_get($brag_api_url);
-
-        $responseBody = wp_remote_retrieve_body($response);
-        $resonseJson = json_decode($responseBody);
-        $my_subs = $resonseJson->data;
-        $my_sub_lists = wp_list_pluck($my_subs, 'id');
-    endif;
-
     ob_start();
 
-    if (isset($my_sub_lists) && !empty($my_sub_lists)) :
-        $menu_genres = get_terms(
-            'genre',
-            array(
-                'orderby' => 'count',
-                'order' => 'DESC',
-                'exclude' => $exclude_genres,
-                'meta_query' => array(
-                    array(
-                        'key' => 'observer-topic',
-                        'value' => $my_sub_lists,
-                        'compare' => 'IN',
-                    )
-                )
-            )
-        );
-        $menu_genres_ids = wp_list_pluck($menu_genres, 'term_id');
-
-        foreach ($menu_genres as $genre) :
-            array_push($top_menu_items, [
-                'link' => get_term_link($genre),
-                'text' => $genre->name,
-            ]);
-        endforeach;
-
-        if (count($menu_genres) < $number_of_menu_items) :
-            $menu_genres2 = get_terms(
-                'genre',
+    $menu_genres = get_terms(
+        'genre',
+        array(
+            'parent' => null,
+            'orderby' => 'count',
+            'order' => 'DESC',
+            'exclude' => $exclude_genres,
+            'meta_query' => array(
                 array(
-                    'parent' => null,
-                    'orderby' => 'count',
-                    'order' => 'DESC',
-                    'exclude' => array_merge($exclude_genres, $menu_genres_ids),
-                    'number' => $number_of_menu_items - count($menu_genres)
-                )
-            );
-
-            foreach ($menu_genres2 as $genre) :
-                array_push($top_menu_items, [
-                    'link' => get_term_link($genre),
-                    'text' => '<span class="plus"><img src="' . ICONS_URL . 'plus.svg" width="16" height="16" alt="+"></span>
-          <span class="plus-hover"><img src="' . ICONS_URL . 'plus-td.svg" width="16" height="16" alt="+"></span>
-          <span class="text-muted">' . $genre->name . '</span>',
-                    'class' => 'secondary',
-                ]);
-            endforeach;
-        endif;
-    else : // Show all genres
-        $menu_genres = get_terms(
-            'genre',
-            array(
-                'parent' => null,
-                'orderby' => 'count',
-                'order' => 'DESC',
-                'exclude' => $exclude_genres,
-                'meta_query' => array(
-                    array(
-                        'key' => 'observer-topic',
-                        'compare' => 'EXISTS',
-                    )
+                    'key' => 'observer-topic',
+                    'compare' => 'EXISTS',
                 )
             )
-        );
-        foreach ($menu_genres as $genre) :
-            array_push($top_menu_items, [
-                'link' => get_term_link($genre),
-                'text' => $genre->name,
-            ]);
-        endforeach;
-    endif; // If user picked niche
+        )
+    );
+    foreach ($menu_genres as $genre) :
+        $top_menu_items[] = [
+            'link' => get_term_link($genre),
+            'text' => $genre->name,
+        ];
+    endforeach;
 
-    array_push($top_menu_items, [
+    $top_menu_items[] = [
         'link' => home_url('photo'),
         'text' => 'Photos',
-    ]);
-
-    array_push($top_menu_items, [
-        'link' => 'https://thebrag.com/observer/competitions/',
-        'text' => 'Competitions',
-        'target' => '_blank',
-    ]);
+    ];
 
     if (is_user_logged_in()) :
-        array_push($top_menu_items, [
+        $top_menu_items[] = [
             'link' => wp_logout_url(),
             'text' => 'Logout',
             'class' => 'nav-item-logout'
-        ]);
+        ];
     endif;
 
     ?>
@@ -280,7 +210,7 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
             foreach ($top_menu_items as $i => $top_menu_item) :
                 if ($i < $number_of_menu_items) :
             ?>
-                    <li class="<?php echo isset($top_menu_item['class']) ? $top_menu_item['class'] : ''; ?>">
+                    <li class="<?php echo $top_menu_item['class'] ?? ''; ?>">
                         <a href="<?php echo $top_menu_item['link']; ?>">
                             <?php echo $top_menu_item['text']; ?>
                         </a>
@@ -293,7 +223,7 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
                             <ul>
                             <?php endif; // $number_of_menu_items th menu item 
                             ?>
-                            <li class="<?php echo isset($top_menu_item['class']) ? $top_menu_item['class'] : ''; ?>">
+                            <li class="<?php echo $top_menu_item['class'] ?? ''; ?>">
                                 <a href="<?php echo $top_menu_item['link']; ?>" <?php echo isset($top_menu_item['target']) ? ' target="' . $top_menu_item['target'] . '"' : ''; ?>>
                                     <?php echo $top_menu_item['text']; ?>
                                 </a>
