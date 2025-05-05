@@ -12,6 +12,7 @@ plugins/*
 !plugins/tbm-media-helper
 !plugins/tbm-nz-content
 !plugins/tbm-cache
+!plugins/vinyl-media-newsletters
 
 !plugins/tbm-ga
 plugins/tbm-ga/*
