@@ -239,4 +239,270 @@ jQuery(document).ready(function ($) {
             }
         );
     }
+
+    $(window).scroll(function () {
+        winTop = $(this).scrollTop();
+
+        /* if (winTop >= $('header').outerHeight()) {
+          $('#skin').addClass('fixed');
+        } else {
+          $('#skin').removeClass('fixed');
+        } */
+
+        if ($(window).width() < 768) {
+            var mainTop = $("main").length ? $("main").offset().top : 0;
+            var billboardHeight = $(".ad-billboard-top").length
+                ? $(".ad-billboard-top").height()
+                : 0;
+            if (winTop >= $(window).height() / 2) {
+                $(".ad-billboard-top").addClass("sticky").slideDown();
+            }
+        }
+        /*  else {
+          $('.sticky-ad-bottom').hide();
+        } */
+
+        if ($(".single").length) {
+            if ($(".single-article .post-content").find("h2").length >= 6) {
+                $.each(
+                    $(".single-article .post-content").find("h2"),
+                    function (index, elem) {
+                        if (!$(this).data("href")) {
+                            return;
+                        }
+
+                        var offset_top = $(window).scrollTop() + $("header").outerHeight();
+
+                        if (
+                            offset_top <= $(this).offset().top + 50 &&
+                            offset_top >= $(this).offset().top - 50
+                        ) {
+                            var page_url_scroll =
+                                document.location.protocol +
+                                "//" +
+                                document.location.host +
+                                document.location.pathname;
+                            if (
+                                $(this).text() != "" &&
+                                page_url_scroll != $(this).data("href")
+                            ) {
+                                page_title_html_scroll = $(this).text();
+                                page_title_scroll = $("<textarea />")
+                                    .html(page_title_html_scroll)
+                                    .text();
+                                page_url_scroll = $(this).data("href");
+
+                                document.title = page_title_scroll;
+                                window.history.pushState(
+                                    null,
+                                    page_title_scroll,
+                                    page_url_scroll
+                                );
+                            }
+                        }
+                    }
+                );
+            } else if ($(".single-article .post-content").find("h3").length >= 6) {
+                $.each(
+                    $(".single-article .post-content").find("h3"),
+                    function (index, elem) {
+                        if (!$(this).data("href")) {
+                            return;
+                        }
+
+                        var offset_top = $(window).scrollTop() + $("header").outerHeight();
+
+                        if (
+                            offset_top <= $(this).offset().top + 50 &&
+                            offset_top >= $(this).offset().top - 50
+                        ) {
+                            var page_url_scroll =
+                                document.location.protocol +
+                                "//" +
+                                document.location.host +
+                                document.location.pathname;
+                            if (
+                                $(this).text() != "" &&
+                                page_url_scroll != $(this).data("href")
+                            ) {
+                                page_title_html_scroll = $(this).text();
+                                page_title_scroll = $("<textarea />")
+                                    .html(page_title_html_scroll)
+                                    .text();
+                                page_url_scroll = $(this).data("href");
+
+                                document.title = page_title_scroll;
+                                window.history.pushState(
+                                    null,
+                                    page_title_scroll,
+                                    page_url_scroll
+                                );
+                            }
+                        }
+                    }
+                );
+            }
+
+            if ($("#articles-wrap").length && $('.featured', "#articles-wrap").length === 0 && count_articles < 4) {
+                if (!loading && scrollHandling.allow) {
+                    scrollHandling.allow = false;
+                    setTimeout(scrollHandling.reallow, scrollHandling.delay);
+                    var offset =
+                        $(button).offset().top -
+                        $(window).scrollTop() -
+                        $(window).outerHeight();
+
+                    if (winHeight * 1.5 > offset) {
+                        loading = true;
+                        var data = {
+                            action: "tbm_ajax_load_next_post",
+                            exclude_posts: tbm_load_next_post.exclude_posts,
+                            id: tbm_load_next_post.current_post,
+                            count_articles: count_articles,
+                        };
+                        $.post(tbm_load_next_post.url, data, function (res) {
+                            if (res.success) {
+                                if (res.data.page_title != "undefined") {
+                                    count_articles++;
+                                }
+                                dm.AjaxEvent("pageview");
+
+                                tbm_load_next_post.current_post = res.data.loaded_post;
+                                tbm_load_next_post.exclude_posts += "," + res.data.loaded_post;
+
+                                $("#articles-wrap").append(res.data.content);
+                                $("#articles-wrap").append(button);
+
+                                fusetag.setTargeting("fuse_category", [
+                                    "'" + res.data.category + "'",
+                                ]);
+
+                                var bbSlot = fusetag.getAdSlotsById("22378619009");
+                                if (typeof bbSlot != "undefined") {
+                                    var slotResponseInformation =
+                                        bbSlot[0].getResponseInformation();
+                                    if (typeof slotResponseInformation != "undefined") {
+                                        if (
+                                            typeof slotResponseInformation.lineItemId != "undefined"
+                                        ) {
+                                            fusetag.setTargeting("LineItemId", [
+                                                "'" + slotResponseInformation.lineItemId + "'",
+                                            ]);
+                                        }
+                                    }
+                                }
+                                fusetag.setTargeting("pagepath", [
+                                    "'" + res.data.pagepath + "'",
+                                ]);
+                                /* if (typeof v != "undefined") {
+                                  if (typeof v.lineItemId != "undefined" && v.lineItemId == 5709731975) {
+                                    fusetag.setTargeting("pos", ["1"]);
+                                  }
+                                } else {
+                                  fusetag.setTargeting("pagepath", [
+                                    "'" + res.data.pagepath + "'",
+                                  ]);
+                                } */
+
+                                loading = false;
+                            } else {
+                                button.remove();
+                            }
+                        }).fail(function (xhr, textStatus, e) {
+                        });
+                    }
+                }
+            } else {
+                if (typeof button !== "undefined") {
+                    button.remove();
+                }
+            } // If $('#articles-wrap').length
+
+            if (typeof button !== "undefined") {
+                $news_stories = $(".single-article");
+                visible_news_story = $.grep($news_stories, function (item) {
+                    return $(item).position().top <= winTop + $(window).height() / 2; // + $('#header').outerHeight() - 30;
+                });
+
+                if (
+                    $(visible_news_story).last().find("h1").text() != "" &&
+                    page_url != $(visible_news_story).last().find("h1").data("href")
+                ) {
+                    page_title_html = $(visible_news_story)
+                        .last()
+                        .find("h1")
+                        .data("title");
+                    page_title = $("<textarea />").html(page_title_html).text();
+                    page_url = $(visible_news_story).last().find("h1").data("href");
+
+                    var author = $(visible_news_story)
+                        .last()
+                        .find(".author")
+                        .data("author");
+                    var cats = $(visible_news_story)
+                        .last()
+                        .find(".cats")
+                        .data("category");
+                    var tags = $(visible_news_story).last().find(".cats").data("tags");
+                    var pubdate = $(visible_news_story)
+                        .last()
+                        .find("time")
+                        .data("pubdate");
+                    var genre = $(visible_news_story).last().find(".cats").data("genre");
+                    window.dataLayer = window.dataLayer || [];
+                    window.dataLayer.push({
+                        event: 'articleView',
+                        AuthorCD: author,
+                        CategoryCD: cats,
+                        TagsCD: tags,
+                        PubdateCD: pubdate,
+                        genreCD: genre,
+                    });
+
+                    document.title = page_title;
+                    window.history.pushState(null, page_title, page_url);
+
+                    article_number = $(visible_news_story)
+                        .last()
+                        .find("h1")
+                        .data("article-number");
+                } // If visible_news_story.last().find('h1')
+            } // If button exists
+
+            if ($(visible_news_story).last().find(".observer-sub-form").length) {
+                var elemSubForm = $(visible_news_story)
+                    .last()
+                    .find(".observer-sub-form");
+
+                if (elemSubForm.closest("blockquote").length > 0) {
+                    elemSubForm.detach();
+                }
+                if (
+                    $(window).scrollTop() <
+                    elemSubForm.offset().top +
+                    elemSubForm.outerHeight() -
+                    $(window).height() / 2 &&
+                    $(window).scrollTop() + $(window).innerHeight() >
+                    elemSubForm.offset().top + $(window).height() / 2
+                ) {
+                    elemSubForm
+                        .closest(".single-article")
+                        .find(".overlay")
+                        .first()
+                        .fadeIn();
+                } else {
+                    elemSubForm
+                        .closest(".single-article")
+                        .find(".overlay")
+                        .first()
+                        .fadeOut();
+                }
+            }
+            if ($(".single-article .overlay").length) {
+                $(".single-article .overlay").on("click", function () {
+                    $(this).remove();
+                });
+            }
+        } // If $('.single').length
+    });
 });

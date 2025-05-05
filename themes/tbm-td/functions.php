@@ -223,7 +223,7 @@ register_taxonomy(
 function load_js_css(): void
 {
 //    wp_enqueue_script('scripts', CDN_URL . 'js/scripts.min.js', ['jquery'], '20240805.1', true);
-     wp_enqueue_script('scripts', get_template_directory_uri() . '/js/scripts.js', array('jquery'), time(), true);
+     wp_enqueue_script('scripts', get_template_directory_uri() . '/js/scripts.js', array('jquery'), '20250505', true);
 
 
     if (is_single()) {
