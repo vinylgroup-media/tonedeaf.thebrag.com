@@ -286,7 +286,6 @@ if (!post_password_required($post)) :
                             </div>
                         </div><!-- Author details, author socials -->
                     <?php endif; ?>
-                    <div class="linkby-widget" data-type="listicle"></div>
                 </div><!-- /.post-content -->
 
                 <div class="mt-2" style="width: 300px; margin: auto;">
@@ -360,6 +359,9 @@ if (!post_password_required($post)) :
             endif; // If there are spotlight articles
             ?>
         </div>
+        <?php if ((function_exists('get_field') && !get_field('paid_content'))) : ?>
+            <div class="linkby-widget" data-type="listicle"></div>
+        <?php endif; ?>
     </article><!-- .container .single_story -->
 <?php elseif ($count_articles == 1) :
     echo '<style>.load-more{display:none;}</style>';
