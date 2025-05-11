@@ -187,6 +187,22 @@ class VinylMediaNewsletters
                 return '';
             }
 
+            if( $topic->title == 'The Music Network' ) {
+                $topic->title = 'Industry News';
+            }
+
+            if( $topic->title == 'Tone Deaf' ) {
+                $topic->title = 'Music';
+            }
+
+            if( $topic->title == 'Rolling Stone AU/NZ' ) {
+                $topic->title = 'Music';
+            }
+
+            if( $topic->title == 'Variety Australia' ) {
+                $topic->title = 'Film & TV';
+            }
+
             load_template( plugin_dir_path( __FILE__ ) . 'partials/form-subscribe.php', true, [
                 'post_id' => $post_id,
                 'topic_id' => $topic_id,
