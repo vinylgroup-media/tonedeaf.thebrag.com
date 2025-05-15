@@ -338,7 +338,7 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
             <div class="d-flex justify-content-between container">
                 <div class="network-socials-wrap d-none d-md-block">
                     <div class="network-socials">
-                        <div class="btn btn-media-top btn-toggle-slidedown" data-target="network">
+                        <div class="btn btn-media-top btn-toggle-slidedown" data-target="network" style="padding-bottom: 0 !important;">
                             <span class="brag-media-top"><img src="https://images-r2-1.thebrag.com/tb/uploads/2025/02/vinyl-media.png" width="100" height="13" alt="The Brag Media" title="The Brag Media" loading="lazy" style="width: 80px;"></span>
                             <span class="arrow-down"><img src="<?php echo ICONS_URL; ?>icon_arrow-down-td.svg" width="10" height="20" alt="▼"></span>
                         </div>
@@ -359,23 +359,7 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
                 </div>
                 <div class="user-wrap d-flex flex-column justify-content-end pr-1 pr-md-2 w-sm-auto">
                     <div class="user-info d-none d-md-flex flex-row mb-1">
-                        <?php
-                        if (is_user_logged_in()) :
-                        ?>
-                            <a href="https://thebrag.com/profile/" target="_blank" rel="noreferrer" class="user-name d-flex flex-row btn user text-white" style="padding: 0;">
-                                <?php echo get_avatar($current_user, 24, 'mystery', $user_info->first_name, ['class' => 'rounded-circle']); ?>
-                            </a>
-                        <?php else : ?>
-                            <a href="<?php echo esc_url(wp_login_url($current_url)); ?>" class="text-white" style="font-size: 0.9rem;">Login / Signup</a>
-                        <?php endif; ?>
                     </div>
-<!--                    <button class="btn btn-primary btn-observer-top btn-toggle-slidedown d-flex" data-target="observer-list-top">-->
-<!--                        <span>Pick Your Niche</span>-->
-<!--                        <span class="ml-1 d-xs-none" style="margin-top: -1px;">-->
-<!--                            <img src="--><?php //echo ICONS_URL; ?><!--icon_mail.svg" class="btn-img" width="24" height="24" alt="Mail">-->
-<!--                            <img src="--><?php //echo ICONS_URL; ?><!--icon_mail-td.svg" class="btn-img hover" width="24" height="24" alt="Mail">-->
-<!--                        </span>-->
-<!--                    </button>-->
                 </div>
             </div>
 

@@ -86,6 +86,14 @@
     flex: 0 0 360px;
 }
 
+.observer-title {
+    font-size: 1.2rem;
+}
+
+.observer-desc {
+    font-size: .875rem;
+}
+
 .observer-sub-form .img-wrap {
     display: none;
     flex: 0 0 180px;
