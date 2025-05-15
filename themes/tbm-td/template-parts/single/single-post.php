@@ -240,7 +240,7 @@ if (!post_password_required($post)) :
                                                     <?php if ($author->twitter != '') : ?>
                                                         <div class="nav-item">
                                                             <a href="<?php echo $author->twitter; ?>" target="_blank" class="d-block rounded-circle bg-dark" style="padding: .25rem; margin: .25rem;">
-                                                                <img src="<?php echo ICONS_URL; ?>twitter.svg" width="32" style="width: 24px; margin: 0;">
+                                                                <img src="<?php echo ICONS_URL; ?>x.svg" width="32" style="width: 24px; margin: 0;">
                                                             </a>
                                                         </div>
                                                     <?php endif; ?>
