@@ -2265,13 +2265,13 @@ function brands()
             'width' => 100,
             'ext' => 'svg',
         ],
-        'brag-jobs' => [
-            'title' => 'The Brag Jobs',
-            'link' => 'https://thebrag.com/jobs',
-            'logo_name' => 'The-Brag-Jobs',
-            'width' => 80,
-            'ext' => 'png',
-        ],
+//        'brag-jobs' => [
+//            'title' => 'The Brag Jobs',
+//            'link' => 'https://thebrag.com/jobs',
+//            'logo_name' => 'The-Brag-Jobs',
+//            'width' => 80,
+//            'ext' => 'png',
+//        ],
         /* 'dbu' => [
             'title' => 'Don\'t Bore Us',
             'link' => 'https://dontboreus.thebrag.com/',
