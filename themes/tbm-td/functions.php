@@ -436,6 +436,7 @@ function register_cpt_photo_gallery()
         'not_found_in_trash' => _x('No photo galleries found in Trash', 'photo_gallery'),
         'parent_item_colon' => _x('Parent Photo Gallery:', 'photo_gallery'),
         'menu_name' => _x('Photo Galleries', 'photo_gallery'),
+        'show_in_rest' => true
     ];
 
     $args = [
