@@ -435,8 +435,7 @@ function register_cpt_photo_gallery()
         'not_found' => _x('No photo galleries found', 'photo_gallery'),
         'not_found_in_trash' => _x('No photo galleries found in Trash', 'photo_gallery'),
         'parent_item_colon' => _x('Parent Photo Gallery:', 'photo_gallery'),
-        'menu_name' => _x('Photo Galleries', 'photo_gallery'),
-        'show_in_rest' => true
+        'menu_name' => _x('Photo Galleries', 'photo_gallery')
     ];
 
     $args = [
@@ -470,6 +469,7 @@ function register_cpt_photo_gallery()
             'read_post' => 'photo_gallery',
             'publish_post' => 'photo_gallery',
         ],
+        'show_in_rest' => true
     ];
 
     register_post_type('photo_gallery', $args);
