@@ -26,7 +26,7 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
     <meta name="msapplication-config" content="/icons/browserconfig.xml">
     <meta name="theme-color" content="#1E81EF">
 
-    <meta name='impact-site-verification' value='-1277201721'>
+	<meta name='impact-site-verification' value='bcdef5d2-ea23-4991-b415-792c47fb1665'>
 
     <?php if (is_single()) {
 
