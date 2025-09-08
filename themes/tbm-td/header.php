@@ -108,6 +108,9 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
         })(window, "googletag", "function");
     </script>
 
+    <!-- Simlinks -->
+    <script type="text/javascript" src="https://s.skimresources.com/js/283493X1778391.skimlinks.js"></script>
+
     <style>
         <?php
         echo file_get_contents(get_template_directory() . '/css/reset.css');
