@@ -238,6 +238,7 @@ class TBMAds
         'incontent_2' => '22378619015',
         'desktop_sticky' => '22378678339',
         'mob_sticky' => '22378566870',
+          'oop' => '22779890848'
       ],
       'second_article' => [
         'skin' => '22378566867',
@@ -253,6 +254,7 @@ class TBMAds
         'inbody1' => '22378678345',
 
         'incontent_2' => '22378566876',
+              'oop' => '22779890848'
       ],
       'category' => [
         'skin' => '22378678021',
@@ -269,6 +271,7 @@ class TBMAds
 
         'desktop_sticky' => '22378678027',
         'mob_sticky' => '22378678336',
+              'oop' => '22779890848'
       ],
       'homepage' => [
         'desktop_sticky' => '22378677994',
@@ -304,6 +307,7 @@ class TBMAds
         'incontent_6' => '22378564854',
 
         'mob_sticky' => '22378678024',
+              'oop' => '22779890848'
       ]
     ];
   }
