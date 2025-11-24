@@ -246,7 +246,7 @@ class TBMAds
         $html .= '<!--' . $post_id . ' | '  . $section . ' | ' . $ad_location . ' | ' . $slot_no . '-->';
 
         $html .= '<div id="div-gpt-' . $gpt_id . '" style="margin: auto; text-align: center">';
-        $html .= '<script>googletag.cmd.push(function() { googletag.display("' . $gpt_id . '"); });</script>';
+        $html .= '<script>googletag.cmd.push(function() { googletag.display("div-gpt-' . $gpt_id . '"); });</script>';
         $html .= '</div>';
 
         if ($slot_no > 1) {
