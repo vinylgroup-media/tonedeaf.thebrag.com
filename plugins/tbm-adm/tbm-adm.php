@@ -92,7 +92,7 @@ class TBMAds
 
                 // ---------- CATEGORY ----------
                 <?php if ($is_category): ?>
-                slot('/22071836792/SSM_tonedeafbrag/category_header', leaderboardSizes, 'div-gpt-category_header');
+                slot('/22071836792/SSM_tonedeafbrag/category_leaderboard', leaderboardSizes, 'div-gpt-category_leaderboard');
                 slot('/22071836792/SSM_tonedeafbrag/category_mrec', mrecSizes, 'div-gpt-category_mrec');
                 slot('/22071836792/SSM_tonedeafbrag/category_vrec', vrecSizes, 'div-gpt-category_vrec');
                 slot('/22071836792/SSM_tonedeafbrag/category_skin', skinSizes, 'div-gpt-category_skin', true);
@@ -107,6 +107,7 @@ class TBMAds
                 // ---------- ARTICLE ----------
                 <?php if ($is_article): ?>
                 slot('/22071836792/SSM_tonedeafbrag/article_leaderboard', leaderboardSizes, 'div-gpt-article_leaderboard');
+                slot('/22071836792/SSM_tonedeafbrag/article_header', leaderboardSizes, 'div-gpt-article_header');
                 slot('/22071836792/SSM_tonedeafbrag/article_mrec', mrecSizes, 'div-gpt-article_mrec');
                 slot('/22071836792/SSM_tonedeafbrag/article_incontent_1', incontentSizes, 'div-gpt-article_incontent_1');
                 slot('/22071836792/SSM_tonedeafbrag/article_incontent_2', incontentSizes, 'div-gpt-article_incontent_2');
@@ -308,6 +309,7 @@ class TBMAds
       'article' => [
         'skin' => '22378678033',
         'leaderboard' => '22378619009',
+        'header' => '22378619009',
 
         'mrec' => '22378619012',
         'rail1' => '22378619012',
