@@ -112,8 +112,8 @@ class TBMAds
                 slot('/22071836792/SSM_tonedeafbrag/article_incontent_1', incontentSizes, 'div-gpt-article_incontent_1');
                 slot('/22071836792/SSM_tonedeafbrag/article_incontent_2', incontentSizes, 'div-gpt-article_incontent_2');
                 slot('/22071836792/SSM_tonedeafbrag/article_vrec', vrecSizes, 'div-gpt-article_vrec');
-                slot('/22071836792/SSM_tonedeafbrag/article_rail1', incontentSizes, 'div-gpt-article_rail1');
-                slot('/22071836792/SSM_tonedeafbrag/article_rail2', incontentSizes, 'div-gpt-article_rail2');
+                slot('/22071836792/SSM_tonedeafbrag/article_rail1', vrecSizes, 'div-gpt-article_rail1');
+                slot('/22071836792/SSM_tonedeafbrag/article_rail2', vrecSizes, 'div-gpt-article_rail2');
 
                 slot('/22071836792/SSM_tonedeafbrag/article_skin', skinSizes, 'div-gpt-article_skin', true);
                 slot('/22071836792/SSM_tonedeafbrag/article_sticky', [[728,90]], 'div-gpt-article_sticky', true);
