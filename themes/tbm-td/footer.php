@@ -130,7 +130,13 @@ position: fixed;
 <!-- 22071836792/outofpage/outofpage -->
 <!--<div data-fuse="22779890848"></div>-->
 
-<?php render_ad_tag('oop'); ?>
+<div id="div-gpt-outofpage">
+    <script>
+        googletag.cmd.push(function() {
+            googletag.display('div-gpt-outofpage');
+        });
+    </script>
+</div>
 
 <!-- Simlinks -->
 <script type="text/javascript" src="https://s.skimresources.com/js/283493X1778391.skimlinks.js"></script>

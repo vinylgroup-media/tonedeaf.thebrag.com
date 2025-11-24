@@ -271,8 +271,7 @@ class TBMAds
                 $html .= 'googletag.pubads().setTargeting("pagepath", ["' . $pagepath . '"]);';
             }
 
-            $html .= '
-                </script>';
+            $html .= '</script>';
       }
 
       return $html;
