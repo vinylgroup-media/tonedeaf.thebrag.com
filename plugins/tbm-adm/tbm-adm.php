@@ -92,7 +92,7 @@ class TBMAds
 
                 // ---------- CATEGORY ----------
                 <?php if ($is_category): ?>
-                slot('/22071836792/SSM_tonedeafbrag/category_leaderboard', leaderboardSizes, 'div-gpt-category_leaderboard');
+                slot('/22071836792/SSM_tonedeafbrag/category_header', leaderboardSizes, 'div-gpt-category_header');
                 slot('/22071836792/SSM_tonedeafbrag/category_mrec', mrecSizes, 'div-gpt-category_mrec');
                 slot('/22071836792/SSM_tonedeafbrag/category_vrec', vrecSizes, 'div-gpt-category_vrec');
                 slot('/22071836792/SSM_tonedeafbrag/category_skin', skinSizes, 'div-gpt-category_skin', true);
