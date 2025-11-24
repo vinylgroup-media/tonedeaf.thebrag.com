@@ -885,34 +885,34 @@ function tbm_theme_options_republish()
 // JS to make BB sticky
 add_action('wp_footer', function () {
 ?>
-    <script>
-        fusetag.onSlotRenderEnded((e) => {
-            if (e.slotId === 'fuse-slot-22378618988-1' || e.slotId === 'fuse-slot-22378619009-1') {
-                googletag.pubads().addEventListener('slotRenderEnded', function(event) {
-                    const slot = event.slot
-                    if (slot.getSlotElementId() === 'fuse-slot-22378618988-1' || slot.getSlotElementId() === 'fuse-slot-22378619009-1') {
-                        if (event.creativeId === 138373276463) {
-                            const skin = document.getElementById('skin')
-                            skin.style.setProperty('display', 'none', 'important')
-
-                            const ad_billboard = parent.document.querySelector('.ad-billboard .mx-auto')
-
-                            ad_billboard.style.position = 'fixed'
-                            ad_billboard.style.zIndex = 999
-                            ad_billboard.style.bottom = '15px'
-                            ad_billboard.style.transform = 'translateX(-50%)';
-                            ad_billboard.style.left = '50%';
-
-                            setTimeout(function() {
-                                ad_billboard.style.bottom = '0'
-                                ad_billboard.style.position = 'relative'
-                            }, 6000)
-                        }
-                    }
-                })
-            }
-        })
-    </script>
+<!--    <script>-->
+<!--        fusetag.onSlotRenderEnded((e) => {-->
+<!--            if (e.slotId === 'fuse-slot-22378618988-1' || e.slotId === 'fuse-slot-22378619009-1') {-->
+<!--                googletag.pubads().addEventListener('slotRenderEnded', function(event) {-->
+<!--                    const slot = event.slot-->
+<!--                    if (slot.getSlotElementId() === 'fuse-slot-22378618988-1' || slot.getSlotElementId() === 'fuse-slot-22378619009-1') {-->
+<!--                        if (event.creativeId === 138373276463) {-->
+<!--                            const skin = document.getElementById('skin')-->
+<!--                            skin.style.setProperty('display', 'none', 'important')-->
+<!---->
+<!--                            const ad_billboard = parent.document.querySelector('.ad-billboard .mx-auto')-->
+<!---->
+<!--                            ad_billboard.style.position = 'fixed'-->
+<!--                            ad_billboard.style.zIndex = 999-->
+<!--                            ad_billboard.style.bottom = '15px'-->
+<!--                            ad_billboard.style.transform = 'translateX(-50%)';-->
+<!--                            ad_billboard.style.left = '50%';-->
+<!---->
+<!--                            setTimeout(function() {-->
+<!--                                ad_billboard.style.bottom = '0'-->
+<!--                                ad_billboard.style.position = 'relative'-->
+<!--                            }, 6000)-->
+<!--                        }-->
+<!--                    }-->
+<!--                })-->
+<!--            }-->
+<!--        })-->
+<!--    </script>-->
 <?php
 });
 

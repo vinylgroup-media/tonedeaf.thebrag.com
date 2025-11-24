@@ -34,34 +34,106 @@ class TBMAds
    */
   public function action_wp_enqueue_scripts()
   {
-    wp_enqueue_script('adm-fuse', 'https://cdn.fuseplatform.net/publift/tags/2/2376/fuse.js', [], '2');
+      wp_enqueue_script(
+          'adm-gpt',
+          'https://securepubads.g.doubleclick.net/tag/js/gpt.js'
+      );
   }
 
   /*
    * WP Head
    */
-  public function action_wp_head()
-  {
-    // if (!is_home() && !is_front_page()) 
+    public function action_wp_head()
     {
-      ?>
-      <script type="text/javascript">
-        const fusetag = window.fusetag || (window.fusetag = {
-          que: []
-        });
+        $is_home     = is_home() || is_front_page();
+        $is_category = is_category() || is_archive();
+        $is_article  = is_single();
 
-        fusetag.que.push(function () {
-          googletag.pubads().enableSingleRequest();
-          googletag.enableServices();
-        });
-      </script>
-      <?php
+        ?>
+        <script>
+            window.googletag = window.googletag || {cmd: []};
+
+            googletag.cmd.push(function () {
+                const isMobile = window.innerWidth < 768;
+
+                const leaderboardSizes = isMobile
+                    ? [[300,50],[300,100],[320,100],[320,50]]
+                    : [[970,250],[970,90],[728,90]];
+
+                const mrecSizes       = ['fluid',[300,250],[336,280]];
+                const incontentSizes  = ['fluid',[300,250],[336,280],[320,480]];
+                const vrecSizes       = ['fluid',[300,250],[300,600]];
+                const skinSizes       = [[1600,1200]];
+
+                function slot(path, sizes, id, desktopOnly = false) {
+                    if (desktopOnly && isMobile) return;
+                    googletag.defineSlot(path, sizes, id).addService(googletag.pubads());
+                }
+
+                // ---------- HOMEPAGE ----------
+                <?php if ($is_home): ?>
+                slot('/22071836792/SSM_tonedeafbrag/homepage_header', leaderboardSizes, 'div-gpt-homepage_header');
+                slot('/22071836792/SSM_tonedeafbrag/homepage_desktop_sticky', [[728,90]], 'div-gpt-homepage_desktop_sticky', true);
+                slot('/22071836792/SSM_tonedeafbrag/homepage_skin', skinSizes, 'div-gpt-homepage_skin', true);
+
+                // Incontent & MREC
+                for (let i = 1; i <= 6; i++) {
+                    slot(`/22071836792/SSM_tonedeafbrag/homepage_incontent_${i}`, incontentSizes, `div-gpt-homepage_incontent_${i}`);
+                }
+                for (let i = 1; i <= 7; i++) {
+                    slot(`/22071836792/SSM_tonedeafbrag/homepage_vrec_${i}`, vrecSizes, `div-gpt-homepage_vrec_${i}`);
+                }
+
+                slot('/22071836792/SSM_tonedeafbrag/homepage_mob_sticky_footer',
+                    [[1,1],[300,50],[320,50]],
+                    'div-gpt-homepage_mob_sticky_footer'
+                );
+                <?php endif; ?>
+
+                // ---------- CATEGORY ----------
+                <?php if ($is_category): ?>
+                slot('/22071836792/SSM_tonedeafbrag/category_leaderboard', leaderboardSizes, 'div-gpt-category_leaderboard');
+                slot('/22071836792/SSM_tonedeafbrag/category_mrec', mrecSizes, 'div-gpt-category_mrec');
+                slot('/22071836792/SSM_tonedeafbrag/category_vrec', vrecSizes, 'div-gpt-category_vrec');
+                slot('/22071836792/SSM_tonedeafbrag/category_skin', skinSizes, 'div-gpt-category_skin', true);
+                slot('/22071836792/SSM_tonedeafbrag/category_desktop_sticky', [[728,90]], 'div-gpt-category_desktop_sticky', true);
+
+                slot('/22071836792/SSM_tonedeafbrag/category_mob_sticky_footer',
+                    [[1,1],[300,50],[320,50]],
+                    'div-gpt-category_mob_sticky_footer'
+                );
+                <?php endif; ?>
+
+                // ---------- ARTICLE ----------
+                <?php if ($is_article): ?>
+                slot('/22071836792/SSM_tonedeafbrag/article_leaderboard', leaderboardSizes, 'div-gpt-article_leaderboard');
+                slot('/22071836792/SSM_tonedeafbrag/article_mrec', mrecSizes, 'div-gpt-article_mrec');
+                slot('/22071836792/SSM_tonedeafbrag/article_incontent_1', incontentSizes, 'div-gpt-article_incontent_1');
+                slot('/22071836792/SSM_tonedeafbrag/article_incontent_2', incontentSizes, 'div-gpt-article_incontent_2');
+                slot('/22071836792/SSM_tonedeafbrag/article_vrec', vrecSizes, 'div-gpt-article_vrec');
+
+                slot('/22071836792/SSM_tonedeafbrag/article_skin', skinSizes, 'div-gpt-article_skin', true);
+                slot('/22071836792/SSM_tonedeafbrag/article_sticky', [[728,90]], 'div-gpt-article_sticky', true);
+
+                slot('/22071836792/SSM_tonedeafbrag/article_mob_sticky_footer',
+                    [[1,1],[300,50],[320,50]],
+                    'div-gpt-article_mob_sticky_footer'
+                );
+                <?php endif; ?>
+
+                slot('/22071836792/SSM_tonedeafbrag/outofpage', [], 'div-gpt-outofpage');
+                slot('/22071836792/SSM_tonedeafbrag/preroll', [[640,480]], 'div-gpt-preroll');
+
+                googletag.pubads().enableSingleRequest();
+                googletag.enableServices();
+            });
+        </script>
+        <?php
     }
-  }
 
-  /*
-   * Singleton
-   */
+    /*
+     * Singleton
+     */
   public static function get_instance()
   {
     if (!isset(static::$_instance)) {
@@ -81,7 +153,9 @@ class TBMAds
     if (is_page_template('page-templates/page-solstice-2021.php') || is_page_template('page-quiz.php')):
       return;
     endif;
-
+    if ($ad_location == 'leaderboard') {
+        $ad_location = 'header';
+    }
     $html = '';
     $fuse_tags = self::fuse_tags();
 
@@ -168,27 +242,37 @@ class TBMAds
       } else {
         $fuse_id = $fuse_tags[$ad_location];
       }
-      $html .= '<!--' . $post_id . ' | ' . $section . ' | ' . $ad_location . ' | ' . $slot_no . '-->';
-      $html .= '<div data-fuse="' . $fuse_id . '" class="fuse-ad"></div>';
+        $gpt_id = $section . '_' . $ad_location;
+        $html .= '<!--' . $post_id . ' | '  . $section . ' | ' . $ad_location . ' | ' . $slot_no . '-->';
 
-      if ($slot_no > 1) {
-        $html .= '<script>
-      fusetag.que.push(function(){
-        fusetag.loadSlotById("' . $fuse_id . '");
-       });
-       </script>';
-      } else {
-        $html .= '<script type="text/javascript">';
-        if (isset($category)) {
-          $html .= 'fusetag.setTargeting("fuse_category", ["' . $category . '"]);';
-        }
-        if (isset($tag_slugs)) {
-          $html .= 'fusetag.setTargeting("tbm_tags", ' . json_encode($tag_slugs) . ');';
-        }
-        if (isset($pagepath)) {
-          $html .= 'fusetag.setTargeting("pagepath", ["' . $pagepath . '"]);';
-        }
-        $html .= '</script>';
+        $html .= '<div id="div-gpt-' . $gpt_id . '" style="margin: auto; text-align: center">';
+        $html .= '<script>googletag.cmd.push(function() { googletag.display("' . $gpt_id . '"); });</script>';
+        $html .= '</div>';
+
+        if ($slot_no > 1) {
+            $html .= '<script>
+                googletag.cmd.push(function() {
+                  googletag.display("div-gpt-' . $gpt_id . '");
+                });
+                    </script>';
+        } else {
+            $html .= '<script type="text/javascript">
+                window.googletag = window.googletag || {cmd: []};
+                googletag.cmd.push(function() {';
+            if (isset($category)) {
+                $html .= 'googletag.pubads().setTargeting("fuse_category", ["' . $category . '"]);';
+            }
+
+            if (isset($tag_slugs)) {
+                $html .= 'googletag.pubads().setTargeting("tbm_tags", ' . json_encode($tag_slugs) . ');';
+            }
+
+            if (isset($pagepath)) {
+                $html .= 'googletag.pubads().setTargeting("pagepath", ["' . $pagepath . '"]);';
+            }
+
+            $html .= '
+                </script>';
       }
 
       return $html;
