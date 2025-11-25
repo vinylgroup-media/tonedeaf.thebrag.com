@@ -35,7 +35,7 @@ $amp_post_id = $post_id = $this->get('post_id'); ?>
     <article class="amp-wp-article">
 
         <div class="amp-ad" style="text-align: center; margin: auto;">
-            <?php echo render_ad_tag('header'); ?>
+            <?php echo render_ad_tag('leaderboard'); ?>
         </div>
 
         <?php $this->load_parts(array('featured-image')); ?>
@@ -261,7 +261,7 @@ $amp_post_id = $post_id = $this->get('post_id'); ?>
                             <div class="post-thumbnail">
                                 <?php if ('' !== get_the_post_thumbnail()) : ?>
                                     <a href="<?php echo get_permalink() . 'amp'; ?>">
-                                        <?php // the_post_thumbnail( 'thumbnail' ); 
+                                        <?php // the_post_thumbnail( 'thumbnail' );
                                         ?>
                                         <?php
                                         $thumbnail = wp_get_attachment_image_src(get_post_thumbnail_id(), 'thumbnail');

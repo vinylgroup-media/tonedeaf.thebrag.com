@@ -1823,10 +1823,20 @@ function ssm_inject_ads($content)
         return $content;
     }
     // return tbm_inject_ads( $content );
-    if ((function_exists('get_field') && get_field('paid_content')) || is_page_template('single-template-featured.php') || is_page_template('page-templates/brag-observer.php')):
+    if ((function_exists('get_field') && get_field('paid_content'))):
         return $content;
     endif;
 
+    // Exclude ad injection for specific templates
+    $excluded_templates = array('single-template-featured.php', 'page-templates/brag-observer.php');
+    $current_template = get_page_template_slug();
+    if (!$current_template && is_single()) {
+        // For single posts, check post meta for custom template
+        $current_template = get_post_meta(get_the_ID(), '_wp_page_template', true);
+    }
+    if (in_array($current_template, $excluded_templates, true)) {
+        return $content;
+    }
     if (is_page()) {
         return $content;
     }
@@ -2124,7 +2134,7 @@ function render_ad_tag($tag, $slot_no = 1)
     if (!file_exists(WP_PLUGIN_DIR . '/tbm-adm/tbm-adm.php'))
         return;
     require_once WP_PLUGIN_DIR . '/tbm-adm/tbm-adm.php';
-    $ads = TBMAds::get_instance();
+    $ads = \TBM\TBMAds::get_instance();
     echo $ads->get_ad($tag, $slot_no, get_the_ID());
     return;
 }

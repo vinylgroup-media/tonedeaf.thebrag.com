@@ -9,6 +9,8 @@
  * Author URI:
  */
 
+namespace TBM;
+
 class TBMAds
 {
 
@@ -45,16 +47,44 @@ class TBMAds
    */
     public function action_wp_head()
     {
+        global $post;
+
         $is_home     = is_home() || is_front_page();
         $is_category = is_category() || is_archive();
         $is_article  = is_single();
+        $is_article_feature  = is_page_template('single-template-featured.php');
+
+        // Determine pagepath
+        if (isset($_GET['dfp_key'])) {
+            $pagepath = sanitize_text_field($_GET['dfp_key']);
+        } elseif ($is_home) {
+            $pagepath = 'home';
+        } else {
+            $request_uri_sanitized = sanitize_text_field($_SERVER['REQUEST_URI']);
+            $pagepath_uri = substr(str_replace(['/', 'beta'], '', $request_uri_sanitized), 0, 40);
+            $pagepath_e = explode('?', $pagepath_uri);
+            $pagepath = $pagepath_e[0];
+        }
+
+        // Extract tag slugs for articles
+        $tag_slugs = [];
+        if (isset($post) && $post instanceof \WP_Post) {
+            $tags = get_the_tags($post->ID);
+            if ($tags) {
+                $tag_slugs = wp_list_pluck($tags, 'slug');
+            }
+        }
 
         ?>
         <script>
             window.googletag = window.googletag || {cmd: []};
 
+            const isMobile = window.innerWidth < 768;
+
             googletag.cmd.push(function () {
-                const isMobile = window.innerWidth < 768;
+                // Set targeting first
+                googletag.pubads().setTargeting("site", ["tonedeafbrag"]);
+                googletag.pubads().setTargeting("pagepath", ["<?php echo esc_js($pagepath); ?>"]);
 
                 const leaderboardSizes = isMobile
                     ? [[300,50],[300,100],[320,100],[320,50]]
@@ -73,21 +103,15 @@ class TBMAds
                 // ---------- HOMEPAGE ----------
                 <?php if ($is_home): ?>
                 slot('/22071836792/SSM_tonedeafbrag/homepage_header', leaderboardSizes, 'div-gpt-homepage_header');
-                slot('/22071836792/SSM_tonedeafbrag/homepage_desktop_sticky', [[728,90]], 'div-gpt-homepage_desktop_sticky', true);
                 slot('/22071836792/SSM_tonedeafbrag/homepage_skin', skinSizes, 'div-gpt-homepage_skin', true);
 
                 // Incontent & MREC
-                for (let i = 1; i <= 6; i++) {
+                for (let i = 1; i <= 3; i++) {
                     slot(`/22071836792/SSM_tonedeafbrag/homepage_incontent_${i}`, incontentSizes, `div-gpt-homepage_incontent_${i}`);
                 }
-                for (let i = 1; i <= 7; i++) {
+                for (let i = 1; i <= 6; i++) {
                     slot(`/22071836792/SSM_tonedeafbrag/homepage_vrec_${i}`, vrecSizes, `div-gpt-homepage_vrec_${i}`);
                 }
-
-                slot('/22071836792/SSM_tonedeafbrag/homepage_mob_sticky_footer',
-                    [[1,1],[300,50],[320,50]],
-                    'div-gpt-homepage_mob_sticky_footer'
-                );
                 <?php endif; ?>
 
                 // ---------- CATEGORY ----------
@@ -96,36 +120,22 @@ class TBMAds
                 slot('/22071836792/SSM_tonedeafbrag/category_mrec', mrecSizes, 'div-gpt-category_mrec');
                 slot('/22071836792/SSM_tonedeafbrag/category_vrec', vrecSizes, 'div-gpt-category_vrec');
                 slot('/22071836792/SSM_tonedeafbrag/category_skin', skinSizes, 'div-gpt-category_skin', true);
-                slot('/22071836792/SSM_tonedeafbrag/category_desktop_sticky', [[728,90]], 'div-gpt-category_desktop_sticky', true);
-
-                slot('/22071836792/SSM_tonedeafbrag/category_mob_sticky_footer',
-                    [[1,1],[300,50],[320,50]],
-                    'div-gpt-category_mob_sticky_footer'
-                );
                 <?php endif; ?>
 
                 // ---------- ARTICLE ----------
                 <?php if ($is_article): ?>
+
                 slot('/22071836792/SSM_tonedeafbrag/article_leaderboard', leaderboardSizes, 'div-gpt-article_leaderboard');
-                slot('/22071836792/SSM_tonedeafbrag/article_header', leaderboardSizes, 'div-gpt-article_header');
-                slot('/22071836792/SSM_tonedeafbrag/article_mrec', mrecSizes, 'div-gpt-article_mrec');
                 slot('/22071836792/SSM_tonedeafbrag/article_incontent_1', incontentSizes, 'div-gpt-article_incontent_1');
-                slot('/22071836792/SSM_tonedeafbrag/article_incontent_2', incontentSizes, 'div-gpt-article_incontent_2');
+                <?php if(!$is_article_feature) : ?>
+                slot('/22071836792/SSM_tonedeafbrag/article_mrec', mrecSizes, 'div-gpt-article_mrec');
                 slot('/22071836792/SSM_tonedeafbrag/article_vrec', vrecSizes, 'div-gpt-article_vrec');
-                slot('/22071836792/SSM_tonedeafbrag/article_rail1', vrecSizes, 'div-gpt-article_rail1');
-                slot('/22071836792/SSM_tonedeafbrag/article_rail2', vrecSizes, 'div-gpt-article_rail2');
-
-                slot('/22071836792/SSM_tonedeafbrag/article_skin', skinSizes, 'div-gpt-article_skin', true);
-                slot('/22071836792/SSM_tonedeafbrag/article_sticky', [[728,90]], 'div-gpt-article_sticky', true);
-
-                slot('/22071836792/SSM_tonedeafbrag/article_mob_sticky_footer',
-                    [[1,1],[300,50],[320,50]],
-                    'div-gpt-article_mob_sticky_footer'
-                );
                 <?php endif; ?>
 
-                slot('/22071836792/SSM_tonedeafbrag/outofpage', [], 'div-gpt-outofpage');
-                slot('/22071836792/SSM_tonedeafbrag/preroll', [[640,480]], 'div-gpt-preroll');
+                slot('/22071836792/SSM_tonedeafbrag/article_skin', skinSizes, 'div-gpt-article_skin', true);
+                <?php endif; ?>
+
+                slot('/22071836792/SSM_tonedeafbrag/outofpage', [[1,1]], 'div-gpt-outofpage');
 
                 googletag.pubads().enableSingleRequest();
                 googletag.enableServices();
@@ -156,9 +166,6 @@ class TBMAds
     if (is_page_template('page-templates/page-solstice-2021.php') || is_page_template('page-quiz.php')):
       return;
     endif;
-    if ($ad_location == 'leaderboard') {
-        $ad_location = 'header';
-    }
     $html = '';
     $fuse_tags = self::fuse_tags();
 
@@ -400,4 +407,4 @@ class TBMAds
   }
 }
 
-TBMAds::get_instance();
+\TBM\TBMAds::get_instance();

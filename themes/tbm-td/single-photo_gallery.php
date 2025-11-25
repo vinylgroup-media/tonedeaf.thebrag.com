@@ -64,8 +64,8 @@ $the_post_id = get_the_ID();
                             </a>
                             <?php
                         endforeach; // For Each Category
-                    endif; // If there are categories for the post 
-            
+                    endif; // If there are categories for the post
+
                     if (isset($is_oped) && $is_oped) {
                         ?>
                         <a class="text-uppercase cat mx-1" href="<?php echo get_category_link($oped_termid); ?>"
@@ -234,7 +234,7 @@ $the_post_id = get_the_ID();
                     <div class="col-md-4 right-col-has-ad d-none d-md-block ml-2 align-self-stretch">
                         <div class="d-flex flex-column h-100 justify-content-start">
                             <div class="align-self-center mb-3">
-                                <?php render_ad_tag('rail1'); ?>
+                                <?php render_ad_tag('mrec'); ?>
                             </div>
                             <div class="sticky-ad-right">
                                 <div class="mt-3">
