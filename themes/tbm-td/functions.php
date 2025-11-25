@@ -1827,6 +1827,16 @@ function ssm_inject_ads($content)
         return $content;
     endif;
 
+    // Exclude ad injection for specific templates
+    $excluded_templates = array('single-template-featured.php', 'page-templates/brag-observer.php');
+    $current_template = get_page_template_slug();
+    if (!$current_template && is_single()) {
+        // For single posts, check post meta for custom template
+        $current_template = get_post_meta(get_the_ID(), '_wp_page_template', true);
+    }
+    if (in_array($current_template, $excluded_templates, true)) {
+        return $content;
+    }
     if (is_page()) {
         return $content;
     }
