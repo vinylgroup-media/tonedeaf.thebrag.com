@@ -124,7 +124,6 @@ class TBMAds
 
                 // ---------- ARTICLE ----------
                 <?php if ($is_article): ?>
-                googletag.pubads().setTargeting("tbm_tags", <?php echo json_encode($tag_slugs); ?>);
 
                 slot('/22071836792/SSM_tonedeafbrag/article_leaderboard', leaderboardSizes, 'div-gpt-article_leaderboard');
                 slot('/22071836792/SSM_tonedeafbrag/article_incontent_1', incontentSizes, 'div-gpt-article_incontent_1');
