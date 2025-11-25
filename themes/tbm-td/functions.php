@@ -1828,7 +1828,7 @@ function ssm_inject_ads($content)
     endif;
 
     // Exclude ad injection for specific templates
-    $excluded_templates = array('single-template-featured.php', 'page-templates/brag-observer.php');
+    $excluded_templates = array('page-templates/brag-observer.php');
     $current_template = get_page_template_slug();
     if (!$current_template && is_single()) {
         // For single posts, check post meta for custom template
