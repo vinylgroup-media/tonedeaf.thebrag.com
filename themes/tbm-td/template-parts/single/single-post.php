@@ -7,7 +7,7 @@ extract($args);
 global $wpdb;
 
 $spotlight_article_ids = $wpdb->get_results(
-    "SELECT post_id FROM ( 
+    "SELECT post_id FROM (
         SELECT post_id FROM `{$wpdb->prefix}tbm_trending`
         WHERE post_id != " . get_the_ID()  . "
         ORDER BY `created_at` DESC LIMIT 10
@@ -28,7 +28,7 @@ endif;
 if ($count_articles === 1) : ?>
     <div class="ad-billboard ad-billboard-top container py-1 py-md-2">
         <div class="mx-auto text-center">
-            <?php render_ad_tag('header', $count_articles); ?>
+            <?php render_ad_tag('leaderboard', $count_articles); ?>
         </div>
     </div>
     <?php
@@ -70,7 +70,7 @@ if (!post_password_required($post)) :
     ?>
         <div class="ad-billboard ad-billboard-<?php echo $count_articles === 1 ? '1' : 'infinite'; ?> container py-2 py-md-4">
             <div class="mx-auto text-center">
-                <?php render_ad_tag('header', $count_articles); ?>
+                <?php render_ad_tag('leaderboard', $count_articles); ?>
             </div>
         </div>
     <?php endif; ?>
@@ -118,7 +118,7 @@ if (!post_password_required($post)) :
                     <a class="text-uppercase cat mx-1" href="<?php echo get_term_link($genre->term_id); ?>" style="color: #79746b; font-size: 90%;"><?php echo $genre->name; ?></a>
                 <?php
                 endforeach; // For Each Category
-            endif; // If there are categories for the post 
+            endif; // If there are categories for the post
 
             if (isset($is_oped) && $is_oped) {
                 ?>
@@ -183,13 +183,13 @@ if (!post_password_required($post)) :
                     if (get_field('promoted_text_link') && '' != get_field('promoted_text_link')) :
                 ?>
                         <a href="<?php echo get_field('promoted_text_link'); ?>" target="_blank" class="text-dark">
-                        <?php endif; // If promoted_text_link 
+                        <?php endif; // If promoted_text_link
                         ?>
                         <div class="p-3 mb-3 d-flex align-items-center" style="border: 1px solid #b2b2b2; font-size: 110%">
                             <div><?php echo get_field('promoted_text'); ?></div>
                             <?php if (get_field('promoted_logo') && '' != get_field('promoted_logo')) : ?>
                                 <img src="<?php echo get_field('promoted_logo'); ?>" style="width: 100px;">
-                            <?php endif; // If promoted_logo 
+                            <?php endif; // If promoted_logo
                             ?>
                         </div>
                         <?php if (get_field('promoted_text_link') && '' != get_field('promoted_text_link')) : ?>
@@ -324,7 +324,7 @@ if (!post_password_required($post)) :
                             'trackVisitor': '<?php echo get_field('track_visitors'); ?>'
                         });
                     </script>
-                <?php endif; // If set track visitors 
+                <?php endif; // If set track visitors
                 ?>
                 <!-- Story End -->
             </div><!-- Left panel - content, etc. -->
@@ -332,7 +332,7 @@ if (!post_password_required($post)) :
             <div class="col-md-4 right-col-has-ad d-none d-md-block ml-2 align-self-stretch">
                 <div class="d-flex flex-column h-100 justify-content-start">
                     <div class="align-self-center" style="min-width: 300px;">
-                        <?php render_ad_tag('rail1', $count_articles); ?>
+                        <?php render_ad_tag('mrec', $count_articles); ?>
                     </div>
                     <div>
                         <?php
@@ -344,7 +344,7 @@ if (!post_password_required($post)) :
                     <div class="sticky-ad-right pt-2">
                         <div class="" style="min-width: 300px;">
                             <?php
-                            render_ad_tag('rail2', $count_articles);
+                            render_ad_tag('vrec', $count_articles);
                             ?>
                         </div>
                     </div>
