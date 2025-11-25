@@ -102,7 +102,7 @@ class TBMAds
 
                 // ---------- HOMEPAGE ----------
                 <?php if ($is_home): ?>
-                slot('/22071836792/SSM_tonedeafbrag/homepage_header', leaderboardSizes, 'div-gpt-homepage_header');
+                slot('/22071836792/SSM_tonedeafbrag/homepage_leaderboard', leaderboardSizes, 'div-gpt-homepage_leaderboard');
                 slot('/22071836792/SSM_tonedeafbrag/homepage_skin', skinSizes, 'div-gpt-homepage_skin', true);
 
                 // Incontent & MREC
