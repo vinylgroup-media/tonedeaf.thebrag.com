@@ -23,6 +23,8 @@ plugins/tbm-ga/*
 !plugins/tbm-gtm
 !plugins/tbm-floating-player
 
+!plugins/vm-*
+
 uploads
 
 # ignore specific themes
