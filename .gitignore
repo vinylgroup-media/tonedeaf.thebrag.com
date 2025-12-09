@@ -23,6 +23,9 @@ plugins/tbm-ga/*
 !plugins/tbm-gtm
 !plugins/tbm-floating-player
 
+!plugins/vm-*
+plugins/vm-ai-feed/CLAUDE.md
+
 uploads
 
 # ignore specific themes

@@ -1,0 +1,12 @@
+{
+	"name": "vinylmedia/vm-ai-feed",
+	"type": "wordpress-plugin",
+	"require": {
+		"league/commonmark": "^2.4"
+	},
+	"autoload": {
+		"psr-4": {
+			"VM\\AIFeed\\": "includes/"
+		}
+	}
+}
