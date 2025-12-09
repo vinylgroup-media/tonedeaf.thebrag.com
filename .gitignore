@@ -24,6 +24,7 @@ plugins/tbm-ga/*
 !plugins/tbm-floating-player
 
 !plugins/vm-*
+plugins/vm-ai-feed/CLAUDE.md
 
 uploads
 
