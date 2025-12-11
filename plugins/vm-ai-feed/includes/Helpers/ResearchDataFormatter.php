@@ -33,13 +33,29 @@ class ResearchDataFormatter
      */
     public static function formatResearchResponse(string $response): string
     {
-        // Check if this looks like our structured research data format
-        if (self::isResearchDataFormat($response)) {
-            return self::parseAndFormatResearchData($response);
-        }
+        try {
+            // IMPORTANT: The response is a JSON string that needs to be parsed
+            $decoded = @json_decode($response, true);
 
-        // Fall back to markdown conversion for regular content
-        return AIMarkdown::convert($response);
+            // Check if JSON parsing was successful
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                // Check if this is the new format with response and references
+                if (isset($decoded['query']) || isset($decoded['response']) || isset($decoded['references'])) {
+                    return self::formatSimpleResponseWithReferences($decoded);
+                }
+            }
+
+            // Check if this looks like our structured research data format
+            if (self::isResearchDataFormat($response)) {
+                return self::parseAndFormatResearchData($response);
+            }
+
+            // Fall back to simple display for any other format
+            return '<div style="padding: 10px; background: #f0f0f0; border-radius: 4px;"><em>Research data available</em></div>';
+        } catch (\Throwable $e) {
+            error_log('ResearchDataFormatter Error: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+            return '<p style="color: #666; font-style: italic;">Research data (formatter error)</p>';
+        }
     }
 
     /**
@@ -365,6 +381,149 @@ class ResearchDataFormatter
     }
 
     /**
+     * Format response with references (new format)
+     *
+     * @param array $data Array with 'response' and 'references' keys
+     * @return string Formatted HTML
+     */
+    private static function formatResponseWithReferences(array $data): string
+    {
+        $response = $data['response'] ?? '';
+        $references = $data['references'] ?? array();
+
+        $html = '<div class="research-response-container">';
+
+        // Display the main response text
+        if (!empty($response)) {
+            // Convert markdown to HTML
+            $response_html = AIMarkdown::convert($response);
+            $html .= '<div class="research-response-text" style="background: #ffffff; padding: 15px; border-radius: 4px; margin-bottom: 20px; line-height: 1.8;">';
+            $html .= $response_html;
+            $html .= '</div>';
+        }
+
+        // Display references
+        if (!empty($references) && is_array($references)) {
+            $html .= self::renderNewFormatReferences($references);
+        }
+
+        $html .= '</div>';
+
+        return $html;
+    }
+
+    /**
+     * Render references in new format
+     *
+     * @param array $references Array of reference objects
+     * @return string HTML output
+     */
+    private static function renderNewFormatReferences(array $references): string
+    {
+        $count = count($references);
+
+        $html = '<details class="research-data-section" open>';
+        $html .= '<summary><strong>Source Articles</strong> <span class="count">(' . esc_html($count) . ')</span></summary>';
+        $html .= '<div class="research-data-content">';
+
+        foreach ($references as $ref) {
+            $ref_id = $ref['reference_id'] ?? '';
+            $file_path = $ref['file_path'] ?? '';
+            $content = $ref['content'] ?? array();
+
+            // Extract fields from content array
+            $title = '';
+            $summary = '';
+            $article_content = '';
+            $source_url = '';
+            $published = '';
+
+            foreach ($content as $item) {
+                if (strpos($item, 'Title:') === 0) {
+                    $title = trim(substr($item, 6));
+                } elseif (strpos($item, 'Summary:') === 0) {
+                    $summary = trim(substr($item, 8));
+                } elseif (strpos($item, 'Content:') === 0) {
+                    $article_content = trim(substr($item, 8));
+                } elseif (strpos($item, 'Source URL:') === 0) {
+                    $source_url = trim(substr($item, 11));
+                } elseif (strpos($item, 'Published:') === 0) {
+                    $published = trim(substr($item, 10));
+                }
+            }
+
+            // Render reference card
+            $html .= '<div class="research-document-card" style="background: #ffffff; padding: 20px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 15px;">';
+
+            // Header with title and reference ID
+            $html .= '<div class="document-header" style="margin-bottom: 12px;">';
+            if (!empty($title)) {
+                $html .= '<h4 class="document-title" style="margin: 0 0 8px 0; font-size: 16px; color: #1d2327;">' . esc_html($title) . '</h4>';
+            }
+            if (!empty($ref_id)) {
+                $html .= '<span class="document-ref" style="display: inline-block; background: #f0f0f1; padding: 3px 8px; border-radius: 3px; font-size: 12px; color: #50575e; margin-right: 8px;">Ref #' . esc_html($ref_id) . '</span>';
+            }
+            if (!empty($file_path)) {
+                $html .= '<a href="' . esc_url($file_path) . '" target="_blank" rel="noopener noreferrer" class="document-source-link" style="font-size: 13px; color: #2271b1; text-decoration: none;">';
+                $html .= esc_html(self::getDomainFromUrl($file_path)) . ' ↗</a>';
+            }
+            $html .= '</div>';
+
+            // Metadata
+            if (!empty($published) || !empty($source_url)) {
+                $html .= '<div class="document-meta" style="margin-bottom: 12px; font-size: 13px; color: #646970;">';
+                if (!empty($published)) {
+                    $formatted_date = self::formatPublishedDate($published);
+                    $html .= '<span class="document-date" style="margin-right: 15px;">📅 ' . esc_html($formatted_date) . '</span>';
+                }
+                $html .= '</div>';
+            }
+
+            // Summary
+            if (!empty($summary)) {
+                $html .= '<div class="document-summary" style="background: #f6f7f7; padding: 12px; border-left: 3px solid #2271b1; margin-bottom: 12px; font-size: 14px; line-height: 1.6;">';
+                $html .= '<strong style="color: #1d2327;">Summary:</strong> ' . esc_html($summary);
+                $html .= '</div>';
+            }
+
+            // Content excerpt (limited to 500 chars)
+            if (!empty($article_content)) {
+                $excerpt = mb_substr($article_content, 0, 500);
+                if (mb_strlen($article_content) > 500) {
+                    $excerpt .= '...';
+                }
+                $html .= '<div class="document-excerpt" style="font-size: 13px; line-height: 1.6; color: #50575e;">';
+                $html .= esc_html($excerpt);
+                $html .= '</div>';
+            }
+
+            $html .= '</div>';
+        }
+
+        $html .= '</div></details>';
+
+        return $html;
+    }
+
+    /**
+     * Format published date
+     *
+     * @param string $date_string Date string to format
+     * @return string Formatted date
+     */
+    private static function formatPublishedDate(string $date_string): string
+    {
+        // Try to parse ISO 8601 format (e.g., "2014-06-02T06:40:46.000Z")
+        $timestamp = strtotime($date_string);
+        if ($timestamp !== false) {
+            return date('M j, Y', $timestamp);
+        }
+
+        // Return as-is if parsing fails
+        return $date_string;
+    }
+
+    /**
      * Extract domain from URL
      *
      * @param string $url The URL to extract domain from
@@ -379,5 +538,32 @@ class ResearchDataFormatter
         }
 
         return $url;
+    }
+
+    /**
+     * Simple formatter for response with references (new robust version)
+     *
+     * @param array $data Array with 'response', 'query', and 'references' keys
+     * @return string Formatted HTML
+     */
+    private static function formatSimpleResponseWithReferences(array $data): string
+    {
+        // Ultra-safe simple version - just display basic info
+        $html = '<div style="padding: 15px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 4px;">';
+
+        // Show query
+        if (isset($data['query'])) {
+            $html .= '<p style="margin: 0 0 10px 0;"><strong>Query:</strong> ' . esc_html($data['query']) . '</p>';
+        }
+
+        // Show reference count
+        if (isset($data['references']) && is_array($data['references'])) {
+            $count = count($data['references']);
+            $html .= '<p style="margin: 0;"><strong>Sources:</strong> ' . $count . ' articles</p>';
+        }
+
+        $html .= '</div>';
+
+        return $html;
     }
 }
