@@ -34,7 +34,17 @@ class TBMAds
    */
   public function action_wp_enqueue_scripts()
   {
-    wp_enqueue_script('adm-fuse', 'https://cdn.fuseplatform.net/publift/tags/2/2376/fuse.js', [], '2');
+      wp_enqueue_script('adm-fuse', 'https://cdn.fuseplatform.net/publift/tags/2/2376/fuse.js', [], '2');
+      wp_enqueue_script(
+          'adm-gpt',
+          'https://securepubads.g.doubleclick.net/tag/js/gpt.js'
+      );
+      wp_enqueue_script(
+          'magnite',
+          'https://micro.rubiconproject.com/prebid/dynamic/28043.js',
+          [],
+          null
+      );
   }
 
   /*
@@ -42,20 +52,155 @@ class TBMAds
    */
   public function action_wp_head()
   {
-    // if (!is_home() && !is_front_page()) 
-    {
-      ?>
-      <script type="text/javascript">
-        const fusetag = window.fusetag || (window.fusetag = {
-          que: []
-        });
+    // if (!is_home() && !is_front_page())
+      {
+          ?>
+          <script type="text/javascript">
+              const fusetag = window.fusetag || (window.fusetag = {
+                  que: []
+              });
 
-        fusetag.que.push(function () {
-          googletag.pubads().enableSingleRequest();
-          googletag.enableServices();
-        });
-      </script>
-      <?php
+              fusetag.que.push(function () {
+                  googletag.pubads().enableSingleRequest();
+                  googletag.enableServices();
+              });
+          </script>
+          <?php
+      }
+      {
+          global $post;
+
+          $is_home     = is_home() || is_front_page();
+        $is_category = is_category() || is_archive();
+        $is_article  = is_single();
+        $is_article_feature  = is_page_template('single-template-featured.php');
+
+        // Determine pagepath
+        if (isset($_GET['dfp_key'])) {
+            $pagepath = sanitize_text_field($_GET['dfp_key']);
+        } elseif ($is_home) {
+            $pagepath = 'home';
+        } else {
+            $request_uri_sanitized = sanitize_text_field($_SERVER['REQUEST_URI']);
+            $pagepath_uri = substr(str_replace(['/', 'beta'], '', $request_uri_sanitized), 0, 40);
+            $pagepath_e = explode('?', $pagepath_uri);
+            $pagepath = $pagepath_e[0];
+        }
+
+        // Extract tag slugs for articles
+        $tag_slugs = [];
+        if (isset($post) && $post instanceof \WP_Post) {
+            $tags = get_the_tags($post->ID);
+            if ($tags) {
+                $tag_slugs = wp_list_pluck($tags, 'slug');
+            }
+        }
+
+        ?>
+        <script>
+            window.googletag = window.googletag || {cmd: []};
+
+            const isMobile = window.innerWidth < 768;
+
+            googletag.cmd.push(function () {
+                // Set targeting first
+                googletag.pubads().setTargeting("site", ["tonedeafbrag"]);
+                googletag.pubads().setTargeting("pagepath", ["<?php echo esc_js($pagepath); ?>"]);
+
+                const leaderboardSizes = isMobile
+                    ? [[300,50],[300,100],[320,100],[320,50]]
+                    : [[970,250],[970,90],[728,90]];
+
+                const mrecSizes       = ['fluid',[300,250],[336,280]];
+                const incontentSizes  = ['fluid',[300,250],[336,280],[320,480]];
+                const vrecSizes       = ['fluid',[300,250],[300,600]];
+                const skinSizes       = [[1600,1200]];
+
+                const headerBiddingSlots = []
+                function slot(path, sizes, id, desktopOnly = false) {
+                    if (desktopOnly && isMobile) return;
+                    const div = googletag.defineSlot(path, sizes, id).addService(googletag.pubads());
+                    headerBiddingSlots.push(div)
+                }
+
+                // ---------- HOMEPAGE ----------
+                <?php if ($is_home): ?>
+                slot('/22071836792/SSM_tonedeafbrag/homepage_leaderboard', leaderboardSizes, 'div-gpt-homepage_leaderboard');
+                slot('/22071836792/SSM_tonedeafbrag/homepage_skin', skinSizes, 'div-gpt-homepage_skin', true);
+
+                // Incontent & MREC
+                for (let i = 1; i <= 3; i++) {
+                    slot(`/22071836792/SSM_tonedeafbrag/homepage_incontent_${i}`, incontentSizes, `div-gpt-homepage_incontent_${i}`);
+                }
+                for (let i = 1; i <= 6; i++) {
+                    slot(`/22071836792/SSM_tonedeafbrag/homepage_vrec_${i}`, vrecSizes, `div-gpt-homepage_vrec_${i}`);
+                }
+                <?php endif; ?>
+
+                // ---------- CATEGORY ----------
+                <?php if ($is_category): ?>
+                slot('/22071836792/SSM_tonedeafbrag/category_leaderboard', leaderboardSizes, 'div-gpt-category_leaderboard');
+                slot('/22071836792/SSM_tonedeafbrag/category_mrec', mrecSizes, 'div-gpt-category_mrec');
+                slot('/22071836792/SSM_tonedeafbrag/category_vrec', vrecSizes, 'div-gpt-category_vrec');
+                slot('/22071836792/SSM_tonedeafbrag/category_skin', skinSizes, 'div-gpt-category_skin', true);
+                <?php endif; ?>
+
+                // ---------- ARTICLE ----------
+                <?php if ($is_article): ?>
+
+                slot('/22071836792/SSM_tonedeafbrag/article_leaderboard', leaderboardSizes, 'div-gpt-article_leaderboard');
+                slot('/22071836792/SSM_tonedeafbrag/article_incontent_1', incontentSizes, 'div-gpt-article_incontent_1');
+                <?php if(!$is_article_feature) : ?>
+                slot('/22071836792/SSM_tonedeafbrag/article_mrec', mrecSizes, 'div-gpt-article_mrec');
+                slot('/22071836792/SSM_tonedeafbrag/article_vrec', vrecSizes, 'div-gpt-article_vrec');
+                <?php endif; ?>
+
+                slot('/22071836792/SSM_tonedeafbrag/article_skin', skinSizes, 'div-gpt-article_skin', true);
+                <?php endif; ?>
+
+                slot('/22071836792/SSM_tonedeafbrag/outofpage', [[1,1]], 'div-gpt-outofpage');
+
+                googletag.pubads().enableSingleRequest();
+                googletag.enableServices();
+                function demandManagerRequest(slots) {
+
+
+                    // provide failsafeHandler with callback function to fire when we want to make
+                    // the ad server request, as well as headerBiddingSlots to umagnse in case of failsafe
+                    const sendAdServerRequest = failsafeHandler((slotsToRefresh) => {
+                        googletag.pubads().refresh(slotsToRefresh);
+                    }, slots);
+
+
+                    // request bids when PBJS is ready
+                    pbjs.que.push(function () {
+                        pbjs.rp.requestBids({
+                            callback: sendAdServerRequest,
+                            gptSlotObjects: slots
+                        });
+                    });
+
+
+                    // start the failsafe timeout
+                    setTimeout(sendAdServerRequest, FAILSAFE_TIMEOUT);
+
+
+                    // function that handles the failsafe using boolean logic per auction
+                    function failsafeHandler(callback, initialSlots) {
+                        let adserverRequestSent = false;
+                        return (bidsBackSlots) => {
+                            if (adserverRequestSent) return;
+                            adserverRequestSent = true;
+                            callback(bidsBackSlots || initialSlots);
+                        };
+
+
+                    }
+                }
+                demandManagerRequest(headerBiddingSlots);
+            });
+        </script>
+        <?php
     }
   }
 
