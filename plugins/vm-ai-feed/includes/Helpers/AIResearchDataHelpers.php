@@ -23,6 +23,18 @@ class AIResearchDataHelpers
 {
 
     /**
+     * Maximum size in characters for JSON section regex matching
+     * Prevents performance issues with very large responses
+     */
+    private const MAX_JSON_SECTION_SIZE = 50000;
+
+    /**
+     * Threshold for word boundary truncation
+     * If a space is found in the last 30% of text, truncate there
+     */
+    private const WORD_BOUNDARY_THRESHOLD = 0.7;
+
+    /**
      * Format research response data
      *
      * Detects whether the response contains JSON research data or markdown,
@@ -108,7 +120,7 @@ class AIResearchDataHelpers
     private static function extractJsonSection(string $response, string $sectionName): array
     {
         // Find section header with limit to avoid performance issues on large responses
-        $pattern = '/' . preg_quote($sectionName, '/') . ':\s*```json\s*([\s\S]{0,50000}?)\s*```/s';
+        $pattern = '/' . preg_quote($sectionName, '/') . ':\s*```json\s*([\s\S]{0,' . self::MAX_JSON_SECTION_SIZE . '}?)\s*```/s';
 
         if (preg_match($pattern, $response, $matches)) {
             $jsonStr = trim($matches[1]);
@@ -399,7 +411,7 @@ class AIResearchDataHelpers
     {
         $parsed = parse_url($url);
         
-        if (!$parsed || !isset($parsed['scheme'])) {
+        if (!$parsed || !isset($parsed['scheme']) || !isset($parsed['host'])) {
             return false;
         }
         
@@ -423,7 +435,7 @@ class AIResearchDataHelpers
         $truncated = mb_substr($text, 0, $maxLength);
         $lastSpace = mb_strrpos($truncated, ' ');
 
-        if ($lastSpace !== false && $lastSpace > ($maxLength * 0.7)) {
+        if ($lastSpace !== false && $lastSpace > ($maxLength * self::WORD_BOUNDARY_THRESHOLD)) {
             // If we found a space in the last 30% of the text, use it
             $truncated = mb_substr($truncated, 0, $lastSpace);
         }
