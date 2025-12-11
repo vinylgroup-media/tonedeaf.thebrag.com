@@ -1005,18 +1005,20 @@ class AIFeed
 			wp_send_json_error('Insufficient permissions', 403);
 		}
 
-		// Get article ID
-		$article_id = sanitize_text_field($_POST['article_id'] ?? '');
-		if (empty($article_id)) {
-			wp_send_json_error('Article ID is required', 400);
+		// Get research request ID and article ID
+		$research_request_id = sanitize_text_field($_POST['research_request_id'] ?? '');
+		$article_id = sanitize_text_field($_POST['article_id'] ?? ''); // Keep for logging
+
+		if (empty($research_request_id)) {
+			wp_send_json_error('Research request ID is required', 400);
 		}
 
 		// Get configurable API URL
 		$config  = AIFeedConfig::getInstance();
-		$api_url = $config->getApiUrl('v1/api/articles/' . $article_id);
+		$api_url = $config->getApiUrl('api/research-request-combined/' . urlencode($research_request_id));
 		$api_key = $config->getApiKey();
 
-		error_log('VM AI Feed: Deleting article ID: ' . $article_id);
+		error_log('VM AI Feed: Deleting research request ID: ' . $research_request_id . ' (from article: ' . $article_id . ')');
 		error_log('VM AI Feed: API URL: ' . $api_url);
 
 		$response = wp_remote_request(
@@ -1032,7 +1034,7 @@ class AIFeed
 		);
 
 		if (is_wp_error($response)) {
-			$error_msg = 'Failed to delete article: ' . $response->get_error_message();
+			$error_msg = 'Failed to delete research request: ' . $response->get_error_message();
 			error_log('VM AI Feed: ' . $error_msg);
 			wp_send_json_error($error_msg, 500);
 		}
@@ -1045,16 +1047,17 @@ class AIFeed
 		error_log('VM AI Feed: Delete response body: ' . substr($body, 0, 200));
 
 		if ($response_code === 200 && isset($data['success']) && $data['success'] === true) {
-			error_log('VM AI Feed: Article deleted successfully');
+			error_log('VM AI Feed: Research request and associated articles deleted successfully');
 			wp_send_json_success(
 				[
-					'message'    => 'Article deleted successfully',
+					'message'    => 'Research request and associated articles deleted successfully',
 					'article_id' => $article_id,
+					'research_request_id' => $research_request_id,
 				]
 			);
 		} else {
 			// Extract error message
-			$error_message = 'Failed to delete article';
+			$error_message = 'Failed to delete research request';
 			if (isset($data['error']['message'])) {
 				$error_message = $data['error']['message'];
 			} elseif (isset($data['message'])) {
@@ -1062,7 +1065,7 @@ class AIFeed
 			} else {
 				$error_message .= ' (HTTP ' . $response_code . ')';
 			}
-			error_log('VM AI Feed: Error deleting article: ' . $error_message);
+			error_log('VM AI Feed: Error deleting research request: ' . $error_message);
 			wp_send_json_error($error_message, $response_code);
 		}
 	}
