@@ -6,7 +6,7 @@ use VM\AIFeed\Core\AIFeedConfig;
 use VM\AIFeed\Helpers\AIDateHelpers;
 use VM\AIFeed\Helpers\AIStatusHelpers;
 use VM\AIFeed\Helpers\AIFeedUIHelpers;
-use VM\AIFeed\Helpers\ResearchDataFormatter;
+use VM\AIFeed\Helpers\AIResearchDataHelpers;
 use VM\AIFeed\Content\AIMarkdown;
 use VM\AIFeed\Content\AIEmbeds;
 
@@ -1314,7 +1314,7 @@ class AIFeedArticleView
 					echo '<p><strong>Query:</strong> ' . esc_html($rn['query']) . '</p>';
 				}
 				if (! empty($rn['response'])) {
-					$recent_news_html = ResearchDataFormatter::formatResearchResponse($rn['response']);
+					$recent_news_html = AIResearchDataHelpers::formatResearchResponse($rn['response']);
 					echo '<div style="background: #f8f9fa; padding: 10px; border-left: 4px solid #007cba; line-height: 1.6; margin-bottom: 15px;">' . wp_kses_post($recent_news_html) . '</div>';
 				}
 			}
