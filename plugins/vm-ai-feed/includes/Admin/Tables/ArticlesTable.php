@@ -143,7 +143,7 @@ class AIFeedArticlesTable
 					echo '<td>' . esc_html($this->calculateDuration($item['start_time'] ?? null, $item['completed_time'] ?? null)) . '</td>';
 					echo '<td>' . esc_html($item['iterations'] ?? '0') . '</td>';
 					echo '<td>';
-					echo '<button class="button button-small button-secondary delete-article" data-article-id="' . esc_attr($item['id']) . '" data-article-title="' . esc_attr($item['post_title'] ?? 'Untitled') . '">Delete</button>';
+					echo '<button class="button button-small button-secondary delete-article" data-article-id="' . esc_attr($item['id']) . '" data-research-request-id="' . esc_attr($item['research_request_id'] ?? '') . '" data-article-title="' . esc_attr($item['post_title'] ?? 'Untitled') . '">Delete</button>';
 					echo '</td>';
 					echo '</tr>';
 				}
@@ -747,15 +747,20 @@ class AIFeedArticlesTable
 
 					var button = $(this);
 					var articleId = button.data('article-id');
+					var researchRequestId = button.data('research-request-id');
 					var articleTitle = button.data('article-title');
 
 					if (!articleId) {
 						alert('No article ID found');
 						return;
 					}
+					if (!researchRequestId) {
+						alert('No research request ID found');
+						return;
+					}
 
 					// Confirm deletion
-					if (!confirm('Are you sure you want to delete the article "' + articleTitle + '"?\n\nThis action cannot be undone.')) {
+					if (!confirm('Are you sure you want to delete the article "' + articleTitle + '"?\n\nThis will also delete:\n- The associated research request\n- All articles from that research request\n- All article revisions\n- All research memories\n\nThis action cannot be undone.')) {
 						return;
 					}
 
@@ -772,6 +777,7 @@ class AIFeedArticlesTable
 						data: {
 							action: 'delete_article',
 							article_id: articleId,
+							research_request_id: researchRequestId,
 							nonce: nonce
 						},
 						success: function(response) {
