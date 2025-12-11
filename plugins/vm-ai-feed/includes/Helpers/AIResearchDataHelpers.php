@@ -35,6 +35,12 @@ class AIResearchDataHelpers
     private const WORD_BOUNDARY_THRESHOLD = 0.7;
 
     /**
+     * Maximum size in characters for raw data fallback display
+     * Prevents performance issues when displaying unformatted research data
+     */
+    private const MAX_RAW_DATA_DISPLAY_SIZE = 5000;
+
+    /**
      * Format research response data
      *
      * Detects whether the response contains JSON research data or markdown,
@@ -64,7 +70,9 @@ class AIResearchDataHelpers
 
             // Fall back to simple display for any other format
             // Limit output to prevent performance issues
-            $truncated = mb_strlen($response) > 5000 ? mb_substr($response, 0, 5000) . "\n\n... (truncated)" : $response;
+            $truncated = mb_strlen($response) > self::MAX_RAW_DATA_DISPLAY_SIZE 
+                ? mb_substr($response, 0, self::MAX_RAW_DATA_DISPLAY_SIZE) . "\n\n... (truncated)" 
+                : $response;
             return '<div style="padding: 10px; background: #f0f0f0; border-radius: 4px;"><strong>Raw research data:</strong><pre style="white-space: pre-wrap; word-break: break-word;">' . htmlspecialchars($truncated, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</pre></div>';
         } catch (\Throwable $e) {
             error_log('AIResearchDataHelpers Error: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
