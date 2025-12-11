@@ -73,7 +73,12 @@ class AIResearchDataHelpers
             $truncated = mb_strlen($response) > self::MAX_RAW_DATA_DISPLAY_SIZE 
                 ? mb_substr($response, 0, self::MAX_RAW_DATA_DISPLAY_SIZE) . "\n\n... (truncated)" 
                 : $response;
-            return '<div style="padding: 10px; background: #f0f0f0; border-radius: 4px;"><strong>Raw research data:</strong><pre style="white-space: pre-wrap; word-break: break-word;">' . htmlspecialchars($truncated, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</pre></div>';
+            $html = '<div style="padding: 10px; background: #f0f0f0; border-radius: 4px;">'
+                . '<strong>Raw research data:</strong>'
+                . '<pre style="white-space: pre-wrap; word-break: break-word;">'
+                . htmlspecialchars($truncated, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
+                . '</pre></div>';
+            return $html;
         } catch (\Throwable $e) {
             error_log('AIResearchDataHelpers Error: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
             return '<p style="color: #666; font-style: italic;">Research data (formatter error)</p>';
