@@ -754,6 +754,10 @@ class AIFeedArticlesTable
 						alert('No article ID found');
 						return;
 					}
+					if (!researchRequestId) {
+						alert('No research request ID found');
+						return;
+					}
 
 					// Confirm deletion
 					if (!confirm('Are you sure you want to delete the article "' + articleTitle + '"?\n\nThis will also delete:\n- The associated research request\n- All articles from that research request\n- All article revisions\n- All research memories\n\nThis action cannot be undone.')) {
