@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Research Data Formatter
+ * Research Data Helpers
  *
  * Formats research response data (Archives and Recent News) from JSON to readable HTML.
  * Handles both JSON-formatted responses and markdown responses.
@@ -19,8 +19,20 @@ use VM\AIFeed\Content\AIMarkdown;
  *
  * @since 1.0.0
  */
-class ResearchDataFormatter
+class AIResearchDataHelpers
 {
+
+    /**
+     * Maximum size in characters for JSON section regex matching
+     * Prevents performance issues with very large responses
+     */
+    private const MAX_JSON_SECTION_SIZE = 50000;
+
+    /**
+     * Threshold for word boundary truncation
+     * If a space is found in the last 30% of text, truncate there
+     */
+    private const WORD_BOUNDARY_THRESHOLD = 0.7;
 
     /**
      * Format research response data
@@ -107,8 +119,8 @@ class ResearchDataFormatter
      */
     private static function extractJsonSection(string $response, string $sectionName): array
     {
-        // Find section header
-        $pattern = '/' . preg_quote($sectionName, '/') . ':\s*```json\s*(.*?)\s*```/s';
+        // Find section header with limit to avoid performance issues on large responses
+        $pattern = '/' . preg_quote($sectionName, '/') . ':\s*```json\s*([\s\S]{0,' . self::MAX_JSON_SECTION_SIZE . '}?)\s*```/s';
 
         if (preg_match($pattern, $response, $matches)) {
             $jsonStr = trim($matches[1]);
@@ -141,7 +153,11 @@ class ResearchDataFormatter
                 foreach ($refMatches as $match) {
                     $references[$match[1]] = trim($match[2]);
                 }
+            } else {
+                error_log('[VM\AIFeed] AIResearchDataHelpers: No references found in Reference Document List section. Format may have changed.');
             }
+        } else {
+            error_log('[VM\AIFeed] AIResearchDataHelpers: Reference Document List section not found in response. Format may have changed.');
         }
 
         return $references;
@@ -157,7 +173,7 @@ class ResearchDataFormatter
     {
         $count = count($entities);
 
-        $html = '<details class="research-data-section" open>';
+        $html = '<details class="research-data-section">';
         $html .= '<summary><strong>Knowledge Graph Entities</strong> <span class="count">(' . esc_html($count) . ')</span></summary>';
         $html .= '<div class="research-data-content">';
         $html .= '<table class="research-data-table wp-list-table widefat fixed striped">';
@@ -170,7 +186,7 @@ class ResearchDataFormatter
 
         foreach ($entities as $entity) {
             $html .= '<tr>';
-            $html .= '<td><strong>' . esc_html($entity['entity'] ?? 'Unknown') . '</strong></td>';
+            $html .= '<td><strong>' . esc_html($entity['entity'] ?? 'Entity name not available') . '</strong></td>';
             $html .= '<td><span class="entity-type-badge">' . esc_html($entity['type'] ?? 'unknown') . '</span></td>';
             $html .= '<td>' . esc_html($entity['description'] ?? 'No description') . '</td>';
             $html .= '</tr>';
@@ -205,8 +221,8 @@ class ResearchDataFormatter
 
         foreach ($relationships as $rel) {
             $html .= '<tr>';
-            $html .= '<td><strong>' . esc_html($rel['entity1'] ?? 'Unknown') . '</strong></td>';
-            $html .= '<td><strong>' . esc_html($rel['entity2'] ?? 'Unknown') . '</strong></td>';
+            $html .= '<td><strong>' . esc_html($rel['entity1'] ?? 'Entity not specified') . '</strong></td>';
+            $html .= '<td><strong>' . esc_html($rel['entity2'] ?? 'Entity not specified') . '</strong></td>';
             $html .= '<td>' . esc_html($rel['description'] ?? 'No description') . '</td>';
             $html .= '</tr>';
         }
@@ -246,7 +262,7 @@ class ResearchDataFormatter
             if (!empty($parsed['title'])) {
                 $html .= '<h4 class="document-title">' . esc_html($parsed['title']) . '</h4>';
             }
-            if (!empty($refId) && !empty($references[$refId])) {
+            if (!empty($refId) && !empty($references[$refId]) && self::isValidUrl($references[$refId])) {
                 $html .= '<a href="' . esc_url($references[$refId]) . '" target="_blank" rel="noopener noreferrer" class="document-source-link">';
                 $html .= esc_html(self::getDomainFromUrl($references[$refId])) . ' ↗</a>';
             }
@@ -271,12 +287,9 @@ class ResearchDataFormatter
                 $html .= '</div>';
             }
 
-            // Content excerpt (limited to 500 chars)
+            // Content excerpt (limited to 500 chars, word-aware)
             if (!empty($parsed['content'])) {
-                $excerpt = mb_substr($parsed['content'], 0, 500);
-                if (mb_strlen($parsed['content']) > 500) {
-                    $excerpt .= '...';
-                }
+                $excerpt = self::truncateAtWordBoundary($parsed['content'], 500);
                 $html .= '<div class="document-excerpt">';
                 $html .= esc_html($excerpt);
                 $html .= '</div>';
@@ -293,6 +306,8 @@ class ResearchDataFormatter
     /**
      * Parse document chunk content into structured fields
      *
+     * More robust parsing that handles fields in any order
+     *
      * @param string $content Raw content string
      * @return array Parsed fields
      */
@@ -306,29 +321,48 @@ class ResearchDataFormatter
             'published' => ''
         );
 
-        // Parse Title
-        if (preg_match('/Title:\s*(.+?)(?:\n|$)/s', $content, $matches)) {
-            $fields['title'] = trim($matches[1]);
+        // Split content into lines and parse fields in any order
+        $lines = preg_split('/\r\n|\r|\n/', $content);
+        $currentField = null;
+        $buffer = '';
+        $fieldMap = array(
+            'title' => 'Title:',
+            'summary' => 'Summary:',
+            'content' => 'Content:',
+            'source_url' => 'Source URL:',
+            'published' => 'Published:'
+        );
+
+        foreach ($lines as $line) {
+            $trimmed = trim($line);
+            $fieldFound = false;
+
+            // Check if line starts with a known field label
+            foreach ($fieldMap as $key => $label) {
+                if (stripos($trimmed, $label) === 0) {
+                    // Save previous field buffer
+                    if ($currentField !== null) {
+                        $fields[$currentField] = trim($buffer);
+                    }
+                    $currentField = $key;
+                    $buffer = substr($trimmed, strlen($label));
+                    $fieldFound = true;
+                    break;
+                }
+            }
+
+            // If we're in a field and didn't find a new field label, accumulate lines
+            if (!$fieldFound && $currentField !== null) {
+                if (!empty($buffer)) {
+                    $buffer .= "\n";
+                }
+                $buffer .= $line;
+            }
         }
 
-        // Parse Summary
-        if (preg_match('/Summary:\s*(.+?)(?:\n\n|Content:|Source URL:|Published:|$)/s', $content, $matches)) {
-            $fields['summary'] = trim($matches[1]);
-        }
-
-        // Parse Content
-        if (preg_match('/Content:\s*(.+?)(?:\n\nSource URL:|Published:|$)/s', $content, $matches)) {
-            $fields['content'] = trim($matches[1]);
-        }
-
-        // Parse Source URL
-        if (preg_match('/Source URL:\s*(.+?)(?:\n|$)/s', $content, $matches)) {
-            $fields['source_url'] = trim($matches[1]);
-        }
-
-        // Parse Published date
-        if (preg_match('/Published:\s*(.+?)(?:\n|$)/s', $content, $matches)) {
-            $fields['published'] = trim($matches[1]);
+        // Save last field buffer
+        if ($currentField !== null) {
+            $fields[$currentField] = trim($buffer);
         }
 
         return $fields;
@@ -350,6 +384,9 @@ class ResearchDataFormatter
         $html .= '<ul class="research-references-list">';
 
         foreach ($references as $id => $url) {
+            if (!self::isValidUrl($url)) {
+                continue;
+            }
             $domain = self::getDomainFromUrl($url);
             $html .= '<li>';
             $html .= '<span class="ref-id">[' . esc_html($id) . ']</span> ';
@@ -362,6 +399,48 @@ class ResearchDataFormatter
         $html .= '</div></details>';
 
         return $html;
+    }
+
+    /**
+     * Validate URL to ensure it uses http or https protocol
+     *
+     * @param string $url The URL to validate
+     * @return bool True if URL is valid and uses allowed protocol
+     */
+    private static function isValidUrl(string $url): bool
+    {
+        $parsed = parse_url($url);
+        
+        if (!$parsed || !isset($parsed['scheme']) || !isset($parsed['host'])) {
+            return false;
+        }
+        
+        return in_array(strtolower($parsed['scheme']), array('http', 'https'), true);
+    }
+
+    /**
+     * Truncate text at word boundary
+     *
+     * @param string $text The text to truncate
+     * @param int $maxLength Maximum length in characters
+     * @return string Truncated text with ellipsis if needed
+     */
+    private static function truncateAtWordBoundary(string $text, int $maxLength): string
+    {
+        if (mb_strlen($text) <= $maxLength) {
+            return $text;
+        }
+
+        // Find the last space within the limit
+        $truncated = mb_substr($text, 0, $maxLength);
+        $lastSpace = mb_strrpos($truncated, ' ');
+
+        if ($lastSpace !== false && $lastSpace > ($maxLength * self::WORD_BOUNDARY_THRESHOLD)) {
+            // If we found a space in the last 30% of the text, use it
+            $truncated = mb_substr($truncated, 0, $lastSpace);
+        }
+
+        return $truncated . '...';
     }
 
     /**
