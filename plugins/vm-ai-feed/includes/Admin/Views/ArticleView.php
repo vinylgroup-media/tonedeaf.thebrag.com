@@ -450,7 +450,7 @@ class AIFeedArticleView
 					echo '<p><strong>Query:</strong> ' . esc_html($research_data['archives']['query']) . '</p>';
 				}
 				if (! empty($research_data['archives']['response'])) {
-// DISABLED PERMANENTLY: 					$archives_html = ResearchDataFormatter::formatResearchResponse($research_data['archives']['response']);
+// DISABLED PERMANENTLY: 					$archives_html = AIResearchDataHelpers::formatResearchResponse($research_data['archives']['response']);
 // DISABLED PERMANENTLY: 					echo '<div style="background: #f8f9fa; padding: 10px; border-left: 4px solid #007cba; line-height: 1.6;">' . wp_kses_post($archives_html) . '</div>';
 				}
 				echo '</div>';
@@ -465,7 +465,7 @@ class AIFeedArticleView
 						echo '<p><strong>Query:</strong> ' . esc_html($rn['query']) . '</p>';
 					}
 					if (! empty($rn['response'])) {
-// DISABLED PERMANENTLY: 						$recent_news_html = ResearchDataFormatter::formatResearchResponse($rn['response']);
+// DISABLED PERMANENTLY: 						$recent_news_html = AIResearchDataHelpers::formatResearchResponse($rn['response']);
 // DISABLED PERMANENTLY: 						echo '<div style="background: #f8f9fa; padding: 10px; border-left: 4px solid #007cba; line-height: 1.6; margin-bottom: 15px;">' . wp_kses_post($recent_news_html) . '</div>';
 					}
 				}
@@ -1292,7 +1292,7 @@ class AIFeedArticleView
 			}
 			if (! empty($research_data['archives']['response'])) {
 				try {
-					$archives_html = ResearchDataFormatter::formatResearchResponse($research_data['archives']['response']);
+					$archives_html = AIResearchDataHelpers::formatResearchResponse($research_data['archives']['response']);
 					echo '<div style="background: #f8f9fa; padding: 10px; border-left: 4px solid #007cba; line-height: 1.6;">' . wp_kses_post($archives_html) . '</div>';
 				} catch (\Throwable $e) {
 					error_log('VM AI Feed: Error formatting archives research data: ' . $e->getMessage());

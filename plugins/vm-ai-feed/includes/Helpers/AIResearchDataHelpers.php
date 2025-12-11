@@ -63,9 +63,9 @@ class AIResearchDataHelpers
             }
 
             // Fall back to simple display for any other format
-            return '<div style="padding: 10px; background: #f0f0f0; border-radius: 4px;"><em>Research data available</em></div>';
+            return '<div style="padding: 10px; background: #f0f0f0; border-radius: 4px;"><strong>Raw research data:</strong><pre style="white-space: pre-wrap; word-break: break-word;">' . htmlspecialchars($response, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</pre></div>';
         } catch (\Throwable $e) {
-            error_log('ResearchDataFormatter Error: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+            error_log('AIResearchDataHelpers Error: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
             return '<p style="color: #666; font-style: italic;">Research data (formatter error)</p>';
         }
     }
