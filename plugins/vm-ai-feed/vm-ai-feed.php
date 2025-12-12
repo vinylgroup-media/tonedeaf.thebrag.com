@@ -51,7 +51,7 @@ use VM\AIFeed\Core\AIFeed;
 \VM\AIFeed\Taxonomy\CategoryAIMeta::init();
 
 // Admin-only initialization.
-if (is_admin()) {
+if ( is_admin() ) {
 	$ai_feed = AIFeed::getInstance();
 	$ai_feed->init();
 }

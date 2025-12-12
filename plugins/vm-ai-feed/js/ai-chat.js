@@ -102,7 +102,7 @@ jQuery(document).ready(($) => {
             <div style="padding: 10px; background: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; margin-bottom: 10px;">
                 <p style="margin: 0; color: #155724;"><strong>✓ Draft Created</strong></p>
                 <p style="margin: 5px 0 0 0; font-size: 12px; color: #155724;">
-                    <a href="${data.post_url}" target="_blank" style="color: #155724;">View Post</a> | 
+                    <a href="${data.post_url}" target="_blank" style="color: #155724;">View Post</a> |
                     <a href="${getEditPostUrl(data.post_id)}" target="_blank" style="color: #155724;">Edit Post</a>
                 </p>
             </div>
@@ -142,6 +142,9 @@ jQuery(document).ready(($) => {
 						return;
 					}
 
+					// Show loading state
+					unlockBtn.prop("disabled", true).text("Deleting draft...");
+
 					// Use the proper delete nonce
 					const deleteNonce = aiChat.delete_nonce;
 
@@ -159,18 +162,32 @@ jQuery(document).ready(($) => {
 						.then((response) => response.json())
 						.then((data) => {
 							if (data.success) {
-								// Refresh article content to show updated status
-								refreshArticleContent();
+								// Show success message
+								showPublishStatus(
+									"success",
+									"<strong>Draft deleted!</strong> You can now create a new draft.",
+								);
 
-								// Hide unlock button and show publish button
-								$("#unlock-publish").hide();
-								publishBtn.show();
+								// Hide unlock button
+								unlockBtn.hide();
 
 								// Remove published status div if it exists
 								publishBtn
 									.siblings('div[style*="background: #d4edda"]')
 									.remove();
+								$("#draft-created-status").remove();
+
+								// Reset and show publish button
+								publishBtn
+									.removeAttr("data-published-id")
+									.text("Create Draft")
+									.prop("disabled", false)
+									.show();
 							} else {
+								// Reset button on error
+								unlockBtn
+									.prop("disabled", false)
+									.text("Unlock to Update Draft");
 								alert(
 									`Failed to delete draft: ${data.data || "Unknown error"}`,
 								);
@@ -178,6 +195,8 @@ jQuery(document).ready(($) => {
 						})
 						.catch((error) => {
 							console.error("Error:", error);
+							// Reset button on error
+							unlockBtn.prop("disabled", false).text("Unlock to Update Draft");
 							alert("Failed to delete draft: Network error");
 						});
 				}
@@ -215,12 +234,12 @@ jQuery(document).ready(($) => {
 					// Update article headline
 					$("#article-headline").text(article.post_title);
 
-                    // Update article content (prefer rendered HTML from server)
-                    if (response.data.article_html) {
-                        $("#article-content").html(response.data.article_html);
-                    } else {
-                        $("#article-content").html(article.post_content || "");
-                    }
+					// Update article content (prefer rendered HTML from server)
+					if (response.data.article_html) {
+						$("#article-content").html(response.data.article_html);
+					} else {
+						$("#article-content").html(article.post_content || "");
+					}
 
 					// Update other article fields if they exist
 					if (article.post_excerpt) {
@@ -586,7 +605,7 @@ jQuery(document).ready(($) => {
 		$("#article-content-headline").text(
 			revision.post_content_headline || "No headline available",
 		);
-		
+
 		// Process content through markdown library via AJAX
 		if (revision.post_content) {
 			$.ajax({
