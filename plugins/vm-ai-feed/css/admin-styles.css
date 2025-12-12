@@ -387,6 +387,46 @@ body.folded .vm-ai-feed-reader {
 	margin-top: 10px;
 }
 
+/* Research Response Container (new format) */
+.research-response-container {
+	margin-top: 10px;
+}
+
+.research-response-text {
+	background: #ffffff;
+	padding: 15px;
+	border-radius: 4px;
+	margin-bottom: 20px;
+	line-height: 1.8;
+	border: 1px solid #e0e0e0;
+}
+
+.research-response-text h3 {
+	font-size: 16px;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	color: #1d2327;
+}
+
+.research-response-text p {
+	margin-bottom: 12px;
+}
+
+.research-response-text ul,
+.research-response-text ol {
+	margin-left: 20px;
+	margin-bottom: 12px;
+}
+
+.research-response-text a {
+	color: #2271b1;
+	text-decoration: none;
+}
+
+.research-response-text a:hover {
+	text-decoration: underline;
+}
+
 .research-data-section {
 	background: #ffffff;
 	border: 1px solid #ddd;

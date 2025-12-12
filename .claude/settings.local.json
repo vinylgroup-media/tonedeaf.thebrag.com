@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "Bash(php -l:*)",
+      "Bash(php -i:*)",
+      "Bash(log show --predicate 'eventMessage contains \"\"\"\"VM AI Feed\"\"\"\"' --info --last 5m)",
+      "Bash(log show:*)"
+    ]
+  }
+}
