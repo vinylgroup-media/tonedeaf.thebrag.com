@@ -39,7 +39,7 @@ class AIFeed
 	 *
 	 * @var array
 	 */
-	private const DEFAULT_CATEGORIES = [11, 5];
+	private const DEFAULT_CATEGORIES = [59];
 
 	/**
 	 * Maximum revisions to fetch per request
@@ -215,6 +215,14 @@ class AIFeed
 
 		if (is_wp_error($post_id)) {
 			wp_send_json_error('Failed to ' . $action . ' post: ' . $post_id->get_error_message(), 500);
+		}
+
+		// Set tags from article data
+		if (! empty($article['tags_input'])) {
+			$tags = is_array($article['tags_input'])
+				? $article['tags_input']
+				: array_map('trim', explode(',', $article['tags_input']));
+			wp_set_post_terms($post_id, $tags, 'post_tag');
 		}
 
 		// Update article status in API (optional)

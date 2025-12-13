@@ -549,7 +549,7 @@ class AIFeedArticleView
 
 		if ($is_published) {
 			// Show published status
-			echo '<div style="padding: 10px; background: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; margin-bottom: 10px;">';
+			echo '<div id="draft-created-status" style="padding: 10px; background: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; margin-bottom: 10px;">';
 			echo '<p style="margin: 0; color: #155724;"><strong>✓ Draft Created</strong></p>';
 			echo '<p style="margin: 5px 0 0 0; font-size: 12px; color: #155724;">';
 			echo '<a href="' . esc_url(get_permalink($published_post->ID)) . '" target="_blank" style="color: #155724;">View Post</a> | ';
@@ -1022,6 +1022,7 @@ class AIFeedArticleView
                 document.addEventListener("DOMContentLoaded", function() {
                     const unlockBtn = document.getElementById("unlock-publish");
                     const unlockSection = document.getElementById("unlock-section");
+                    const publishStatus = document.getElementById("publish-status");
 
                     if (unlockBtn && unlockSection) {
                         unlockBtn.addEventListener("click", function() {
@@ -1029,6 +1030,10 @@ class AIFeedArticleView
 
                             if (hasWarning) {
                                 if (confirm("Warning: This will delete the existing draft post and allow you to create a new one. Are you sure you want to continue?")) {
+                                    // Show loading state
+                                    unlockBtn.disabled = true;
+                                    unlockBtn.textContent = "Deleting draft...";
+
                                     // Delete the existing draft post
                                     const publishedPostId = document.querySelector("#publish-article").getAttribute("data-published-id");
 
@@ -1042,15 +1047,46 @@ class AIFeedArticleView
                                     .then(response => response.json())
                                     .then(data => {
                                         if (data.success) {
-                                            // Refresh the page to show the clean state
-                                            // Add cache buster to force fresh data
-                                            window.location.href = window.location.href.split("?")[0] + "?page=vm-ai-feed-articles&action=view-article&article_id=' . esc_js($article_id) . '&t=" + Date.now();
+                                            // Show success message
+                                            if (publishStatus) {
+                                                publishStatus.style.display = "block";
+                                                publishStatus.style.background = "#d4edda";
+                                                publishStatus.style.border = "1px solid #c3e6cb";
+                                                publishStatus.style.color = "#155724";
+                                                publishStatus.innerHTML = "<strong>Draft deleted!</strong> You can now create a new draft.";
+                                            }
+
+                                            // Hide the unlock button and draft created status
+                                            unlockBtn.style.display = "none";
+                                            const draftCreatedStatus = document.getElementById("draft-created-status");
+                                            if (draftCreatedStatus) {
+                                                draftCreatedStatus.style.display = "none";
+                                            }
+
+                                            // Show the publish button and enable it
+                                            const publishBtn = document.getElementById("publish-article");
+                                            if (publishBtn) {
+                                                // Remove the data-published-id since draft is deleted
+                                                publishBtn.removeAttribute("data-published-id");
+                                                publishBtn.textContent = "Create Draft";
+                                                publishBtn.disabled = false;
+                                                publishBtn.style.display = "block";
+                                            }
+
+                                            // Hide the unlock section if visible
+                                            unlockSection.style.display = "none";
                                         } else {
+                                            // Reset button state on error
+                                            unlockBtn.disabled = false;
+                                            unlockBtn.textContent = "Unlock to Update Draft";
                                             alert("Failed to delete draft: " + (data.data || "Unknown error"));
                                         }
                                     })
                                     .catch(error => {
                                         console.error("Error:", error);
+                                        // Reset button state on error
+                                        unlockBtn.disabled = false;
+                                        unlockBtn.textContent = "Unlock to Update Draft";
                                         alert("Failed to delete draft: Network error");
                                     });
                                 }
