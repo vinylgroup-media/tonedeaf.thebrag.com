@@ -218,7 +218,7 @@ class AIFeed
 		}
 
 		// Set tags from article data
-		if (!empty($article['tags_input'])) {
+		if (! empty($article['tags_input'])) {
 			$tags = is_array($article['tags_input'])
 				? $article['tags_input']
 				: array_map('trim', explode(',', $article['tags_input']));
