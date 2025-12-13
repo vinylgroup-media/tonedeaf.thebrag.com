@@ -16,8 +16,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@200;300;500&display=swap" rel="stylesheet">
     <?php // if (!is_page_template('page-quiz.php')) : 
     ?>
-    <link rel="stylesheet" id="tbm-css" href="<?php echo CDN_URL; ?>css/style.css?v=20240805.1" type="text/css" media="all" />
-    <?php // endif; 
+<!--    <link rel="stylesheet" id="tbm-css" href="--><?php //echo CDN_URL; ?><!--css/style.css?v=20240805.1" type="text/css" media="all" />-->
+    <link rel="stylesheet" id="tbm-css" href="<?php echo get_stylesheet_directory_uri() ?>/css/style.css?v=20240805.1" type="text/css" media="all" />
+    <?php // endif;
     ?>
 </noscript>
 
@@ -95,7 +96,7 @@
                 "name": "<?php echo get_bloginfo('name'); ?>",
                 "logo": {
                     "@type": "ImageObject",
-                    "url": "https://images-r2-2.thebrag.com/common/brands/202309/TBM_White.png"
+                    "url": "https://images-r2-1.thebrag.com/tb/uploads/2025/02/vinyl-media.png"
                 }
             },
             "description": "<?php echo get_bloginfo('description'); ?>"
@@ -127,7 +128,18 @@ position: fixed;
 </div> -->
 
 <!-- 22071836792/outofpage/outofpage -->
-<div data-fuse="22779890848"></div>
+<!--<div data-fuse="22779890848"></div>-->
+
+<div id="div-gpt-outofpage">
+    <script>
+        googletag.cmd.push(function() {
+            googletag.display('div-gpt-outofpage');
+        });
+    </script>
+</div>
+
+<!-- Simlinks -->
+<script type="text/javascript" src="https://s.skimresources.com/js/283493X1778391.skimlinks.js"></script>
 
 </body>
 

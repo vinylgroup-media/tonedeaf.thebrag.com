@@ -1,0 +1,136 @@
+.observer-sub-form {
+    position: relative;
+    z-index: 2;
+    border-radius: 1rem;
+    font-style: normal;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    box-shadow: 0 0 18px #fff;
+    background-color: #0f0c0c;
+    flex-wrap: nowrap !important;
+    color: #fff;
+    display: flex;
+    min-height: 180px;
+}
+
+.observer-subscribe-form {
+    width: 100%;
+}
+
+.observer-sub-form .d-flex {
+    display: flex
+}
+
+.observer-sub-form .justify-content-center {
+    justify-content: center
+}
+
+.observer-sub-form .align-items-center {
+    align-items: center
+}
+
+.observer-sub-form .d-none {
+    display: none
+}
+
+.observer-sub-form .btn {
+    border-radius: .25rem;
+    padding: .5rem 1rem;
+    background-color: #d32531;
+    color: #fff
+}
+
+.observer-sub-form .bg-white {
+    background-color: #fff
+}
+
+.observer-sub-form .p-3 {
+    padding: 1.5rem
+}
+
+.observer-sub-form form {
+    border-radius: 10rem
+}
+
+.observer-sub-form a {
+    text-decoration: underline;
+    font-weight: 700;
+    color: #d32531 !important
+}
+
+.observer-sub-form .email {
+    background: #fff;
+    border-radius: .25rem;
+    padding: 25px 15px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0
+}
+
+.observer-sub-form input[type=submit] {
+    background-color: #d32531
+}
+
+.observer-sub-form input[type=email] {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1;
+    color: #000;
+    border: none;
+    padding: .75rem;
+    background-color: #fff;
+    background-clip: padding-box;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out
+}
+
+.observer-sub-form  .observer-sub-form-info {
+    flex: 0 0 360px;
+}
+
+.observer-title {
+    font-size: 1.2rem;
+}
+
+.observer-desc {
+    font-size: .875rem;
+}
+
+.observer-sub-form .img-wrap {
+    display: none;
+    flex: 0 0 180px;
+    background-position: center center;
+    background-size: cover;
+    border-radius: 1rem 0 0 1rem
+}
+
+.observer-sub-form .img-wrap img {
+    max-width: 100% !important
+}
+
+.observer-sub-form .spinner {
+    width: 30px !important;
+    height: 30px !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(calc(50% - 30px), calc(50% - 30px));
+    text-align: center;
+}
+
+.js-errors-subscribe {
+    color: #d32531;
+}
+
+@media (min-width: 78.75rem) {
+    .observer-sub-form {
+        width: calc(111.11111% + .6875rem);
+        margin-left: calc(-5.555555% - .34375rem)
+    }
+
+    .observer-sub-form .img-wrap {
+        display: block;
+    }
+}
+
+.d-none {
+    display: none !important;
+}

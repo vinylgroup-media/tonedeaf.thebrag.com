@@ -23,7 +23,7 @@ if (1 === $paged) {
 <div class="container bg-yellow">
     <!-- <div class="container py-4">
         <div class="mx-auto text-center">
-            <?php // render_ad_tag('incontent_1'); 
+            <?php // render_ad_tag('incontent_1');
             ?>
         </div>
     </div> -->

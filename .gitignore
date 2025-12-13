@@ -11,6 +11,8 @@ plugins/*
 !plugins/theme-options
 !plugins/tbm-media-helper
 !plugins/tbm-nz-content
+!plugins/tbm-cache
+!plugins/vinyl-media-newsletters
 
 !plugins/tbm-ga
 plugins/tbm-ga/*
@@ -20,6 +22,9 @@ plugins/tbm-ga/*
 !plugins/tbm-braze
 !plugins/tbm-gtm
 !plugins/tbm-floating-player
+
+!plugins/vm-*
+plugins/vm-ai-feed/CLAUDE.md
 
 uploads
 

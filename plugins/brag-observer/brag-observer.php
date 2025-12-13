@@ -559,7 +559,7 @@ class BragObserver
                 return '';
             }
 
-            $topic->title = trim(str_ireplace('Observer', '', $topic->title));
+            $topic->title = trim(str_ireplace('Vinyl', '', $topic->title));
             ?>
             <div class="observer-sub-form justify-content-center my-3 p-0 d-flex align-items-stretch bg-dark text-white">
                 <div class="img-wrap" style="background-image: url(<?php echo $topic->image_url; ?>);">
@@ -569,28 +569,21 @@ class BragObserver
                 <div class="p-3 d-flex justify-content-center align-items-center">
                     <div>
                         <div class="mb-2">
-                            <h2 class="h5 mb-0 observer-title">Love <?php echo $topic->title; ?>?</h2>
+                            <h2 class="h5 mb-0 observer-title">Love Music?</h2>
                         </div>
                         <p class="mb-2">
-                            Get the latest <?php echo $topic->title; ?> news, features, updates and giveaways straight
-                            to your inbox
-                            <a href="<?php echo $topic->link; ?>" class="l-learn-more text-dark" target="_blank"
-                               rel="noopener">Learn more</a>
+                            Get the latest news, features, updates and giveaways straight
+                            to your inbox.
                         </p>
-                        <?php if (!is_user_logged_in()) : ?>
-                            <button class="button btn btn-primary btn-join" style="color: #fff !important">JOIN</button>
-                        <?php endif; ?>
                         <form action="#" method="post" id="observer-subscribe-form<?php echo $post_id; ?>"
                               name="observer-subscribe-form"
-                              class="observer-subscribe-form <?php echo !is_user_logged_in() ? 'd-none bg-white' : ''; ?>">
+                              class="observer-subscribe-form">
                             <div class="d-flex justify-content-start">
                                 <input type="hidden" name="list" value="<?php echo $topic_id; ?>">
-                                <?php if (!is_user_logged_in()) : ?>
-                                    <label>
-                                        <input type="email" name="email" class="form-control observer-sub-email"
-                                               placeholder="Your email" value="">
-                                    </label>
-                                <?php endif; ?>
+                                <label>
+                                    <input type="email" name="email" class="form-control observer-sub-email"
+                                           placeholder="Your email" value="">
+                                </label>
                                 <div class="d-flex submit-wrap rounded">
                                     <input type="submit" value="Join" name="subscribe"
                                            class="button btn btn-primary rounded" style="color: #fff !important">
@@ -608,6 +601,7 @@ class BragObserver
         ob_end_clean();
 
         return $html;
+        return '';
     } // save_tastemaker_review()
 
     /*
@@ -637,7 +631,7 @@ public function ajax_subscribe_observer(): void
                 wp_die();
             }
 
-            $brag_api_url_base = in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']) ? 'https://the-brag.com/' : 'https://thebrag.com/';
+            $brag_api_url_base = in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']) ? 'https://thebrag.com/' : 'https://thebrag.com/';
 
             $brag_api_url = $brag_api_url_base . 'wp-json/brag_observer_airship/v1/sub_unsub/';
 
@@ -656,6 +650,7 @@ public function ajax_subscribe_observer(): void
             );
             $responseBody = wp_remote_retrieve_body($response);
             $responseJson = json_decode($responseBody);
+
             if (isset($responseJson->success) && $responseJson->success == 1) {
                 wp_send_json_success($responseJson->data);
             }

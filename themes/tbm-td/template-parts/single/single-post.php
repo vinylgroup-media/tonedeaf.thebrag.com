@@ -5,8 +5,9 @@ extract($args);
 * Get Spotlight articles
 */
 global $wpdb;
+
 $spotlight_article_ids = $wpdb->get_results(
-    "SELECT post_id FROM ( 
+    "SELECT post_id FROM (
         SELECT post_id FROM `{$wpdb->prefix}tbm_trending`
         WHERE post_id != " . get_the_ID()  . "
         ORDER BY `created_at` DESC LIMIT 10
@@ -117,7 +118,7 @@ if (!post_password_required($post)) :
                     <a class="text-uppercase cat mx-1" href="<?php echo get_term_link($genre->term_id); ?>" style="color: #79746b; font-size: 90%;"><?php echo $genre->name; ?></a>
                 <?php
                 endforeach; // For Each Category
-            endif; // If there are categories for the post 
+            endif; // If there are categories for the post
 
             if (isset($is_oped) && $is_oped) {
                 ?>
@@ -182,13 +183,13 @@ if (!post_password_required($post)) :
                     if (get_field('promoted_text_link') && '' != get_field('promoted_text_link')) :
                 ?>
                         <a href="<?php echo get_field('promoted_text_link'); ?>" target="_blank" class="text-dark">
-                        <?php endif; // If promoted_text_link 
+                        <?php endif; // If promoted_text_link
                         ?>
                         <div class="p-3 mb-3 d-flex align-items-center" style="border: 1px solid #b2b2b2; font-size: 110%">
                             <div><?php echo get_field('promoted_text'); ?></div>
                             <?php if (get_field('promoted_logo') && '' != get_field('promoted_logo')) : ?>
                                 <img src="<?php echo get_field('promoted_logo'); ?>" style="width: 100px;">
-                            <?php endif; // If promoted_logo 
+                            <?php endif; // If promoted_logo
                             ?>
                         </div>
                         <?php if (get_field('promoted_text_link') && '' != get_field('promoted_text_link')) : ?>
@@ -239,7 +240,7 @@ if (!post_password_required($post)) :
                                                     <?php if ($author->twitter != '') : ?>
                                                         <div class="nav-item">
                                                             <a href="<?php echo $author->twitter; ?>" target="_blank" class="d-block rounded-circle bg-dark" style="padding: .25rem; margin: .25rem;">
-                                                                <img src="<?php echo ICONS_URL; ?>twitter.svg" width="32" style="width: 24px; margin: 0;">
+                                                                <img src="<?php echo ICONS_URL; ?>x-light.svg" width="32" style="width: 24px; margin: 0;">
                                                             </a>
                                                         </div>
                                                     <?php endif; ?>
@@ -285,7 +286,6 @@ if (!post_password_required($post)) :
                             </div>
                         </div><!-- Author details, author socials -->
                     <?php endif; ?>
-
                 </div><!-- /.post-content -->
 
                 <div class="mt-2" style="width: 300px; margin: auto;">
@@ -324,7 +324,7 @@ if (!post_password_required($post)) :
                             'trackVisitor': '<?php echo get_field('track_visitors'); ?>'
                         });
                     </script>
-                <?php endif; // If set track visitors 
+                <?php endif; // If set track visitors
                 ?>
                 <!-- Story End -->
             </div><!-- Left panel - content, etc. -->
@@ -332,11 +332,11 @@ if (!post_password_required($post)) :
             <div class="col-md-4 right-col-has-ad d-none d-md-block ml-2 align-self-stretch">
                 <div class="d-flex flex-column h-100 justify-content-start">
                     <div class="align-self-center" style="min-width: 300px;">
-                        <?php render_ad_tag('rail1', $count_articles); ?>
+                        <?php render_ad_tag('mrec', $count_articles); ?>
                     </div>
                     <div>
                         <?php
-                        if ($spotlight_articles->have_posts()) :
+                        if (isset($spotlight_articles) && $spotlight_articles->have_posts()) :
                             get_template_part('template-parts/single/spotlight', null, ['pos' => 'sidebar', 'spotlight_articles' => $spotlight_articles]);
                         endif; // If there are spotlight articles
                         ?>
@@ -344,7 +344,7 @@ if (!post_password_required($post)) :
                     <div class="sticky-ad-right pt-2">
                         <div class="" style="min-width: 300px;">
                             <?php
-                            render_ad_tag('rail2', $count_articles);
+                            render_ad_tag('vrec', $count_articles);
                             ?>
                         </div>
                     </div>
@@ -354,11 +354,14 @@ if (!post_password_required($post)) :
 
         <div>
             <?php
-            if ($spotlight_articles->have_posts()) :
+            if (isset($spotlight_articles) && $spotlight_articles->have_posts()) :
                 get_template_part('template-parts/single/spotlight', null, ['pos' => 'below_article', 'spotlight_articles' => $spotlight_articles]);
             endif; // If there are spotlight articles
             ?>
         </div>
+        <?php if ((function_exists('get_field') && !get_field('paid_content'))) : ?>
+            <div class="linkby-widget" data-type="listicle"></div>
+        <?php endif; ?>
     </article><!-- .container .single_story -->
 <?php elseif ($count_articles == 1) :
     echo '<style>.load-more{display:none;}</style>';

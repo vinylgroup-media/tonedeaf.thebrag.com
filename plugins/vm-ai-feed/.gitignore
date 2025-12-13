@@ -1,0 +1,9 @@
+node_modules/
+build/
+.DS_Store
+
+# Composer (do not commit installed dependencies or local PHAR)
+vendor/
+composer.lock
+composer.phar
+.claude

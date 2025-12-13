@@ -9,6 +9,8 @@
  * Author URI:
  */
 
+namespace TBM;
+
 class TBMAds
 {
 
@@ -34,7 +36,6 @@ class TBMAds
    */
   public function action_wp_enqueue_scripts()
   {
-      wp_enqueue_script('adm-fuse', 'https://cdn.fuseplatform.net/publift/tags/2/2376/fuse.js', [], '2');
       wp_enqueue_script(
           'adm-gpt',
           'https://securepubads.g.doubleclick.net/tag/js/gpt.js'
@@ -50,27 +51,11 @@ class TBMAds
   /*
    * WP Head
    */
-  public function action_wp_head()
-  {
-    // if (!is_home() && !is_front_page())
-      {
-          ?>
-          <script type="text/javascript">
-              const fusetag = window.fusetag || (window.fusetag = {
-                  que: []
-              });
+    public function action_wp_head()
+    {
+        global $post;
 
-              fusetag.que.push(function () {
-                  googletag.pubads().enableSingleRequest();
-                  googletag.enableServices();
-              });
-          </script>
-          <?php
-      }
-      {
-          global $post;
-
-          $is_home     = is_home() || is_front_page();
+        $is_home     = is_home() || is_front_page();
         $is_category = is_category() || is_archive();
         $is_article  = is_single();
         $is_article_feature  = is_page_template('single-template-featured.php');
@@ -202,11 +187,10 @@ class TBMAds
         </script>
         <?php
     }
-  }
 
-  /*
-   * Singleton
-   */
+    /*
+     * Singleton
+     */
   public static function get_instance()
   {
     if (!isset(static::$_instance)) {
@@ -226,7 +210,6 @@ class TBMAds
     if (is_page_template('page-templates/page-solstice-2021.php') || is_page_template('page-quiz.php')):
       return;
     endif;
-
     $html = '';
     $fuse_tags = self::fuse_tags();
 
@@ -313,27 +296,36 @@ class TBMAds
       } else {
         $fuse_id = $fuse_tags[$ad_location];
       }
-      $html .= '<!--' . $post_id . ' | ' . $section . ' | ' . $ad_location . ' | ' . $slot_no . '-->';
-      $html .= '<div data-fuse="' . $fuse_id . '" class="fuse-ad"></div>';
+        $gpt_id = $section . '_' . $ad_location;
+        $html .= '<!--' . $post_id . ' | '  . $section . ' | ' . $ad_location . ' | ' . $slot_no . '-->';
 
-      if ($slot_no > 1) {
-        $html .= '<script>
-      fusetag.que.push(function(){
-        fusetag.loadSlotById("' . $fuse_id . '");
-       });
-       </script>';
-      } else {
-        $html .= '<script type="text/javascript">';
-        if (isset($category)) {
-          $html .= 'fusetag.setTargeting("fuse_category", ["' . $category . '"]);';
-        }
-        if (isset($tag_slugs)) {
-          $html .= 'fusetag.setTargeting("tbm_tags", ' . json_encode($tag_slugs) . ');';
-        }
-        if (isset($pagepath)) {
-          $html .= 'fusetag.setTargeting("pagepath", ["' . $pagepath . '"]);';
-        }
-        $html .= '</script>';
+        $html .= '<div id="div-gpt-' . $gpt_id . '" style="margin: auto; text-align: center">';
+        $html .= '<script>googletag.cmd.push(function() { googletag.display("div-gpt-' . $gpt_id . '"); });</script>';
+        $html .= '</div>';
+
+        if ($slot_no > 1) {
+            $html .= '<script>
+                googletag.cmd.push(function() {
+                  googletag.display("div-gpt-' . $gpt_id . '");
+                });
+                    </script>';
+        } else {
+            $html .= '<script type="text/javascript">
+                window.googletag = window.googletag || {cmd: []};
+                googletag.cmd.push(function() {';
+            if (isset($category)) {
+                $html .= 'googletag.pubads().setTargeting("fuse_category", ["' . $category . '"]);';
+            }
+
+            if (isset($tag_slugs)) {
+                $html .= 'googletag.pubads().setTargeting("tbm_tags", ' . json_encode($tag_slugs) . ');';
+            }
+
+            if (isset($pagepath)) {
+                $html .= 'googletag.pubads().setTargeting("pagepath", ["' . $pagepath . '"]);';
+            }
+
+            $html .= '</script>';
       }
 
       return $html;
@@ -370,6 +362,7 @@ class TBMAds
       'article' => [
         'skin' => '22378678033',
         'leaderboard' => '22378619009',
+        'header' => '22378619009',
 
         'mrec' => '22378619012',
         'rail1' => '22378619012',
@@ -383,6 +376,7 @@ class TBMAds
         'incontent_2' => '22378619015',
         'desktop_sticky' => '22378678339',
         'mob_sticky' => '22378566870',
+          'oop' => '22779890848'
       ],
       'second_article' => [
         'skin' => '22378566867',
@@ -398,6 +392,7 @@ class TBMAds
         'inbody1' => '22378678345',
 
         'incontent_2' => '22378566876',
+              'oop' => '22779890848'
       ],
       'category' => [
         'skin' => '22378678021',
@@ -414,6 +409,7 @@ class TBMAds
 
         'desktop_sticky' => '22378678027',
         'mob_sticky' => '22378678336',
+              'oop' => '22779890848'
       ],
       'homepage' => [
         'desktop_sticky' => '22378677994',
@@ -449,9 +445,10 @@ class TBMAds
         'incontent_6' => '22378564854',
 
         'mob_sticky' => '22378678024',
+              'oop' => '22779890848'
       ]
     ];
   }
 }
 
-TBMAds::get_instance();
+\TBM\TBMAds::get_instance();

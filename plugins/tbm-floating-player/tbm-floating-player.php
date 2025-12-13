@@ -13,9 +13,10 @@ namespace TBM;
 
 class FloatingPlayer
 {
-    protected $playerId;
-    protected $playlistId;
-    protected $playerTitle;
+    protected mixed $playerId;
+    protected mixed $playlistId;
+    protected string $playerTitle;
+    protected string $adId;
 
     public function __construct()
     {

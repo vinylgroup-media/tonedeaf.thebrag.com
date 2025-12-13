@@ -222,8 +222,8 @@ register_taxonomy(
 
 function load_js_css(): void
 {
-    wp_enqueue_script('scripts', CDN_URL . 'js/scripts.min.js', ['jquery'], '20240805.1', true);
-    // wp_enqueue_script('scripts', get_template_directory_uri() . '/js/scripts.js', array('jquery'), time(), true);
+//    wp_enqueue_script('scripts', CDN_URL . 'js/scripts.min.js', ['jquery'], '20240805.1', true);
+     wp_enqueue_script('scripts', get_template_directory_uri() . '/js/scripts.js', array('jquery'), '20250505', true);
 
 
     if (is_single()) {
@@ -435,7 +435,7 @@ function register_cpt_photo_gallery()
         'not_found' => _x('No photo galleries found', 'photo_gallery'),
         'not_found_in_trash' => _x('No photo galleries found in Trash', 'photo_gallery'),
         'parent_item_colon' => _x('Parent Photo Gallery:', 'photo_gallery'),
-        'menu_name' => _x('Photo Galleries', 'photo_gallery'),
+        'menu_name' => _x('Photo Galleries', 'photo_gallery')
     ];
 
     $args = [
@@ -469,6 +469,7 @@ function register_cpt_photo_gallery()
             'read_post' => 'photo_gallery',
             'publish_post' => 'photo_gallery',
         ],
+        'show_in_rest' => true
     ];
 
     register_post_type('photo_gallery', $args);
@@ -1822,10 +1823,20 @@ function ssm_inject_ads($content)
         return $content;
     }
     // return tbm_inject_ads( $content );
-    if ((function_exists('get_field') && get_field('paid_content')) || is_page_template('single-template-featured.php') || is_page_template('page-templates/brag-observer.php')):
+    if ((function_exists('get_field') && get_field('paid_content'))):
         return $content;
     endif;
 
+    // Exclude ad injection for specific templates
+    $excluded_templates = array('page-templates/brag-observer.php');
+    $current_template = get_page_template_slug();
+    if (!$current_template && is_single()) {
+        // For single posts, check post meta for custom template
+        $current_template = get_post_meta(get_the_ID(), '_wp_page_template', true);
+    }
+    if (in_array($current_template, $excluded_templates, true)) {
+        return $content;
+    }
     if (is_page()) {
         return $content;
     }
@@ -1882,7 +1893,7 @@ var nSdkInstance = NOLBUNDLE.nlsQ("P59D1CA7E-CA1C-4718-8E85-F8807D018FED","nSdkI
 var dcrStaticMetadata = {type:"static",dataSrc:"cms",assetid:"' . $assetId . '", section:"Tone Deaf",segA:"",segB:""}
 nSdkInstance.ggPM("staticstart",dcrStaticMetadata);
 </script>';
-    echo $html;
+    //echo $html;
 }
 
 /*
@@ -2123,7 +2134,7 @@ function render_ad_tag($tag, $slot_no = 1)
     if (!file_exists(WP_PLUGIN_DIR . '/tbm-adm/tbm-adm.php'))
         return;
     require_once WP_PLUGIN_DIR . '/tbm-adm/tbm-adm.php';
-    $ads = TBMAds::get_instance();
+    $ads = \TBM\TBMAds::get_instance();
     echo $ads->get_ad($tag, $slot_no, get_the_ID());
     return;
 }
@@ -2265,13 +2276,13 @@ function brands()
             'width' => 100,
             'ext' => 'svg',
         ],
-        'brag-jobs' => [
-            'title' => 'The Brag Jobs',
-            'link' => 'https://thebrag.com/jobs',
-            'logo_name' => 'The-Brag-Jobs',
-            'width' => 80,
-            'ext' => 'png',
-        ],
+//        'brag-jobs' => [
+//            'title' => 'The Brag Jobs',
+//            'link' => 'https://thebrag.com/jobs',
+//            'logo_name' => 'The-Brag-Jobs',
+//            'width' => 80,
+//            'ext' => 'png',
+//        ],
         /* 'dbu' => [
             'title' => 'Don\'t Bore Us',
             'link' => 'https://dontboreus.thebrag.com/',
@@ -2591,14 +2602,14 @@ add_filter('the_content', function ($content) {
         $mag_cover = json_decode($mag_cover_res['body']);
     }
 
-    $content .= '<a href="https://au.rollingstone.com/subscribe-magazine/" target="_blank" rel="noopener" class="d-flex flex-column flex-md-row align-items-start rs-subscribe-footer"><div class="d-flex">';
-    if (isset($mag_cover) && '' != $mag_cover) {
-        $content .= '<div class="flex-fill img-wrap"><img src="' . $mag_cover . '" width="100"></div>';
-    }
-    $content .= '<div>Get unlimited access to the coverage that shapes our culture.';
-    $content .= '<div class="d-none d-md-block mt-1"><span class="subscribe">Subscribe</span> to <strong>Rolling Stone magazine</strong></div></div></div>';
-    $content .= '<div class="d-block d-md-none mt-3 w-100"><span class="subscribe">Subscribe</span> to <strong>Rolling Stone magazine</strong></div>';
-    $content .= '</a>';
+//    $content .= '<a href="https://au.rollingstone.com/subscribe-magazine/" target="_blank" rel="noopener" class="d-flex flex-column flex-md-row align-items-start rs-subscribe-footer"><div class="d-flex">';
+//    if (isset($mag_cover) && '' != $mag_cover) {
+//        $content .= '<div class="flex-fill img-wrap"><img src="' . $mag_cover . '" width="100"></div>';
+//    }
+//    $content .= '<div>Get unlimited access to the coverage that shapes our culture.';
+//    $content .= '<div class="d-none d-md-block mt-1"><span class="subscribe">Subscribe</span> to <strong>Rolling Stone magazine</strong></div></div></div>';
+//    $content .= '<div class="d-block d-md-none mt-3 w-100"><span class="subscribe">Subscribe</span> to <strong>Rolling Stone magazine</strong></div>';
+//    $content .= '</a>';
 
     return $content;
 }, 99);
@@ -2664,3 +2675,8 @@ function tbm_the_excerpt($excerpt)
 
     return $excerpt . '.';
 }
+
+function add_linkby_widget_script() {
+  echo '<script src="https://pubfeed.linkby.com/widget.js" async></script>';
+}
+add_action('wp_head', 'add_linkby_widget_script');
