@@ -39,8 +39,9 @@ class TBM_Cache {
             return;
         }
 
-        wp_remote_get('http://192.46.221.223:6001/purge/' . $this->get_domain() . '/' . $post_id . '/' . $type);
-        wp_remote_get('http://45.79.238.137:6001/purge/' . $this->get_domain() . '/' . $post_id . '/' . $type);
-        wp_remote_get('http://172.105.163.75:6001/purge/' . $this->get_domain() . '/' . $post_id . '/' . $type );
+       wp_remote_get('http://192.46.221.223:6001/purge/' . $this->get_domain() . '/' . $post_id . '/' . $type);
+       wp_remote_get('http://45.79.238.137:6001/purge/' . $this->get_domain() . '/' . $post_id . '/' . $type);
+       wp_remote_get('http://172.105.186.184:6001/purge/' . $this->get_domain() . '/' . $post_id . '/' . $type );
+       wp_remote_get('http://172.105.179.9:6001/purge/' . $this->get_domain() . '/' . $post_id . '/' . $type );
     }
 }
