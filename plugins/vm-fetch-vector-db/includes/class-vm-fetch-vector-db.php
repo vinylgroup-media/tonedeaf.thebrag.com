@@ -46,7 +46,13 @@ class VmFetchVectorDb {
         $post_id = absint( $post_id );
 
         // Get API key from WordPress options
-        $api_key = get_option( 'vm_fetch_vector_db_api_key', 'WWSDE2khOwPN' );
+        $api_key = get_option( 'vm_fetch_vector_db_api_key', '' );
+        
+        // Return early if no API key is configured
+        if ( empty( $api_key ) ) {
+            error_log( 'VectorDB API Error: API key not configured' );
+            return;
+        }
 
         $response = wp_remote_post(
             "https://collect.thebrag.media/api/v1/vectorize/{$type}/{$post_id}",
@@ -72,7 +78,9 @@ class VmFetchVectorDb {
     /**
         * Fetch LightRAG data for a post.
         *
-        * @param int      $post_id The post ID.
+        * Triggered on the 'edit_post' action to send the post to the LightRAG API.
+        *
+        * @param int     $post_id The post ID.
         * @param WP_Post $post    The post object.
         *
         * @return void
@@ -89,12 +97,24 @@ class VmFetchVectorDb {
             return;
         }
 
-        wp_remote_post(
+        // Sanitize post_id to ensure it's a positive integer
+        $post_id = absint( $post_id );
+
+        // Get API key from WordPress options
+        $api_key = get_option( 'vm_fetch_vector_db_api_key', '' );
+        
+        // Return early if no API key is configured
+        if ( empty( $api_key ) ) {
+            error_log( 'LightRAG API Error: API key not configured' );
+            return;
+        }
+
+        $response = wp_remote_post(
             "https://search.tonedeaf.thebrag.com/api/v1/lightrag/articles/{$post_id}",
             [
                 'headers' => [
                     'Content-Type' => 'application/json',
-                    'X-API-Key'    => 'WWSDE2khOwPN',
+                    'X-API-Key'    => $api_key,
                 ],
                 'body'    => json_encode(
                     [
@@ -103,5 +123,10 @@ class VmFetchVectorDb {
                 ),
             ]
         );
+
+        // Check for errors and log if necessary
+        if ( is_wp_error( $response ) ) {
+            error_log( 'LightRAG API Error: ' . $response->get_error_message() );
+        }
     }
 }
