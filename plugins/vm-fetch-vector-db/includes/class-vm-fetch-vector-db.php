@@ -20,24 +20,40 @@ class VmFetchVectorDb {
         add_action( 'edit_post', [ $this, 'fetchLightRAG' ], 100, 2 );
     }
 
+    /**
+     * Fetch vector database data for a post.
+     *
+     * Triggered on the 'edit_post' action to send the post to the vectorization API.
+     *
+     * @param int     $post_id The post ID.
+     * @param WP_Post $post    The post object.
+     *
+     * @return void
+     */
     public function fetchVectorDb( $post_id, $post ): void {
         if ( $post->post_status !== 'publish' ) {
             return;
         }
 
-        $type = $post->post_type == 'post' ? 'posts' : $post->post_type;
-        $type = $type == 'page' ? 'pages' : $type;
+        $type = $post->post_type === 'post' ? 'posts' : $post->post_type;
+        $type = $type === 'page' ? 'pages' : $type;
 
         if ( 'revision' === $type ) {
             return;
         }
 
-        wp_remote_post(
-            'https://collect.thebrag.media/api/v1/vectorize/posts/' . $post_id,
+        // Sanitize post_id to ensure it's a positive integer
+        $post_id = absint( $post_id );
+
+        // Get API key from WordPress options
+        $api_key = get_option( 'vm_fetch_vector_db_api_key', 'WWSDE2khOwPN' );
+
+        $response = wp_remote_post(
+            "https://collect.thebrag.media/api/v1/vectorize/{$type}/{$post_id}",
             array(
                 'headers' => array(
                     'Content-Type' => 'application/json',
-                    'X-API-Key'    => 'WWSDE2khOwPN',
+                    'X-API-Key'    => $api_key,
                 ),
                 'body'    => json_encode(
                     array(
@@ -46,6 +62,11 @@ class VmFetchVectorDb {
                 ),
             )
         );
+
+        // Check for errors and log if necessary
+        if ( is_wp_error( $response ) ) {
+            error_log( 'VectorDB API Error: ' . $response->get_error_message() );
+        }
     }
 
     /**
@@ -61,8 +82,8 @@ class VmFetchVectorDb {
             return;
         }
 
-        $type = $post->post_type == 'post' ? 'posts' : $post->post_type;
-        $type = $type == 'page' ? 'pages' : $type;
+        $type = $post->post_type === 'post' ? 'posts' : $post->post_type;
+        $type = $type === 'page' ? 'pages' : $type;
 
         if ( 'revision' === $type ) {
             return;
