@@ -40,6 +40,12 @@ class TBMAds
           'adm-gpt',
           'https://securepubads.g.doubleclick.net/tag/js/gpt.js'
       );
+      wp_enqueue_script(
+          'magnite',
+          'https://micro.rubiconproject.com/prebid/dynamic/28043.js',
+          [],
+          null
+      );
   }
 
   /*
@@ -95,9 +101,11 @@ class TBMAds
                 const vrecSizes       = ['fluid',[300,250],[300,600]];
                 const skinSizes       = [[1600,1200]];
 
+                const headerBiddingSlots = []
                 function slot(path, sizes, id, desktopOnly = false) {
                     if (desktopOnly && isMobile) return;
-                    googletag.defineSlot(path, sizes, id).addService(googletag.pubads());
+                    const div = googletag.defineSlot(path, sizes, id).addService(googletag.pubads());
+                    headerBiddingSlots.push(div)
                 }
 
                 // ---------- HOMEPAGE ----------
@@ -139,6 +147,42 @@ class TBMAds
 
                 googletag.pubads().enableSingleRequest();
                 googletag.enableServices();
+                function demandManagerRequest(slots) {
+
+
+                    // provide failsafeHandler with callback function to fire when we want to make
+                    // the ad server request, as well as headerBiddingSlots to umagnse in case of failsafe
+                    const sendAdServerRequest = failsafeHandler((slotsToRefresh) => {
+                        googletag.pubads().refresh(slotsToRefresh);
+                    }, slots);
+
+
+                    // request bids when PBJS is ready
+                    pbjs.que.push(function () {
+                        pbjs.rp.requestBids({
+                            callback: sendAdServerRequest,
+                            gptSlotObjects: slots
+                        });
+                    });
+
+
+                    // start the failsafe timeout
+                    setTimeout(sendAdServerRequest, FAILSAFE_TIMEOUT);
+
+
+                    // function that handles the failsafe using boolean logic per auction
+                    function failsafeHandler(callback, initialSlots) {
+                        let adserverRequestSent = false;
+                        return (bidsBackSlots) => {
+                            if (adserverRequestSent) return;
+                            adserverRequestSent = true;
+                            callback(bidsBackSlots || initialSlots);
+                        };
+
+
+                    }
+                }
+                demandManagerRequest(headerBiddingSlots);
             });
         </script>
         <?php
