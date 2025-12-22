@@ -31,6 +31,9 @@ class VmFetchVectorDb {
      * @return void
      */
     public function fetchVectorDb( $post_id, $post ): void {
+        // Sanitize post_id to ensure it's a positive integer
+        $post_id = absint( $post_id );
+
         if ( $post->post_status !== 'publish' ) {
             return;
         }
@@ -42,12 +45,9 @@ class VmFetchVectorDb {
             return;
         }
 
-        // Sanitize post_id to ensure it's a positive integer
-        $post_id = absint( $post_id );
-
         // Get API key from WordPress options
         $api_key = get_option( 'vm_fetch_vector_db_api_key', '' );
-        
+
         // Return early if no API key is configured
         if ( empty( $api_key ) ) {
             error_log( 'VectorDB API Error: API key not configured' );
@@ -76,16 +76,19 @@ class VmFetchVectorDb {
     }
 
     /**
-        * Fetch LightRAG data for a post.
-        *
-        * Triggered on the 'edit_post' action to send the post to the LightRAG API.
-        *
-        * @param int     $post_id The post ID.
-        * @param WP_Post $post    The post object.
-        *
-        * @return void
-        */
+     * Fetch LightRAG data for a post.
+     *
+     * Triggered on the 'edit_post' action to send the post to the LightRAG API.
+     *
+     * @param int     $post_id The post ID.
+     * @param WP_Post $post    The post object.
+     *
+     * @return void
+     */
     public function fetchLightRAG( $post_id, $post ): void {
+        // Sanitize post_id to ensure it's a positive integer
+        $post_id = absint( $post_id );
+
         if ( $post->post_status !== 'publish' ) {
             return;
         }
@@ -97,12 +100,9 @@ class VmFetchVectorDb {
             return;
         }
 
-        // Sanitize post_id to ensure it's a positive integer
-        $post_id = absint( $post_id );
-
         // Get API key from WordPress options
         $api_key = get_option( 'vm_fetch_vector_db_api_key', '' );
-        
+
         // Return early if no API key is configured
         if ( empty( $api_key ) ) {
             error_log( 'LightRAG API Error: API key not configured' );

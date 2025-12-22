@@ -22,7 +22,8 @@ register_activation_hook(
     function (): void {
         // Only set the API key if it hasn't been set yet
         if ( ! get_option( 'vm_fetch_vector_db_api_key' ) ) {
-            add_option( 'vm_fetch_vector_db_api_key', 'WWSDE2khOwPN' );
+            // Initialize with an empty value so the API key must be configured manually.
+            add_option( 'vm_fetch_vector_db_api_key', '' );
         }
     }
 );
