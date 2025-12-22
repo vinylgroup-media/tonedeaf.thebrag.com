@@ -16,37 +16,37 @@ class VmFetchVectorDb {
     }
 
     public function init(): void {
-        // add_action( 'edit_post', [ $this, 'fetchVectorDb' ], 100, 2 );
+        add_action( 'edit_post', [ $this, 'fetchVectorDb' ], 100, 2 );
         add_action( 'edit_post', [ $this, 'fetchLightRAG' ], 100, 2 );
     }
 
-    // public function fetchVectorDb( $post_id, $post ): void {
-    //     if ( $post->post_status !== 'publish' ) {
-    //         return;
-    //     }
+    public function fetchVectorDb( $post_id, $post ): void {
+        if ( $post->post_status !== 'publish' ) {
+            return;
+        }
 
-    //     $type = $post->post_type == 'post' ? 'posts' : $post->post_type;
-    //     $type = $type == 'page' ? 'pages' : $type;
+        $type = $post->post_type == 'post' ? 'posts' : $post->post_type;
+        $type = $type == 'page' ? 'pages' : $type;
 
-    //     if ( 'revision' === $type ) {
-    //         return;
-    //     }
+        if ( 'revision' === $type ) {
+            return;
+        }
 
-    //     wp_remote_post(
-    //         'https://collect.vinylmedia.com.au/api/v1/vectorize/posts/' . $post_id,
-    //         array(
-    //             'headers' => array(
-    //                 'Content-Type' => 'application/json',
-    //                 'X-API-Key'    => 'WWSDE2khOwPN',
-    //             ),
-    //             'body'    => json_encode(
-    //                 array(
-    //                     'force' => true,
-    //                 )
-    //             ),
-    //         )
-    //     );
-    // }
+        wp_remote_post(
+            'https://collect.thebrag.media/api/v1/vectorize/posts/' . $post_id,
+            array(
+                'headers' => array(
+                    'Content-Type' => 'application/json',
+                    'X-API-Key'    => 'WWSDE2khOwPN',
+                ),
+                'body'    => json_encode(
+                    array(
+                        'force' => true,
+                    )
+                ),
+            )
+        );
+    }
 
     /**
         * Fetch LightRAG data for a post.
