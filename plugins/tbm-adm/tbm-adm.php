@@ -83,6 +83,7 @@ class TBMAds
 
         ?>
         <script>
+            window.pbjs = window.pbjs || { que: [] };
             window.googletag = window.googletag || {cmd: []};
 
             const isMobile = window.innerWidth < 768;
