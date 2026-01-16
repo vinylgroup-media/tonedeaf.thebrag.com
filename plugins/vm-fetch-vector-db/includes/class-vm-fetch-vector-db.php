@@ -46,20 +46,20 @@ class VmFetchVectorDb {
         }
 
         // Get API key from WordPress options
-        $api_key = get_option( 'vm_fetch_vector_db_api_key', '' );
+        // $api_key = get_option( 'vm_fetch_vector_db_api_key', '' );
 
         // Return early if no API key is configured
-        if ( empty( $api_key ) ) {
-            error_log( 'VectorDB API Error: API key not configured' );
-            return;
-        }
+        // if ( empty( $api_key ) ) {
+        //     error_log( 'VectorDB API Error: API key not configured' );
+        //     return;
+        // }
 
         $response = wp_remote_post(
             "https://collect.thebrag.media/api/v1/vectorize/{$type}/{$post_id}",
             array(
                 'headers' => array(
                     'Content-Type' => 'application/json',
-                    'X-API-Key'    => $api_key,
+                    'X-API-Key'    => '123',
                 ),
                 'body'    => json_encode(
                     array(
@@ -101,20 +101,20 @@ class VmFetchVectorDb {
         }
 
         // Get API key from WordPress options
-        $api_key = get_option( 'vm_fetch_vector_db_api_key', '' );
+        // $api_key = get_option( 'vm_fetch_vector_db_api_key', '' );
 
         // Return early if no API key is configured
-        if ( empty( $api_key ) ) {
-            error_log( 'LightRAG API Error: API key not configured' );
-            return;
-        }
+        // if ( empty( $api_key ) ) {
+        //     error_log( 'LightRAG API Error: API key not configured' );
+        //     return;
+        // }
 
         $response = wp_remote_post(
             "https://search.tonedeaf.thebrag.com/api/v1/lightrag/articles/{$post_id}",
             [
                 'headers' => [
                     'Content-Type' => 'application/json',
-                    'X-API-Key'    => $api_key,
+                    'X-API-Key'    => '123',
                 ],
                 'body'    => json_encode(
                     [

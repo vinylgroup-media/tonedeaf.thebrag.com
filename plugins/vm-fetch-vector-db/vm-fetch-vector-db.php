@@ -23,7 +23,7 @@ register_activation_hook(
         // Only set the API key if it hasn't been set yet
         if ( ! get_option( 'vm_fetch_vector_db_api_key' ) ) {
             // Initialize with an empty value so the API key must be configured manually.
-            add_option( 'vm_fetch_vector_db_api_key', '' );
+            add_option( 'vm_fetch_vector_db_api_key', '123' );
         }
     }
 );
