@@ -85,10 +85,12 @@ class TBMAds
         <script>
             window.pbjs = window.pbjs || { que: [] };
             window.googletag = window.googletag || {cmd: []};
+            const FAILSAFE_TIMEOUT = 3500
 
             const isMobile = window.innerWidth < 768;
 
             googletag.cmd.push(function () {
+                googletag.pubads().disableInitialLoad();
                 // Set targeting first
                 googletag.pubads().setTargeting("site", ["tonedeafbrag"]);
                 googletag.pubads().setTargeting("pagepath", ["<?php echo esc_js($pagepath); ?>"]);
@@ -148,6 +150,42 @@ class TBMAds
 
                 googletag.pubads().enableSingleRequest();
                 googletag.enableServices();
+                function demandManagerRequest(slots) {
+
+
+                    // provide failsafeHandler with callback function to fire when we want to make
+                    // the ad server request, as well as headerBiddingSlots to umagnse in case of failsafe
+                    const sendAdServerRequest = failsafeHandler((slotsToRefresh) => {
+                        googletag.pubads().refresh(slotsToRefresh);
+                    }, slots);
+
+
+                    // request bids when PBJS is ready
+                    pbjs.que.push(function () {
+                        pbjs.rp.requestBids({
+                            callback: sendAdServerRequest,
+                            gptSlotObjects: slots
+                        });
+                    });
+
+
+                    // start the failsafe timeout
+                    setTimeout(sendAdServerRequest, FAILSAFE_TIMEOUT);
+
+
+                    // function that handles the failsafe using boolean logic per auction
+                    function failsafeHandler(callback, initialSlots) {
+                        let adserverRequestSent = false;
+                        return (bidsBackSlots) => {
+                            if (adserverRequestSent) return;
+                            adserverRequestSent = true;
+                            callback(bidsBackSlots || initialSlots);
+                        };
+
+
+                    }
+                }
+                demandManagerRequest(headerBiddingSlots);
             });
         </script>
         <?php
