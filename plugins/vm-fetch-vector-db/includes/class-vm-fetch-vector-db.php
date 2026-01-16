@@ -59,7 +59,7 @@ class VmFetchVectorDb {
             array(
                 'headers' => array(
                     'Content-Type' => 'application/json',
-                    'X-API-Key'    => '123',
+                    'X-API-Key'    => '',
                 ),
                 'body'    => json_encode(
                     array(
@@ -114,7 +114,7 @@ class VmFetchVectorDb {
             [
                 'headers' => [
                     'Content-Type' => 'application/json',
-                    'X-API-Key'    => '123',
+                    'X-API-Key'    => '',
                 ],
                 'body'    => json_encode(
                     [
