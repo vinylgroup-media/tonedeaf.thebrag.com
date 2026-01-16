@@ -43,8 +43,6 @@ class TBMAds
       wp_enqueue_script(
           'magnite',
           'https://micro.rubiconproject.com/prebid/dynamic/28043.js',
-          [],
-          null
       );
   }
 
@@ -85,10 +83,12 @@ class TBMAds
         <script>
             window.pbjs = window.pbjs || { que: [] };
             window.googletag = window.googletag || {cmd: []};
+            const FAILSAFE_TIMEOUT = 3500
 
             const isMobile = window.innerWidth < 768;
 
             googletag.cmd.push(function () {
+                googletag.pubads().disableInitialLoad();
                 // Set targeting first
                 googletag.pubads().setTargeting("site", ["tonedeafbrag"]);
                 googletag.pubads().setTargeting("pagepath", ["<?php echo esc_js($pagepath); ?>"]);
