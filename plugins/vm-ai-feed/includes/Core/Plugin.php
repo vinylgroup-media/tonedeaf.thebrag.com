@@ -54,6 +54,7 @@ class AIFeed
 	 * @var int
 	 */
 	private const MAX_REVISION_PAGES = 100;
+	private const ACCESS_CAPABILITY   = 'access_ai_tools';
 
 	private static AIFeed $_instance;
 	private bool $isViewingItem       = false;
@@ -73,6 +74,7 @@ class AIFeed
 
 	public function init(): void
 	{
+		add_action('init', [$this, 'ai_tools_register_access_capability']);
 		add_action('admin_menu', [$this, 'addAdminMenu']);
 		add_action('admin_enqueue_scripts', [$this, 'enqueueAdminScripts']);
 		add_action('admin_init', [$this, 'handleCustomPages']);
@@ -90,6 +92,21 @@ class AIFeed
 		add_action('wp_ajax_check_article_by_research', [$this, 'handle_check_article_by_research']);
 		add_action('wp_ajax_get_ai_configs', [$this, 'handle_get_ai_configs']);
 	}
+
+    /**
+     * Assign custom AI Tools access capability to admin/editor roles.
+     */
+    public function ai_tools_register_access_capability(): void
+    {
+        $roles = ['administrator', 'editor'];
+
+        foreach ($roles as $role_name) {
+            $role = get_role($role_name);
+            if ($role && ! $role->has_cap(self::ACCESS_CAPABILITY)) {
+                $role->add_cap(self::ACCESS_CAPABILITY);
+            }
+        }
+    }
 
 	/**
 	 * Handle publishing an AI article to WordPress
@@ -418,7 +435,7 @@ class AIFeed
 		add_menu_page(
 			'AI Tools Dashboard',
 			'AI Tools',
-			'manage_options',
+			self::ACCESS_CAPABILITY,
 			'vm-ai',
 			[$this, 'index'],
 			'dashicons-rss',
@@ -429,7 +446,7 @@ class AIFeed
 			'vm-ai',
 			'Articles',
 			'Articles',
-			'manage_options',
+			self::ACCESS_CAPABILITY,
 			'vm-ai-feed-articles',
 			[$this, 'renderArticlesPage'],
 			2
@@ -439,7 +456,7 @@ class AIFeed
 			'vm-ai',
 			'Writers',
 			'Writers',
-			'manage_options',
+			self::ACCESS_CAPABILITY,
 			'vm-ai-feed-ai-configs',
 			[$this, 'renderAIConfigsPage'],
 			5
@@ -449,7 +466,7 @@ class AIFeed
 			'vm-ai',
 			'Settings',
 			'Settings',
-			'manage_options',
+			self::ACCESS_CAPABILITY,
 			'vm-ai-feed-settings',
 			[$this, 'renderSettingsPage'],
 			6
@@ -728,7 +745,7 @@ class AIFeed
 			return;
 		}
 
-		if (! current_user_can('manage_options')) {
+		if (! current_user_can(self::ACCESS_CAPABILITY)) {
 			return;
 		}
 
@@ -767,7 +784,7 @@ class AIFeed
 		}
 
 		// Check user permissions
-		if (! current_user_can('manage_options')) {
+		if (! current_user_can(self::ACCESS_CAPABILITY)) {
 			wp_send_json_error('Insufficient permissions', 403);
 		}
 
@@ -934,7 +951,7 @@ class AIFeed
 		}
 
 		// Check user permissions
-		if (! current_user_can('manage_options')) {
+		if (! current_user_can(self::ACCESS_CAPABILITY)) {
 			wp_send_json_error('Insufficient permissions', 403);
 		}
 
@@ -1009,7 +1026,7 @@ class AIFeed
 		}
 
 		// Check user permissions
-		if (! current_user_can('manage_options')) {
+		if (! current_user_can(self::ACCESS_CAPABILITY)) {
 			wp_send_json_error('Insufficient permissions', 403);
 		}
 
@@ -1105,7 +1122,7 @@ class AIFeed
 		}
 
 		// Check user permissions
-		if (! current_user_can('manage_options')) {
+		if (! current_user_can(self::ACCESS_CAPABILITY)) {
 			error_log('VM AI Feed: Restart workflow - Insufficient permissions');
 			wp_send_json_error('Insufficient permissions', 403);
 		}
@@ -1468,7 +1485,7 @@ class AIFeed
 		}
 
 		// Check user permissions
-		if (! current_user_can('manage_options')) {
+		if (! current_user_can(self::ACCESS_CAPABILITY)) {
 			wp_send_json_error('Insufficient permissions', 403);
 		}
 
