@@ -3,6 +3,7 @@
 namespace VM\AIFeed\Admin\Views;
 
 use VM\AIFeed\Core\AIFeedConfig;
+use VM\AIFeed\Core\AIFeed;
 use VM\AIFeed\Helpers\AIDateHelpers;
 use VM\AIFeed\Helpers\AIStatusHelpers;
 use VM\AIFeed\Helpers\AIFeedUIHelpers;
@@ -24,7 +25,7 @@ class AIFeedArticleView
 	public function displayWorkflow(string $research_request_id = ''): void
 	{
 		// Check user capability
-		if (! current_user_can('manage_options')) {
+		if (! current_user_can(AIFeed::ACCESS_CAPABILITY)) {
 			wp_die('You do not have permission to access this page.');
 		}
 
@@ -49,7 +50,7 @@ class AIFeedArticleView
 	 * Render the admin article view page including article metadata, content, draft/publish controls, and an embedded AI editor iframe.
 	 *
 	 * This function performs access checks and will terminate the request with wp_die if the current user lacks
-	 * the 'manage_options' capability or if no article ID is provided. It fetches article data from the remote API,
+	 * the 'ACCESS_CAPABILITY' capability or if no article ID is provided. It fetches article data from the remote API,
 	 * determines WordPress post/draft state, validates the configured API base URL (showing an admin error and a
 	 * link to settings if the URL is invalid), constructs a secure iframe URL for the AI editor, and outputs the
 	 * HTML and JavaScript required for the article UI. The injected JavaScript handles iframe postMessage events,
@@ -61,7 +62,7 @@ class AIFeedArticleView
 	public function display(string $article_id = '', bool $try_research_id = false): void
 	{
 		// Check user capability
-		if (! current_user_can('manage_options')) {
+		if (! current_user_can(AIFeed::ACCESS_CAPABILITY)) {
 			wp_die('You do not have permission to access this page.');
 		}
 
@@ -1110,7 +1111,7 @@ class AIFeedArticleView
 	public function displayByResearchRequestId(string $research_request_id = ''): void
 	{
 		// Check user capability
-		if (! current_user_can('manage_options')) {
+		if (! current_user_can(AIFeed::ACCESS_CAPABILITY)) {
 			wp_die('You do not have permission to access this page.');
 		}
 

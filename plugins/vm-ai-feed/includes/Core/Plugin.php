@@ -54,7 +54,7 @@ class AIFeed
 	 * @var int
 	 */
 	private const MAX_REVISION_PAGES = 100;
-	private const ACCESS_CAPABILITY   = 'access_ai_tools';
+	public const ACCESS_CAPABILITY   = 'access_ai_tools';
 
 	private static AIFeed $_instance;
 	private bool $isViewingItem       = false;

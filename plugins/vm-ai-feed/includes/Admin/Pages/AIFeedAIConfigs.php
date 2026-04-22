@@ -3,6 +3,7 @@
 namespace VM\AIFeed\Admin\Pages;
 
 use VM\AIFeed\Core\AIFeedConfig;
+use VM\AIFeed\Core\AIFeed;
 
 /**
  * Handles Writer Profile management page
@@ -967,7 +968,7 @@ class AIFeedAIConfigs
 			wp_die('Security check failed');
 		}
 
-		if (! current_user_can('manage_options')) {
+		if (! current_user_can(AIFeed::ACCESS_CAPABILITY)) {
 			wp_die('Insufficient permissions');
 		}
 
@@ -1054,7 +1055,7 @@ class AIFeedAIConfigs
 					echo '<div class="notice notice-error">';
 					echo '<p><strong>Failed to create AI config:</strong> ' . esc_html($error_message) . '</p>';
 
-					if (current_user_can('manage_options')) {
+					if (current_user_can(AIFeed::ACCESS_CAPABILITY)) {
 						echo '<details><summary>API Response Details (Response Code: ' . esc_html($response_code) . ')</summary>';
 						echo '<pre style="background: #f5f5f5; padding: 10px; overflow: auto;">' . esc_html($response_body) . '</pre>';
 						echo '</details>';
@@ -1118,7 +1119,7 @@ class AIFeedAIConfigs
 			wp_die('Security check failed');
 		}
 
-		if (! current_user_can('manage_options')) {
+		if (! current_user_can(AIFeed::ACCESS_CAPABILITY)) {
 			wp_die('Insufficient permissions');
 		}
 
@@ -1186,7 +1187,7 @@ class AIFeedAIConfigs
 		$json_body = json_encode($request_body, JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
 
 		// Debug: Log the request (only for admins)
-		if (current_user_can('manage_options') && defined('WP_DEBUG') && WP_DEBUG) {
+		if (current_user_can(AIFeed::ACCESS_CAPABILITY) && defined('WP_DEBUG') && WP_DEBUG) {
 			error_log("AI Config Update Request: {$json_body}");
 		}
 
@@ -1225,7 +1226,7 @@ class AIFeedAIConfigs
 				function () use ($error_message, $error_details, $response_code, $body, $json_body) {
 					echo '<div class="notice notice-error">';
 					echo '<p><strong>Failed to update AI config:</strong> ' . esc_html($error_message) . '</p>';
-					if (current_user_can('manage_options')) {
+					if (current_user_can(AIFeed::ACCESS_CAPABILITY)) {
 						echo '<details style="margin-top: 10px;"><summary style="cursor: pointer; font-weight: bold;">Error Details (Response Code: ' . esc_html($response_code) . ')</summary>';
 						echo '<p style="font-weight: bold; margin-top: 10px;">Request Body Sent:</p>';
 						echo '<pre style="background: #f5f5f5; padding: 10px; overflow: auto; margin-top: 5px; white-space: pre-wrap;">' . esc_html($json_body) . '</pre>';
@@ -1299,7 +1300,7 @@ class AIFeedAIConfigs
 		if (! isset($_POST['ai_config_nonce']) || ! wp_verify_nonce($_POST['ai_config_nonce'], 'duplicate_ai_config_' . $source_id)) {
 			wp_die('Security check failed');
 		}
-		if (! current_user_can('manage_options')) {
+		if (! current_user_can(AIFeed::ACCESS_CAPABILITY)) {
 			wp_die('Insufficient permissions');
 		}
 		// Validate inputs
@@ -1437,7 +1438,7 @@ class AIFeedAIConfigs
 			wp_die('Security check failed');
 		}
 
-		if (! current_user_can('manage_options')) {
+		if (! current_user_can(AIFeed::ACCESS_CAPABILITY)) {
 			wp_die('Insufficient permissions');
 		}
 
@@ -1505,7 +1506,7 @@ class AIFeedAIConfigs
 			wp_die('Security check failed');
 		}
 
-		if (! current_user_can('manage_options')) {
+		if (! current_user_can(AIFeed::ACCESS_CAPABILITY)) {
 			wp_die('Insufficient permissions');
 		}
 
@@ -1604,7 +1605,7 @@ class AIFeedAIConfigs
 			wp_die('Security check failed');
 		}
 
-		if (! current_user_can('manage_options')) {
+		if (! current_user_can(AIFeed::ACCESS_CAPABILITY)) {
 			wp_die('Insufficient permissions');
 		}
 
@@ -1688,7 +1689,7 @@ class AIFeedAIConfigs
 			wp_die('Security check failed');
 		}
 
-		if (! current_user_can('manage_options')) {
+		if (! current_user_can(AIFeed::ACCESS_CAPABILITY)) {
 			wp_die('Insufficient permissions');
 		}
 
@@ -2286,7 +2287,7 @@ class AIFeedAIConfigs
 			wp_die('Security check failed');
 		}
 
-		if (! current_user_can('manage_options')) {
+		if (! current_user_can(AIFeed::ACCESS_CAPABILITY)) {
 			wp_die('Insufficient permissions');
 		}
 
@@ -2381,7 +2382,7 @@ class AIFeedAIConfigs
 			wp_die('Security check failed');
 		}
 
-		if (! current_user_can('manage_options')) {
+		if (! current_user_can(AIFeed::ACCESS_CAPABILITY)) {
 			wp_die('Insufficient permissions');
 		}
 
@@ -2481,7 +2482,7 @@ class AIFeedAIConfigs
 			wp_die('Security check failed');
 		}
 
-		if (! current_user_can('manage_options')) {
+		if (! current_user_can(AIFeed::ACCESS_CAPABILITY)) {
 			wp_die('Insufficient permissions');
 		}
 
