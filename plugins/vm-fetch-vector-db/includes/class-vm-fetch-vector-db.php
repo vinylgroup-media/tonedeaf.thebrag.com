@@ -110,7 +110,7 @@ class VmFetchVectorDb {
         }
 
         $response = wp_remote_post(
-            "https://search.tonedeaf.thebrag.com/api/v1/lightrag/articles/{$post_id}",
+            "https://content-workers-staging.thebrag.workers.dev/api/v1/lightrag/articles/{$post_id}",
             [
                 'headers' => [
                     'Content-Type' => 'application/json',
