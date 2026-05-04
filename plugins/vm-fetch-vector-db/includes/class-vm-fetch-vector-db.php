@@ -101,20 +101,20 @@ class VmFetchVectorDb {
         }
 
         // Get API key from WordPress options
-        // $api_key = get_option( 'vm_fetch_vector_db_api_key', '' );
+        $api_key = get_option( 'vm_fetch_vector_db_api_key', '' );
 
         // Return early if no API key is configured
-        // if ( empty( $api_key ) ) {
-        //     error_log( 'LightRAG API Error: API key not configured' );
-        //     return;
-        // }
+        if ( empty( $api_key ) ) {
+            error_log( 'LightRAG API Error: API key not configured. Set vm_fetch_vector_db_api_key in WordPress options.' );
+            return;
+        }
 
         $response = wp_remote_post(
-            "https://search.tonedeaf.thebrag.com/api/v1/lightrag/articles/{$post_id}",
+            "https://content-workers-staging.thebrag.workers.dev/api/v1/lightrag/articles/{$post_id}",
             [
                 'headers' => [
                     'Content-Type' => 'application/json',
-                    'X-API-Key'    => '',
+                    'X-API-Key'    => $api_key,
                 ],
                 'body'    => json_encode(
                     [
