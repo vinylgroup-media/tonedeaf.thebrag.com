@@ -91,8 +91,10 @@ function tbm_ga_articles(): array
 
     $args = [
         'date_query' => [
-            'after' => date('c', strtotime($from)),
-            'before' => date('c', strtotime($to)),
+            [
+                'after' => date('c', strtotime($from)),
+                'before' => date('c', strtotime($to)),
+            ]
         ],
         'post_status' => 'publish',
         'posts_per_page' => -1
@@ -171,8 +173,10 @@ function tbm_ga_articles_count($data): int|array
 
     $posts = new WP_Query([
         'date_query' => [
-            'after' => $from,
-            'before' => $to,
+            [
+                'after' => $from,
+                'before' => $to,
+            ]
         ],
         'post_type' => ['post', 'photo_gallery'],
         'post_status' => 'publish',
