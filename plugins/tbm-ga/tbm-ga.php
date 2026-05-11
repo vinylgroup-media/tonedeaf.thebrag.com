@@ -60,7 +60,12 @@ add_action('rest_api_init', function () {
         'methods' => 'GET',
         'callback' => 'tbm_ga_articles',
     ]);
-
+   
+    register_rest_route('ssm_ga/v1', '/articles', [
+        'methods' => 'GET',
+        'callback' => 'tbm_ga_articles',
+    ]);
+   
     register_rest_route('tbm_ga/v1', '/article_author', [
         'methods' => 'GET',
         'callback' => 'tbm_ga_article_author',
