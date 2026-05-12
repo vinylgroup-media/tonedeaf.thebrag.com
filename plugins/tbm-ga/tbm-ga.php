@@ -96,8 +96,6 @@ function tbm_ga_articles(): array
                 'before' => date('c', strtotime($to)),
             ]
         ],
-        'suppress_filters' => true,
-        'ignore_sticky_posts' => true,
         'post_status' => 'publish',
         'posts_per_page' => -1
     ];
@@ -180,8 +178,6 @@ function tbm_ga_articles_count($data): int|array
                 'before' => $to,
             ]
         ],
-        'suppress_filters' => true,
-        'ignore_sticky_posts' => true,
         'post_type' => ['post', 'photo_gallery'],
         'post_status' => 'publish',
         'posts_per_page' => -1
