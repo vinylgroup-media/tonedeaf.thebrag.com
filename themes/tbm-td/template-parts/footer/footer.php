@@ -26,9 +26,6 @@
                     <li><a target="_blank" rel="noopener" href="mailto:contact@vinyl.media">Submit Tip</a></li>
                 </ul>
             </nav>
-            <a href="https://vinyl.group/" target="_blank" class="d-flex" style="justify-content: center; align-items: center; padding-top: 1rem; padding-bottom: 1rem;"">
-                <img src="<?php echo IMAGES_R2_CDN_URL; ?>common/brands/202309/a-vinyl-group-company-white.png" style="height: 2rem;" alt="brag logo">
-            </a>
         </div>
     </div>
 </footer>

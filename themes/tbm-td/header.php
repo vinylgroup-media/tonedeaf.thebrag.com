@@ -353,9 +353,8 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
 
             </div>
 
-            <div class="my-2 btn btn-media-top btn-toggle-network-mobile d-flex" style="width: 100%;">
+            <div class="my-2 btn btn-media-top d-flex" style="width: 100%;">
                 <span class="brag-media-top"><img src="https://images-r2-1.thebrag.com/tb/uploads/2025/02/vinyl-media.png" width="300" height="28" alt="The Brag Media" title="The Brag Media" style="width: 180px;" loading="lazy"></span>
-                <span class="arrow-down ml-1"><img src="<?php echo ICONS_URL; ?>icon_arrow-down-td.svg" width="15" height="14" alt="▼"></span>
             </div>
             <div id="network-mobile" class="network" style="display: none;">
                 <?php get_template_part('template-parts/network'); ?>
@@ -366,9 +365,8 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
             <div class="d-flex justify-content-between container">
                 <div class="network-socials-wrap d-none d-md-block">
                     <div class="network-socials">
-                        <div class="btn btn-media-top btn-toggle-slidedown" data-target="network" style="padding-bottom: 0 !important;">
+                        <div class="btn btn-media-top" style="padding-bottom: 0 !important;">
                             <span class="brag-media-top"><img src="https://images-r2-1.thebrag.com/tb/uploads/2025/02/vinyl-media.png" width="100" height="13" alt="The Brag Media" title="The Brag Media" loading="lazy" style="width: 80px;"></span>
-                            <span class="arrow-down"><img src="<?php echo ICONS_URL; ?>icon_arrow-down-td.svg" width="10" height="20" alt="▼"></span>
                         </div>
                         <div class="socials-top d-flex justify-content-between">
                             <a href="https://www.facebook.com/tonedeafmusic" target="_blank" rel="noreferrer"><img src="<?php echo ICONS_URL; ?>facebook.svg" width="32" height="32" alt="Facebook" title="Facebook"></a>

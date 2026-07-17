@@ -44,12 +44,6 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $(".btn-toggle-network-mobile").on("click", function () {
-        $(this).toggleClass("active");
-        $("#network-mobile").slideToggle();
-        $("#search-nav-wrap").slideToggle();
-    });
-
     $("#overlay").on("click", function () {
         $(this).addClass("d-none");
         $("body").removeClass("modal-open");
