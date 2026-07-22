@@ -379,7 +379,7 @@ $current_url = home_url(add_query_arg([], $GLOBALS['wp']->request));
                 </div><!-- .network-socials-wrap -->
 
                 <div class="d-flex">
-                    <div class="logo-wrap">
+                    <div class="logo-wrap" style="margin-top: 10px;">
                         <a href="<?php echo site_url(); ?>"><img src="<?php echo IMAGES_R2_CDN_URL; ?>common/brands/Tone-Deaf-light.svg" width="100" height="55" alt="Tone Deaf" title="Tone Deaf" loading="lazy"></a>
                     </div>
                 </div>
