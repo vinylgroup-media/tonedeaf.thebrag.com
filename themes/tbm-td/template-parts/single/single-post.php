@@ -86,7 +86,7 @@ if (!post_password_required($post)) :
     if ($tags) :
         foreach ($tags as $tag) :
             $TagsCD .= $tag->slug . ' ';
-            if ($tag->slug === 'native' || $tag->slug === 'native-content') {
+            if ($tag->slug === 'native' || $tag->slug === 'native-content' || $tag->slug === 'sponsored') {
                 $is_native = true;
             }
         endforeach; // For Each Tag
