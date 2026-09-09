@@ -2,12 +2,11 @@
 /**
  * Shared shell for the legal pages (Terms of Use, Privacy Policy).
  *
- * Expects $legal_doc (partial name under template-parts/legal) and
- * $legal_updated to be set by the calling page template.
+ * Expects $legal_doc (partial name under template-parts/legal) to be set by
+ * the calling page template.
  */
 
-$legal_doc     = isset($legal_doc) ? $legal_doc : '';
-$legal_updated = isset($legal_updated) ? $legal_updated : '';
+$legal_doc = isset($legal_doc) ? $legal_doc : '';
 ?>
 
 <div class="ad-billboard ad-billboard-top container py-1 py-md-2">
@@ -19,10 +18,6 @@ $legal_updated = isset($legal_updated) ? $legal_updated : '';
 <section class="container bg-white p-2 p-md-4">
     <article class="legal">
         <h1><?php the_title(); ?></h1>
-
-        <?php if ($legal_updated) : ?>
-            <p class="legal-updated">Last updated: <?php echo esc_html($legal_updated); ?></p>
-        <?php endif; ?>
 
         <div class="post-content">
             <?php get_template_part('template-parts/legal/' . $legal_doc); ?>
@@ -38,13 +33,7 @@ $legal_updated = isset($legal_updated) ? $legal_updated : '';
 
     .legal h1 {
         font-size: 2rem;
-        margin-bottom: .5rem;
-    }
-
-    .legal .legal-updated {
-        margin: 0 0 2rem;
-        font-size: .875rem;
-        opacity: .6;
+        margin-bottom: 2rem;
     }
 
     .legal h2 {
