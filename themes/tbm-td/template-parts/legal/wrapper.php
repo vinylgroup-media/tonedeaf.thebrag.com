@@ -2,11 +2,9 @@
 /**
  * Shared shell for the legal pages (Terms of Use, Privacy Policy).
  *
- * Expects $legal_doc (partial name under template-parts/legal) to be set by
- * the calling page template.
+ * The copy lives in each page's own content so it can be edited in
+ * wp-admin; this file supplies only the layout and typography.
  */
-
-$legal_doc = isset($legal_doc) ? $legal_doc : '';
 ?>
 
 <div class="ad-billboard ad-billboard-top container py-1 py-md-2">
@@ -20,7 +18,7 @@ $legal_doc = isset($legal_doc) ? $legal_doc : '';
         <h1><?php the_title(); ?></h1>
 
         <div class="post-content">
-            <?php get_template_part('template-parts/legal/' . $legal_doc); ?>
+            <?php the_content(); ?>
         </div>
     </article>
 </section>
@@ -55,6 +53,18 @@ $legal_doc = isset($legal_doc) ? $legal_doc : '';
     .legal ul {
         margin: 0 0 1rem;
         padding-left: 1.75rem;
+    }
+
+    .legal ol {
+        list-style: decimal;
+    }
+
+    .legal ol[type="a"] {
+        list-style: lower-alpha;
+    }
+
+    .legal ol[type="i"] {
+        list-style: lower-roman;
     }
 
     .legal ul {
